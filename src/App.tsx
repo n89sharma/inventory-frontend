@@ -2,13 +2,13 @@ import './App.css'
 import { DataRow, DataRowContainer, DetailsContainer, Header, Section } from './components/ui/datacomponents'
 import { Button } from './components/ui/button'
 import { Input } from './components/ui/input'
-import { getAssetDetail, type AssetDetailResponse } from "@/services/api"
+import { getAssetDetail, type AssetDetails } from "@/services/api"
 import { useState } from 'react'
 
 function App() {
 
   const [inputBarcode, setInputBarcode] = useState("")
-  const [assetDetails, setAssetDetails] = useState<AssetDetailResponse | null>(null)
+  const [aDetails, setAssetDetails] = useState<AssetDetails | null>(null)
   const [loading, setLoading] = useState(false)
 
   async function handleSearch() {
@@ -36,13 +36,26 @@ function App() {
       <Section>
         <Header title="Summary"></Header>
         <DataRowContainer>
-          <DataRow label="Asset Type" value={assetDetails?.asset_type ?? "-"} isFirst={true} />
-          <DataRow label="Serial #" value={assetDetails?.serial_number ?? "-"} />
-          <DataRow label="Meter" value={assetDetails?.technical_specification?.meter_total ?? "-"} />
-          <DataRow label="Tracking Status" value={assetDetails?.tracking_status ?? "-"} />
-          <DataRow label="Exit Status" value={assetDetails?.exit_status ?? "-"} />
-          <DataRow label="Technical Status" value={assetDetails?.technical_status ?? "-"} />
-          <DataRow label="Location" value={assetDetails?.asset_location ?? "-"} />
+          <DataRow label="Asset Type" value={aDetails?.asset_type} isFirst={true} />
+          <DataRow label="Serial #" value={aDetails?.serial_number} />
+          <DataRow label="Meter" value={aDetails?.specs?.meter_total} />
+          <DataRow label="Tracking Status" value={aDetails?.tracking_status} />
+          <DataRow label="Exit Status" value={aDetails?.exit_status} />
+          <DataRow label="Technical Status" value={aDetails?.technical_status} />
+          <DataRow label="Location" value={aDetails?.location} />
+        </DataRowContainer>
+      </Section>
+
+      <Section>
+        <Header title="Pricing"></Header>
+        <DataRowContainer>
+          <DataRow label="Purchase Cost" value={aDetails?.cost.purchase_cost} isFirst={true} curr={true} />
+          <DataRow label="Transport Cost" value={aDetails?.cost.transport_cost} curr={true} />
+          <DataRow label="Processing Cost" value={aDetails?.cost.processing_cost} curr={true}/>
+          <DataRow label="Other Cost" value={aDetails?.cost.other_cost} curr={true}/>
+          <DataRow label="Parts Cost" value={aDetails?.cost.parts_cost} curr={true}/>
+          <DataRow label="Total Cost" value={aDetails?.cost.total_cost} curr={true}/>
+          <DataRow label="Sale Price" value={aDetails?.cost.sale_price} curr={true}/>
         </DataRowContainer>
       </Section>
     </DetailsContainer>

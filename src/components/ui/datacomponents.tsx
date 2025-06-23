@@ -85,14 +85,14 @@ type HeaderProps = {
 
 export function Header({ title }: HeaderProps): React.JSX.Element {
   return (
-    <div className="flex content-center h-8 max-w-sm"><h2 className="text-2xl font-bold font-sans">{title}</h2></div>
+    <div className="flex h-8 max-w-sm"><h2 className="text-2xl font-bold font-sans">{title}</h2></div>
   )
 }
 
 
 export function DetailsContainer({ children }: ChildrenProps): React.JSX.Element {
   return (
-    <div className="flex flex-col px-32 self-stretch border-1 rounded-lg border-gray-300 gap-4 py-4">
+    <div className="flex flex-col px-4 self-stretch border-1 rounded-lg border-gray-300 gap-4 py-4">
       {children}
     </div>
   )

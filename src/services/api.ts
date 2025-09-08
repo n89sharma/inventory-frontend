@@ -67,10 +67,10 @@ export type AssetDetails = {
         meter_black: string,
         meter_colour: string,
         meter_total: string,
-        drum_life_c: string,
-        drum_life_m: string,
-        drum_life_y: string,
-        drum_life_k: string
+        drum_life_c: number,
+        drum_life_m: number,
+        drum_life_y: number,
+        drum_life_k: number
     },
     cost: {
         purchase_cost: string,
@@ -127,10 +127,10 @@ function mapAssetDetail(res: AssetDetailResponse): AssetDetails {
             meter_black: formatThousandsK(rspec.meter_black),
             meter_colour: formatThousandsK(rspec.meter_colour),
             meter_total: formatThousandsK(rspec.meter_total),
-            drum_life_c: formatThousandsK(rspec.drum_life_c),
-            drum_life_m: formatThousandsK(rspec.drum_life_m),
-            drum_life_y: formatThousandsK(rspec.drum_life_y),
-            drum_life_k: formatThousandsK(rspec.drum_life_k),
+            drum_life_c: rspec.drum_life_c,
+            drum_life_m: rspec.drum_life_m,
+            drum_life_y: rspec.drum_life_y,
+            drum_life_k: rspec.drum_life_k,
         },
         cost: {
             purchase_cost: formatUSD(rcost.purchase_cost),

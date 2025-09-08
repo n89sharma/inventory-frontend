@@ -14,17 +14,17 @@ type ValueProps = {
 }
 
 export function DataValue({ value, curr = false }: ValueProps): React.JSX.Element {
+  var formattedValue = value ? value : "-"
   if (curr) {
     return (
-      <div className="flex flex-row self-stretch gap-1">
-        <p className={`text-sm font-bold text-gray-900`}>$</p>
-        <p className={`text-sm font-bold text-gray-900 text-right w-19`}>{value}</p>
+      <div className="flex flex-row gap-1">
+        <p className={`text-sm font-bold text-gray-900`}>{value ? "$" : ""}</p>
+        <p className={`text-sm font-bold text-gray-900 text-right w-19`}>{formattedValue}</p>
       </div>
     )
   } else {
-    var formattedValue = value ? value : "-"
     return (
-      <div className="flex flex-row self-stretch">
+      <div className="flex flex-row">
         <p className={`text-sm font-bold text-gray-900 text-left`}>{formattedValue}</p>
       </div>
     )
@@ -41,13 +41,52 @@ type DataPointProps = {
 
 export function DataRow({ label, value, isFirst = false, curr = false }: DataPointProps): React.JSX.Element {
   const className = isFirst
-    ? "border-t-1 border-b-1 border-gray-200 flex flex-col item-start p-1 self-stretch"
-    : "border-b-1 border-gray-200 flex flex-col item-start p-1 self-stretch"
+    ? "border-t-1 border-b-1 border-gray-200 flex flex-col p-1"
+    : "border-b-1 border-gray-200 flex flex-col p-1"
   return (
     <div className={className}>
-      <div className="flex flex-row items-center self-stretch gap-4">
+      <div className="flex flex-row items-center gap-4">
         <DataLabel label={label} />
         <DataValue value={value} curr={curr} />
+      </div>
+    </div>
+  )
+}
+
+type CMYKDataProps = {
+  label: string,
+  c_value: number | undefined,
+  m_value: number | undefined,
+  y_value: number | undefined,
+  k_value: number | undefined
+}
+
+export function CMYKRow({ label, c_value, m_value, y_value, k_value }: CMYKDataProps): React.JSX.Element {
+  return (
+    <div className="border-b-1 border-gray-200 flex flex-col p-1">
+      <div className="flex flex-row items-center gap-4">
+        <DataLabel label={label} />
+        <div className="flex flex-row gap-2">
+          <div className="flex flex-row gap-1">
+            <p className={`text-sm font-bold text-cyan-400 text-left`}>C</p>
+            <p className={`text-sm font-bold text-gray-900 text-left`}>{c_value}</p>
+          </div>
+
+          <div className="flex flex-row gap-1">
+            <p className={`text-sm font-bold text-fuchsia-400 text-left`}>M</p>
+            <p className={`text-sm font-bold text-gray-900 text-left`}>{m_value}</p>
+          </div>
+
+          <div className="flex flex-row gap-1">
+            <p className={`text-sm font-bold text-yellow-400 text-left`}>Y</p>
+            <p className={`text-sm font-bold text-gray-900 text-left`}>{y_value}</p>
+          </div>
+
+          <div className="flex flex-row gap-1">
+            <p className={`text-sm font-bold text-black text-left`}>K</p>
+            <p className={`text-sm font-bold text-gray-900 text-left`}>{k_value}</p>
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -59,21 +98,15 @@ type ChildrenProps = {
 
 export function DataRowContainer({ children }: ChildrenProps): React.JSX.Element {
   return (
-    <div className="flex flex-col item-start self-stretch">
+    <div className="flex flex-col">
       {children}
     </div>
   )
 }
 
-{/* <div className="flex flex-col gap-4 item-start p-2 max-w-sm min-w-3xs">
-        <div className="flex content-center h-8 max-w-sm">
-          <h2 className="text-2xl font-bold font-sans">Summary</h2>
-        </div>
-         */}
-
 export function Section({ children }: ChildrenProps): React.JSX.Element {
   return (
-    <div className="flex flex-col gap-4 item-start p-2 max-w-sm min-w-3xs">
+    <div className="flex flex-col gap-4 p-2 max-w-sm min-w-3xs">
       {children}
     </div>
   )
@@ -92,7 +125,7 @@ export function Header({ title }: HeaderProps): React.JSX.Element {
 
 export function DetailsContainer({ children }: ChildrenProps): React.JSX.Element {
   return (
-    <div className="flex flex-col px-4 self-stretch border-1 rounded-lg border-gray-300 gap-4 py-4">
+    <div className="flex flex-col px-4 border-1 rounded-lg border-gray-300 gap-4 py-4">
       {children}
     </div>
   )

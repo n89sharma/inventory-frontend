@@ -1,5 +1,5 @@
 import './App.css'
-import { DataRow, DataRowContainer, DetailsContainer, Header, Section } from './components/ui/datacomponents'
+import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section } from './components/ui/datacomponents'
 import { Button } from './components/ui/button'
 import { Input } from './components/ui/input'
 import { getAssetDetail, type AssetDetails } from "@/services/api"
@@ -56,6 +56,16 @@ function App() {
           <DataRow label="Parts Cost" value={aDetails?.cost.parts_cost} curr={true}/>
           <DataRow label="Total Cost" value={aDetails?.cost.total_cost} curr={true}/>
           <DataRow label="Sale Price" value={aDetails?.cost.sale_price} curr={true}/>
+        </DataRowContainer>
+      </Section>
+
+      <Section>
+        <Header title="Specifications"></Header>
+        <DataRowContainer>
+          <DataRow label="Cassettes" value={aDetails?.specs.cassettes} isFirst={true} />
+          <DataRow label="Internal Finisher" value={aDetails?.specs.internal_finisher} />
+          <CMYKRow label="Drum Life" c_value={aDetails?.specs.drum_life_c} m_value={aDetails?.specs.drum_life_m} y_value={aDetails?.specs.drum_life_y} k_value={aDetails?.specs.drum_life_k}/>
+
         </DataRowContainer>
       </Section>
     </DetailsContainer>

@@ -119,8 +119,8 @@ function mapAssetDetail(res: AssetDetailResponse): AssetDetails {
         is_held: res.is_held,
         created_at: new Date(res.created_at),
         model: res.model.name,
-        warehouse_code: res.warehouse.city_code,
-        warehouse_street: res.warehouse.street,
+        warehouse_code: res.warehouse?.city_code,
+        warehouse_street: res.warehouse?.street,
         specs: {
             cassettes: rspec.cassettes,
             internal_finisher: rspec.internal_finisher,

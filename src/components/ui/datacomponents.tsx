@@ -1,56 +1,14 @@
-type LabelProps = {
-  label: string
+import * as React from "react"
+import { cn } from "@/lib/utils"
+
+type ChildrenProps = {
+  children: React.ReactNode
+  className?: string
 }
 
-export function DataLabel({ label }: LabelProps): React.JSX.Element {
-  return (
-    <div className="w-30"><p className="text-left text-xs font-medium text-gray-500">{label}</p></div>
-  )
-}
-
-type ValueProps = {
-  value: string | number | undefined,
-  curr?: boolean
-}
-
-export function DataValue({ value, curr = false }: ValueProps): React.JSX.Element {
-  var formattedValue = value ? value : "-"
-  if (curr) {
-    return (
-      <div className="flex flex-row gap-1">
-        <p className={`text-sm font-bold text-gray-900`}>{value ? "$" : ""}</p>
-        <p className={`text-sm font-bold text-gray-900 text-right w-19`}>{formattedValue}</p>
-      </div>
-    )
-  } else {
-    return (
-      <div className="flex flex-row">
-        <p className={`text-sm font-bold text-gray-900 text-left`}>{formattedValue}</p>
-      </div>
-    )
-  }
-
-}
-
-type DataPointProps = {
-  label: string,
-  value: string | number | undefined,
-  isFirst?: boolean,
-  curr?: boolean
-}
-
-export function DataRow({ label, value, isFirst = false, curr = false }: DataPointProps): React.JSX.Element {
-  const className = isFirst
-    ? "border-t-1 border-b-1 border-gray-200 flex flex-col p-1"
-    : "border-b-1 border-gray-200 flex flex-col p-1"
-  return (
-    <div className={className}>
-      <div className="flex flex-row items-center gap-4">
-        <DataLabel label={label} />
-        <DataValue value={value} curr={curr} />
-      </div>
-    </div>
-  )
+type HeaderProps = {
+  title: string
+  className?: string
 }
 
 type CMYKDataProps = {
@@ -58,42 +16,60 @@ type CMYKDataProps = {
   c_value: number | undefined,
   m_value: number | undefined,
   y_value: number | undefined,
-  k_value: number | undefined
+  k_value: number | undefined,
+  className?: string
 }
 
-export function CMYKRow({ label, c_value, m_value, y_value, k_value }: CMYKDataProps): React.JSX.Element {
+type DataPointProps = {
+  label: string,
+  value: string | number | undefined,
+  curr?: boolean,
+  className?: string
+}
+
+type LabelProps = {
+  label: string,
+  className?: string
+}
+
+type ValueProps = {
+  value: string | number | undefined,
+  curr?: boolean,
+  className?: string
+
+}
+
+export function DetailsContainer({ children, className }: ChildrenProps): React.JSX.Element {
   return (
-    <div className="border-b-1 border-gray-200 flex flex-col p-1">
-      <div className="flex flex-row items-center gap-4">
-        <DataLabel label={label} />
-        <div className="flex flex-row gap-2">
-          <div className="flex flex-row gap-1">
-            <p className={`text-sm font-bold text-cyan-400 text-left`}>C</p>
-            <p className={`text-sm font-bold text-gray-900 text-left`}>{c_value}</p>
-          </div>
-
-          <div className="flex flex-row gap-1">
-            <p className={`text-sm font-bold text-fuchsia-400 text-left`}>M</p>
-            <p className={`text-sm font-bold text-gray-900 text-left`}>{m_value}</p>
-          </div>
-
-          <div className="flex flex-row gap-1">
-            <p className={`text-sm font-bold text-yellow-400 text-left`}>Y</p>
-            <p className={`text-sm font-bold text-gray-900 text-left`}>{y_value}</p>
-          </div>
-
-          <div className="flex flex-row gap-1">
-            <p className={`text-sm font-bold text-black text-left`}>K</p>
-            <p className={`text-sm font-bold text-gray-900 text-left`}>{k_value}</p>
-          </div>
-        </div>
-      </div>
+    <div className={cn("flex flex-col rounded-lg border bg-card p-6 shadow-sm grow space-y-5", className)}>
+      {children}
     </div>
   )
 }
 
-type ChildrenProps = {
-  children: React.ReactNode
+export function SectionRow({ children, className }: ChildrenProps): React.JSX.Element {
+  return (
+    <div className={cn("flex flex-row flex-wrap space-x-25 justify-center", className)}>
+      {children}
+    </div>
+  )
+}
+
+
+export function Section({ children, className }: ChildrenProps): React.JSX.Element {
+  return (
+    <section className={cn("space-y-5 max-w-96", className)}>
+      {children}
+    </section>
+  )
+}
+
+export function Header({ title, className }: HeaderProps): React.JSX.Element {
+  return (
+    <h2 className={cn("text-2xl font-bold tracking-tight", className)}>
+      {title}
+    </h2>
+  )
 }
 
 export function DataRowContainer({ children }: ChildrenProps): React.JSX.Element {
@@ -104,29 +80,72 @@ export function DataRowContainer({ children }: ChildrenProps): React.JSX.Element
   )
 }
 
-export function Section({ children }: ChildrenProps): React.JSX.Element {
+export function DataRow({ label, value, curr = false, className }: DataPointProps): React.JSX.Element {
   return (
-    <div className="flex flex-col gap-4 p-2 max-w-sm min-w-3xs">
-      {children}
+    <div className={cn("flex items-center gap-4 py-2 border-b last:border-b-0", className)}>
+      <DataLabel label={label} />
+      <DataValue value={value} curr={curr} />
     </div>
   )
 }
 
-type HeaderProps = {
-  title: string
-}
+export function CMYKRow({ 
+  label, 
+  c_value, 
+  m_value, 
+  y_value, 
+  k_value,
+  className
+}: CMYKDataProps): React.JSX.Element {
 
-export function Header({ title }: HeaderProps): React.JSX.Element {
   return (
-    <div className="flex h-8 max-w-sm"><h2 className="text-2xl font-bold font-sans">{title}</h2></div>
-  )
-}
-
-
-export function DetailsContainer({ children }: ChildrenProps): React.JSX.Element {
-  return (
-    <div className="flex flex-col px-4 border-1 rounded-lg border-gray-300 gap-4 py-4">
-      {children}
+    <div className={cn("flex items-center gap-4 py-2 border-b last:border-b-0", className)}>
+      <DataLabel label={label} />
+      <dd className="flex items-center gap-2 text-sm font-semibold">
+        <span className="flex items-center gap-1">
+          <span className="text-cyan-500">C</span>
+          <span className="tabular-nums">{c_value ?? 0}</span>
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="text-fuchsia-500">M</span>
+          <span className="tabular-nums">{m_value ?? 0}</span>
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="text-yellow-500">Y</span>
+          <span className="tabular-nums">{y_value ?? 0}</span>
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="text-foreground">K</span>
+          <span className="tabular-nums">{k_value ?? 0}</span>
+        </span>
+      </dd>
     </div>
   )
+}
+
+export function DataLabel({ label, className }: LabelProps): React.JSX.Element {
+  return (
+    <dt className={cn("text-left text-sm font-medium text-muted-foreground min-w-[130px]", className)}>
+      {label}
+    </dt>
+  )
+}
+
+export function DataValue({ value, curr = false, className }: ValueProps): React.JSX.Element {
+  var formattedValue = value ?? "-"
+  if (curr) {
+    return (
+      <dd className={cn("flex items-center gap-1 text-sm font-semibold", className)}>
+        {value && <span>$</span>}
+        <span className="tabular-nums text-right w-[80px]">{formattedValue}</span>
+      </dd>
+    )
+  } 
+  
+  return (
+    <dd className={cn("text-sm font-semibold", className)}>
+        {formattedValue}
+    </dd>
+  )
+
 }

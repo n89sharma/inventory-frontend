@@ -44,6 +44,13 @@ function App() {
       </form>
 
       <SectionRow>
+        <h1 className="text-3xl font-bold text-balance">
+          {`${ad?.brand} ${ad?.model} | ${ad?.barcode}`}
+        </h1>
+      </SectionRow>
+
+
+      <SectionRow>
 
         <Section>
           <Header title="Summary"></Header>
@@ -90,13 +97,28 @@ function App() {
 
       <SectionRow>
         <Section>
-          
+
           <Header title="Specifications"></Header>
           <DataRowContainer>
             <DataRow label="Cassettes" value={ad?.specs.cassettes} />
             <DataRow label="Internal Finisher" value={ad?.specs.internal_finisher} />
             <CMYKRow label="Drum Life" c_value={ad?.specs.drum_life_c} m_value={ad?.specs.drum_life_m} y_value={ad?.specs.drum_life_y} k_value={ad?.specs.drum_life_k} />
 
+          </DataRowContainer>
+        </Section>
+      </SectionRow>
+
+      <SectionRow>
+        <Section>
+          <Header title="Arrival"></Header>
+          <DataRowContainer>
+            <DataRow label="Arrived On" value={ad?.arrival.created_at}></DataRow>
+            <DataRow label="Vendor" value={ad?.arrival.origin}></DataRow>
+            <DataRow label="Warehouse" value={ad?.arrival.destination_code}></DataRow>
+            <DataRow label="Arrival #" value={ad?.arrival.arrival_number}></DataRow>
+            <DataRow label="Transporter" value={ad?.arrival.transporter}></DataRow>
+            <DataRow label="Invoice #" value={ad?.purchase_invoice.invoice_number}></DataRow>
+            <DataRow label="Is Cleared" value={ad?.purchase_invoice.is_cleared}></DataRow>
           </DataRowContainer>
         </Section>
       </SectionRow>

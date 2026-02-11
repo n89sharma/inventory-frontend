@@ -50,7 +50,7 @@ export interface AssetDetailResponse {
         drum_life_y: number,
         drum_life_k: number
     },
-    hold:{
+    hold: {
         created_by: {
             email: string,
             name: string
@@ -69,7 +69,30 @@ export interface AssetDetailResponse {
         hold_number: string
     },
     created_at: string,
-    is_held: boolean
+    is_held: boolean,
+    arrival: {
+        arrival_number: string,
+        origin: {
+            name: string
+        },
+        destination: {
+            city_code: string,
+            street: string
+        },
+        transporter: {
+            name: string
+        },
+        created_by: {
+            email: string,
+            name: string
+        },
+        notes: string,
+        created_at: string
+    },
+    purchase_invoice: {
+        invoice_number: string,
+        is_cleared: boolean
+    }
 }
 
 export type AssetDetails = {
@@ -104,7 +127,7 @@ export type AssetDetails = {
         drum_life_y: number,
         drum_life_k: number
     },
-    hold:{
+    hold: {
         created_by: string,
         created_for: string,
         created_at: string | null,
@@ -116,14 +139,28 @@ export type AssetDetails = {
     }
     created_at: string,
     is_held: boolean,
+    arrival: {
+        arrival_number: string,
+        origin: string,
+        destination_code: string,
+        destination_street: string,
+        transporter: string,
+        created_by: string,
+        notes: string,
+        created_at: string
+    },
+    purchase_invoice: {
+        invoice_number: string,
+        is_cleared: string
+    }
 }
 
 function formatThousandsK(value: number): string {
-  if (value < 1000) return value.toString()
-  return (value / 1000).toFixed(0) + " K"
+    if (value < 1000) return value.toString()
+    return (value / 1000).toFixed(0) + " K"
 }
 
-function formatUSD (value: number) {
+function formatUSD(value: number) {
     const currencyValue = new Intl.NumberFormat('en-US', {
         style: 'decimal',
         minimumFractionDigits: 2,
@@ -131,7 +168,7 @@ function formatUSD (value: number) {
     }).format(value)
     return currencyValue
 }
-   
+
 
 function mapAssetDetail(r: AssetDetailResponse): AssetDetails {
     const rspec = r.technical_specification
@@ -179,8 +216,21 @@ function mapAssetDetail(r: AssetDetailResponse): AssetDetails {
             hold_number: r.hold?.hold_number
         },
         created_at: format(new Date(r.created_at), 'MMMM dd, yyyy'),
-        is_held: r.is_held
-
+        is_held: r.is_held,
+        arrival: {
+            arrival_number: r.arrival?.arrival_number,
+            origin: r.arrival?.origin.name,
+            destination_code: r.arrival?.destination.city_code,
+            destination_street: r.arrival?.destination.street,
+            transporter: r.arrival?.transporter.name,
+            created_by: r.arrival?.created_by.name,
+            notes: r.arrival?.notes,
+            created_at: r.arrival ? format(new Date(r.arrival.created_at), 'MMMM dd, yyyy') : ''
+        },
+        purchase_invoice: {
+            invoice_number: r.purchase_invoice?.invoice_number,
+            is_cleared: String(r.purchase_invoice?.is_cleared)
+        }
     }
 }
 

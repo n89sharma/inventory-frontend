@@ -82,7 +82,7 @@ export function DataRowContainer({ children }: ChildrenProps): React.JSX.Element
 
 export function DataRow({ label, value, curr = false, className }: DataPointProps): React.JSX.Element {
   return (
-    <div className={cn("flex items-center gap-4 py-2 border-b last:border-b-0", className)}>
+    <div className={cn("flex items-center gap-4 py-1.5 border-b last:border-b-0", className)}>
       <DataLabel label={label} />
       <DataValue value={value} curr={curr} />
     </div>
@@ -99,7 +99,7 @@ export function CMYKRow({
 }: CMYKDataProps): React.JSX.Element {
 
   return (
-    <div className={cn("flex items-center gap-4 py-2 border-b last:border-b-0", className)}>
+    <div className={cn("flex items-center gap-4 py-1.5 border-b last:border-b-0", className)}>
       <DataLabel label={label} />
       <dd className="flex items-center gap-2 text-sm font-semibold">
         <span className="flex items-center gap-1">

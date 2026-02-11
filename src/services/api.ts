@@ -1,4 +1,5 @@
 import axios from "axios"
+import { format } from 'date-fns'
 
 const apiUrl = import.meta.env.VITE_INVENTORY_API_URL
 export const api = axios.create({
@@ -106,14 +107,14 @@ export type AssetDetails = {
     hold:{
         created_by: string,
         created_for: string,
-        created_at: Date | null,
+        created_at: string | null,
         customer: string,
         from_dt: string,
         to_dt: string,
         notes: string,
         hold_number: string
     }
-    created_at: Date,
+    created_at: string,
     is_held: boolean,
 }
 
@@ -170,14 +171,14 @@ function mapAssetDetail(r: AssetDetailResponse): AssetDetails {
         hold: {
             created_by: r.hold?.created_by?.name,
             created_for: r.hold?.created_for?.name,
-            created_at: r.hold?.created_at ? new Date(r.hold.created_at) : null,
+            created_at: r.hold?.created_at ? format(new Date(r.hold.created_at), 'MMMM dd, yyyy') : null,
             customer: r.hold?.customer?.name,
             from_dt: r.hold?.from_dt,
             to_dt: r.hold?.to_dt,
             notes: r.hold?.notes,
             hold_number: r.hold?.hold_number
         },
-        created_at: new Date(r.created_at),
+        created_at: format(new Date(r.created_at), 'MMMM dd, yyyy'),
         is_held: r.is_held
 
     }

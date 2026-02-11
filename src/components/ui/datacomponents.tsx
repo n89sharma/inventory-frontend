@@ -22,7 +22,7 @@ type CMYKDataProps = {
 
 type DataPointProps = {
   label: string,
-  value: string | number | undefined,
+  value: string | number | undefined | Date | null,
   curr?: boolean,
   className?: string
 }
@@ -66,7 +66,7 @@ export function Section({ children, className }: ChildrenProps): React.JSX.Eleme
 
 export function Header({ title, className }: HeaderProps): React.JSX.Element {
   return (
-    <h2 className={cn("text-2xl font-bold tracking-tight", className)}>
+    <h2 className={cn("text-2xl font-bold tracking-tight text-left", className)}>
       {title}
     </h2>
   )

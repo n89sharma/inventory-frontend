@@ -8,7 +8,7 @@ import { useState } from 'react'
 function App() {
 
   const [inputBarcode, setInputBarcode] = useState("")
-  const [aDetails, setAssetDetails] = useState<AssetDetails | null>(null)
+  const [ad, setAssetDetails] = useState<AssetDetails | null>(null)
   const [loading, setLoading] = useState(false)
 
   async function handleSearch() {
@@ -48,52 +48,55 @@ function App() {
         <Section>
           <Header title="Summary"></Header>
           <DataRowContainer>
-            <DataRow label="Asset Type" value={aDetails?.asset_type} />
-            <DataRow label="Serial #" value={aDetails?.serial_number} />
-            <DataRow label="Meter" value={aDetails?.specs?.meter_total} />
-            <DataRow label="Tracking Status" value={aDetails?.tracking_status} />
-            <DataRow label="Availability" value={aDetails?.availability_status} />
-            <DataRow label="Technical Status" value={aDetails?.technical_status} />
-            <DataRow label="Warehouse" value={aDetails?.warehouse_code} />
-            <DataRow label="Location" value={aDetails?.location} />
+            <DataRow label="Asset Type" value={ad?.asset_type} />
+            <DataRow label="Serial #" value={ad?.serial_number} />
+            <DataRow label="Meter" value={ad?.specs?.meter_total} />
+            <DataRow label="Tracking Status" value={ad?.tracking_status} />
+            <DataRow label="Availability" value={ad?.availability_status} />
+            <DataRow label="Technical Status" value={ad?.technical_status} />
+            <DataRow label="Warehouse" value={ad?.warehouse_code} />
+            <DataRow label="Location" value={ad?.location} />
+            <DataRow label="Created At" value={ad?.created_at} />
           </DataRowContainer>
         </Section>
 
         <Section>
           <Header title="Pricing"></Header>
           <DataRowContainer>
-            <DataRow label="Purchase Cost" value={aDetails?.cost.purchase_cost} curr={true} />
-            <DataRow label="Transport Cost" value={aDetails?.cost.transport_cost} curr={true} />
-            <DataRow label="Processing Cost" value={aDetails?.cost.processing_cost} curr={true} />
-            <DataRow label="Other Cost" value={aDetails?.cost.other_cost} curr={true} />
-            <DataRow label="Parts Cost" value={aDetails?.cost.parts_cost} curr={true} />
-            <DataRow label="Total Cost" value={aDetails?.cost.total_cost} curr={true} />
-            <DataRow label="Sale Price" value={aDetails?.cost.sale_price} curr={true} />
+            <DataRow label="Purchase Cost" value={ad?.cost.purchase_cost} curr={true} />
+            <DataRow label="Transport Cost" value={ad?.cost.transport_cost} curr={true} />
+            <DataRow label="Processing Cost" value={ad?.cost.processing_cost} curr={true} />
+            <DataRow label="Other Cost" value={ad?.cost.other_cost} curr={true} />
+            <DataRow label="Parts Cost" value={ad?.cost.parts_cost} curr={true} />
+            <DataRow label="Total Cost" value={ad?.cost.total_cost} curr={true} />
+            <DataRow label="Sale Price" value={ad?.cost.sale_price} curr={true} />
           </DataRowContainer>
         </Section>
 
         <Section>
-          <Header title="Specifications"></Header>
+          <Header title="Hold"></Header>
           <DataRowContainer>
-            <DataRow label="Cassettes" value={aDetails?.specs.cassettes} />
-            <DataRow label="Internal Finisher" value={aDetails?.specs.internal_finisher} />
-            <CMYKRow label="Drum Life" c_value={aDetails?.specs.drum_life_c} m_value={aDetails?.specs.drum_life_m} y_value={aDetails?.specs.drum_life_y} k_value={aDetails?.specs.drum_life_k} />
-
+            <DataRow label="Date" value={ad?.hold.created_at}></DataRow>
+            <DataRow label="Customer" value={ad?.hold.customer}></DataRow>
+            <DataRow label="For" value={ad?.hold.created_for}></DataRow>
+            <DataRow label="By" value={ad?.hold.created_by}></DataRow>
+            <DataRow label="Notes" value={ad?.hold.notes}></DataRow>
+            <DataRow label="Hold#" value={ad?.hold.hold_number}></DataRow>
           </DataRowContainer>
         </Section>
+
 
       </SectionRow>
 
       <SectionRow>
         <Section>
-          <Header title="Hold"></Header>
+          
+          <Header title="Specifications"></Header>
           <DataRowContainer>
-            <DataRow label="Date" value={""}></DataRow>
-            <DataRow label="Customer" value={""}></DataRow>
-            <DataRow label="For" value={""}></DataRow>
-            <DataRow label="By" value={""}></DataRow>
-            <DataRow label="Notes" value={""}></DataRow>
-            <DataRow label="Hold#" value={""}></DataRow>
+            <DataRow label="Cassettes" value={ad?.specs.cassettes} />
+            <DataRow label="Internal Finisher" value={ad?.specs.internal_finisher} />
+            <CMYKRow label="Drum Life" c_value={ad?.specs.drum_life_c} m_value={ad?.specs.drum_life_m} y_value={ad?.specs.drum_life_y} k_value={ad?.specs.drum_life_k} />
+
           </DataRowContainer>
         </Section>
       </SectionRow>

@@ -22,7 +22,7 @@ type CMYKDataProps = {
 
 type DataPointProps = {
   label: string,
-  value: string | number | undefined | Date | null,
+  value: string | number | undefined | null,
   curr?: boolean,
   className?: string
 }
@@ -33,7 +33,7 @@ type LabelProps = {
 }
 
 type ValueProps = {
-  value: string | number | undefined,
+  value: string | number | undefined | null,
   curr?: boolean,
   className?: string
 

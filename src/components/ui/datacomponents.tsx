@@ -11,6 +11,13 @@ type HeaderProps = {
   className?: string
 }
 
+type TitleProps = {
+  brand: string | undefined,
+  model: string | undefined,
+  barcode: string | undefined,
+  className?: string
+}
+
 type CMYKDataProps = {
   label: string,
   c_value: number | undefined,
@@ -49,7 +56,7 @@ export function DetailsContainer({ children, className }: ChildrenProps): React.
 
 export function SectionRow({ children, className }: ChildrenProps): React.JSX.Element {
   return (
-    <div className={cn("flex flex-row flex-wrap space-x-25 justify-center", className)}>
+    <div className={cn("flex flex-row border border-red-500 flex-wrap space-x-25 justify-center", className)}>
       {children}
     </div>
   )
@@ -58,9 +65,19 @@ export function SectionRow({ children, className }: ChildrenProps): React.JSX.El
 
 export function Section({ children, className }: ChildrenProps): React.JSX.Element {
   return (
-    <section className={cn("space-y-5 max-w-96", className)}>
+    <section className={cn("space-y-5 border border-blue-500", className)}>
       {children}
     </section>
+  )
+}
+
+export function Title({ brand, model, barcode, className }: TitleProps): React.JSX.Element {
+  return (
+    <h1 className={cn("text-3xl font-bold", className)}>
+      {`${brand} ${model}`}
+      <br></br>
+      {barcode}
+    </h1>
   )
 }
 
@@ -72,9 +89,9 @@ export function Header({ title, className }: HeaderProps): React.JSX.Element {
   )
 }
 
-export function DataRowContainer({ children }: ChildrenProps): React.JSX.Element {
+export function DataRowContainer({ children, className }: ChildrenProps): React.JSX.Element {
   return (
-    <div className="flex flex-col">
+    <div className={cn("flex flex-col", className)}>
       {children}
     </div>
   )

@@ -1,5 +1,4 @@
-import './App.css'
-import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section, SectionRow } from './components/ui/datacomponents'
+import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section, SectionRow, Title } from './components/ui/datacomponents'
 import { Button } from './components/ui/button'
 import { Input } from './components/ui/input'
 import { getAssetDetail, type AssetDetails } from "@/services/api"
@@ -43,10 +42,10 @@ function App() {
         </Button>
       </form>
 
-      <SectionRow>
-        <h1 className="text-3xl font-bold text-balance">
-          {`${ad?.brand} ${ad?.model} | ${ad?.barcode}`}
-        </h1>
+      <SectionRow className="flex-col">
+        <Section>
+          <Title brand={ad?.brand} model={ad?.model} barcode={ad?.barcode}></Title>
+        </Section>
       </SectionRow>
 
 

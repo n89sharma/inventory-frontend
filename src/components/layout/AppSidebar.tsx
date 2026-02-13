@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/sidebar"
 import { ChartLineUpIcon, LineSegmentsIcon, LockOpenIcon, MagnifyingGlassIcon, PrinterIcon, StackIcon, TruckTrailerIcon, UserIcon, WarehouseIcon } from "@phosphor-icons/react"
 
-export function AppSidebar() {
+export function AppSidebar(): React.JSX.Element {
   return (
     <Sidebar collapsible="icon">
 

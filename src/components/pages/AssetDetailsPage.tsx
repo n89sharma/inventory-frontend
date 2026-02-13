@@ -1,46 +1,14 @@
 import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section, SectionRow, Title } from '../ui/datacomponents'
-import { Button } from '../ui/button'
-import { Input } from '../ui/input'
-import { getAssetDetail, type AssetDetails } from "@/services/api"
-import { useState } from 'react'
+import { useSearchStore } from "@/store/useSearchStore"
 
 export function AssetDetailsPage() {
 
-  const [inputBarcode, setInputBarcode] = useState("")
-  const [ad, setAssetDetails] = useState<AssetDetails | null>(null)
-  const [loading, setLoading] = useState(false)
-
-  async function handleSearch() {
-    if (!inputBarcode.trim()) return
-    try {
-      setLoading(true)
-      const data = await getAssetDetail({ barcode: inputBarcode })
-      setAssetDetails(data)
-    } catch (err) {
-      console.error("Search failed", err)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const ad = useSearchStore((state) => state.assetDetails)
 
   return (
 
     <DetailsContainer>
-      <form onSubmit={(e) => {
-        e.preventDefault()
-        handleSearch()
-      }} className="flex flex-row gap-2 justify-center">
-        <Input
-          className="max-w-60"
-          type="text"
-          placeholder="Barcode"
-          value={inputBarcode}
-          onChange={(e) => setInputBarcode(e.target.value)}
-        />
-        <Button type="submit" variant="default" onClick={handleSearch} disabled={loading}>
-          {loading ? "Searching..." : "Search"}
-        </Button>
-      </form>
+
 
       <SectionRow className="flex-col">
         <Section>

@@ -48,7 +48,7 @@ type ValueProps = {
 
 export function DetailsContainer({ children, className }: ChildrenProps): React.JSX.Element {
   return (
-    <div className={cn("flex flex-col rounded-lg border bg-card p-6 shadow-sm grow space-y-5", className)}>
+    <div className={cn("flex flex-col rounded-sm border bg-card p-6 gap-6", className)}>
       {children}
     </div>
   )
@@ -56,7 +56,7 @@ export function DetailsContainer({ children, className }: ChildrenProps): React.
 
 export function SectionRow({ children, className }: ChildrenProps): React.JSX.Element {
   return (
-    <div className={cn("flex flex-row flex-wrap space-x-12 justify-center border border-blue-500", className)}>
+    <div className={cn("flex flex-row flex-wrap gap-12", className)}>
       {children}
     </div>
   )
@@ -65,7 +65,7 @@ export function SectionRow({ children, className }: ChildrenProps): React.JSX.El
 
 export function Section({ children, className }: ChildrenProps): React.JSX.Element {
   return (
-    <section className={cn("space-y-5 min-w-80 border border-red-500", className)}>
+    <section className={cn("min-w-64", className)}>
       {children}
     </section>
   )
@@ -99,7 +99,7 @@ export function DataRowContainer({ children, className }: ChildrenProps): React.
 
 export function DataRow({ label, value, curr = false, className }: DataPointProps): React.JSX.Element {
   return (
-    <div className={cn("flex items-center gap-4 py-1.5 border-b last:border-b-0", className)}>
+    <div className={cn("flex items-center gap-4 py-1.5 border-b first:border-t-2", className)}>
       <DataLabel label={label} />
       <DataValue value={value} curr={curr} />
     </div>
@@ -116,7 +116,7 @@ export function CMYKRow({
 }: CMYKDataProps): React.JSX.Element {
 
   return (
-    <div className={cn("flex items-center gap-4 py-1.5 border-b last:border-b-0", className)}>
+    <div className={cn("flex items-center gap-4 py-1.5 border-b", className)}>
       <DataLabel label={label} />
       <dd className="flex items-center gap-2 text-sm font-semibold">
         <span className="flex items-center gap-1">

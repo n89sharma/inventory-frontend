@@ -44,7 +44,8 @@ export function AppSidebar(): React.JSX.Element {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton>
-                  <WarehouseIcon />Arrivals
+                  <WarehouseIcon size={60}/>
+                  <span>Arrivals</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>

@@ -8,7 +8,7 @@ export function AssetTabsSection() {
         <TabsTrigger value="comments"><Header title="Comments"/></TabsTrigger>
         <TabsTrigger value="history"><Header title="History"/></TabsTrigger>
       </TabsList>
-      <TabsContent value="comments">
+      <TabsContent value="comments" className="flex flex-col gap-5">
         <Comment
           user="Nikhil Sharma"
           date="Feb 14, 2026"

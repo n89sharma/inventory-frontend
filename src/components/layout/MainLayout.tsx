@@ -6,9 +6,9 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <div className="flex flex-col">
-        <Header/>
-        <main className="p-4">
+      <div className="flex flex-col w-full">
+        <Header className="sticky top-0 bg-background" />
+        <main className="p-4 w-full max-w-7xl mx-auto">
           {children}
         </main>
       </div>

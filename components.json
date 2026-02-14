@@ -7,8 +7,7 @@
     "config": "",
     "css": "src/global.css",
     "baseColor": "neutral",
-    "cssVariables": true,
-    "prefix": ""
+    "cssVariables": true
   },
   "iconLibrary": "phosphor",
   "aliases": {

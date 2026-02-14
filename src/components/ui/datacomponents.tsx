@@ -56,7 +56,7 @@ export function DetailsContainer({ children, className }: ChildrenProps): React.
 
 export function SectionRow({ children, className }: ChildrenProps): React.JSX.Element {
   return (
-    <div className={cn("flex flex-row flex-wrap space-x-25 justify-center", className)}>
+    <div className={cn("flex flex-row flex-wrap space-x-12 justify-center border border-blue-500", className)}>
       {children}
     </div>
   )
@@ -65,13 +65,13 @@ export function SectionRow({ children, className }: ChildrenProps): React.JSX.El
 
 export function Section({ children, className }: ChildrenProps): React.JSX.Element {
   return (
-    <section className={cn("space-y-5", className)}>
+    <section className={cn("space-y-5 min-w-80 border border-red-500", className)}>
       {children}
     </section>
   )
 }
 
-export function Title({ brand, model, barcode, className }: TitleProps): React.JSX.Element {
+export function AssetTitle({ brand, model, barcode, className }: TitleProps): React.JSX.Element {
   return (
     <h1 className={cn("text-3xl font-bold", className)}>
       {`${brand} ${model}`}

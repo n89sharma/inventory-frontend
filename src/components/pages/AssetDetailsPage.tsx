@@ -1,5 +1,6 @@
-import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section, SectionRow, Title } from '../ui/datacomponents'
+import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section, SectionRow, AssetTitle } from '../ui/datacomponents'
 import { useSearchStore } from "@/store/useSearchStore"
+import { AssetTabsSection } from '../layout/AssetTabsSection'
 
 export function AssetDetailsPage() {
 
@@ -12,7 +13,7 @@ export function AssetDetailsPage() {
 
       <SectionRow className="flex-col">
         <Section>
-          <Title brand={ad?.brand} model={ad?.model} barcode={ad?.barcode}></Title>
+          <AssetTitle brand={ad?.brand} model={ad?.model} barcode={ad?.barcode}></AssetTitle>
         </Section>
       </SectionRow>
 
@@ -101,7 +102,7 @@ export function AssetDetailsPage() {
         </Section>
       </SectionRow>
 
-
+      <AssetTabsSection/>
 
     </DetailsContainer>
   )

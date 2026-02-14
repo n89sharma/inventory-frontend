@@ -89,6 +89,25 @@ export interface AssetDetailResponse {
         notes: string,
         created_at: string
     },
+    departure: {
+        departure_number: string,
+        destination: {
+            name: string
+        },
+        origin: {
+            city_code: string,
+            street: string
+        },
+        transporter: {
+            name: string
+        },
+        created_by: {
+            email: string,
+            name: string
+        },
+        notes: string,
+        created_at: string
+    },
     purchase_invoice: {
         invoice_number: string,
         is_cleared: boolean
@@ -149,6 +168,16 @@ export type AssetDetails = {
         notes: string,
         created_at: string
     },
+    departure: {
+        departure_number: string,
+        origin_code: string,
+        origin_street: string,
+        destination: string,
+        transporter: string,
+        created_by: string,
+        notes: string,
+        created_at: string
+    }
     purchase_invoice: {
         invoice_number: string,
         is_cleared: string
@@ -226,6 +255,16 @@ function mapAssetDetail(r: AssetDetailResponse): AssetDetails {
             created_by: r.arrival?.created_by.name,
             notes: r.arrival?.notes,
             created_at: r.arrival ? format(new Date(r.arrival.created_at), 'MMMM dd, yyyy') : ''
+        },
+        departure:{
+            departure_number: r.departure?.departure_number,
+            origin_code: r.departure?.origin.city_code,
+            origin_street: r.departure?.origin.street,
+            destination: r.departure?.destination.name,
+            transporter: r.departure?.transporter.name,
+            created_by: r.departure?.created_by.name,
+            notes: r.departure?.notes,
+            created_at: r.departure ? format(new Date(r.departure.created_at), 'MMMM dd, yyyy') : ''
         },
         purchase_invoice: {
             invoice_number: r.purchase_invoice?.invoice_number,

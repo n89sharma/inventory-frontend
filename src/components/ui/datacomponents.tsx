@@ -56,7 +56,7 @@ export function DetailsContainer({ children, className }: ChildrenProps): React.
 
 export function SectionRow({ children, className }: ChildrenProps): React.JSX.Element {
   return (
-    <div className={cn("flex flex-row border border-red-500 flex-wrap space-x-25 justify-center", className)}>
+    <div className={cn("flex flex-row flex-wrap space-x-25 justify-center", className)}>
       {children}
     </div>
   )
@@ -65,7 +65,7 @@ export function SectionRow({ children, className }: ChildrenProps): React.JSX.El
 
 export function Section({ children, className }: ChildrenProps): React.JSX.Element {
   return (
-    <section className={cn("space-y-5 border border-blue-500", className)}>
+    <section className={cn("space-y-5", className)}>
       {children}
     </section>
   )

@@ -88,6 +88,17 @@ export function AssetDetailsPage() {
             <DataRow label="Is Cleared" value={ad?.purchase_invoice.is_cleared}></DataRow>
           </DataRowContainer>
         </Section>
+
+        <Section>
+          <Header title="Departure"></Header>
+          <DataRowContainer>
+            <DataRow label="Departed On" value={ad?.departure?.created_at}></DataRow>
+            <DataRow label="Warehouse" value={ad?.departure?.origin_code}></DataRow>
+            <DataRow label="Customer" value={ad?.departure?.destination}></DataRow>
+            <DataRow label="Departure #" value={ad?.departure?.departure_number}></DataRow>
+            <DataRow label="Transporter" value={ad?.departure?.transporter}></DataRow>
+          </DataRowContainer>
+        </Section>
       </SectionRow>
 
 

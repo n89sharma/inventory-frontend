@@ -1,5 +1,6 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
 
 type ChildrenProps = {
   children: React.ReactNode
@@ -27,6 +28,12 @@ type CMYKDataProps = {
   className?: string
 }
 
+type AccessoryDataProps = {
+  label: string,
+  accessories: string[],
+  className?: string
+}
+
 type DataPointProps = {
   label: string,
   value: string | number | undefined | null,
@@ -48,7 +55,7 @@ type ValueProps = {
 
 export function DetailsContainer({ children, className }: ChildrenProps): React.JSX.Element {
   return (
-    <div className={cn("flex flex-col rounded-sm border bg-card p-6 gap-6", className)}>
+    <div className={cn("flex flex-col rounded-sm border bg-card p-6 gap-8", className)}>
       {children}
     </div>
   )
@@ -56,7 +63,7 @@ export function DetailsContainer({ children, className }: ChildrenProps): React.
 
 export function SectionRow({ children, className }: ChildrenProps): React.JSX.Element {
   return (
-    <div className={cn("flex flex-row flex-wrap gap-12", className)}>
+    <div className={cn("flex flex-row flex-wrap gap-16", className)}>
       {children}
     </div>
   )
@@ -106,11 +113,11 @@ export function DataRow({ label, value, curr = false, className }: DataPointProp
   )
 }
 
-export function CMYKRow({ 
-  label, 
-  c_value, 
-  m_value, 
-  y_value, 
+export function CMYKRow({
+  label,
+  c_value,
+  m_value,
+  y_value,
   k_value,
   className
 }: CMYKDataProps): React.JSX.Element {
@@ -140,9 +147,27 @@ export function CMYKRow({
   )
 }
 
+export function AccessoryRow({
+  label,
+  accessories,
+  className }: AccessoryDataProps): React.JSX.Element {
+
+  return (
+    <div className={cn("flex items-center gap-4 py-1.5 border-b", className)}>
+      <DataLabel label={label} />
+      <div className="grid grid-cols-2">
+        {accessories.map((a) => (
+          <Badge variant="outline" key={a}>{a}</Badge>
+        ))}
+
+      </div>
+    </div>
+  )
+}
+
 export function DataLabel({ label, className }: LabelProps): React.JSX.Element {
   return (
-    <dt className={cn("text-left text-sm font-medium text-muted-foreground min-w-[130px]", className)}>
+    <dt className={cn("text-left text-sm font-medium text-muted-foreground min-w-[110px]", className)}>
       {label}
     </dt>
   )
@@ -157,11 +182,11 @@ export function DataValue({ value, curr = false, className }: ValueProps): React
         <span className="tabular-nums text-right w-[80px]">{formattedValue}</span>
       </dd>
     )
-  } 
-  
+  }
+
   return (
     <dd className={cn("text-sm font-semibold", className)}>
-        {formattedValue}
+      {formattedValue}
     </dd>
   )
 

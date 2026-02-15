@@ -1,10 +1,11 @@
-import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section, SectionRow, AssetTitle } from '../ui/datacomponents'
-import { useSearchStore } from "@/store/useSearchStore"
+import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section, SectionRow, AssetTitle, AccessoryRow } from '../ui/datacomponents'
+import { useAssetStore } from "@/store/useAssetStore"
 import { AssetTabsSection } from '../layout/AssetTabsSection'
 
 export function AssetDetailsPage() {
 
-  const ad = useSearchStore((state) => state.assetDetails)
+  const ad = useAssetStore((state) => state.assetDetails)
+  const aa = useAssetStore((state) => state.accessories)
 
   return (
 
@@ -71,7 +72,7 @@ export function AssetDetailsPage() {
             <DataRow label="Cassettes" value={ad?.specs.cassettes} />
             <DataRow label="Internal Finisher" value={ad?.specs.internal_finisher} />
             <CMYKRow label="Drum Life" c_value={ad?.specs.drum_life_c} m_value={ad?.specs.drum_life_m} y_value={ad?.specs.drum_life_y} k_value={ad?.specs.drum_life_k} />
-
+            <AccessoryRow label="Core Functions" accessories={aa??[]}></AccessoryRow>
           </DataRowContainer>
         </Section>
       </SectionRow>

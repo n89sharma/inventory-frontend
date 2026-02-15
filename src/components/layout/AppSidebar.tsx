@@ -39,13 +39,12 @@ export function AppSidebar(): React.JSX.Element {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton>
-                  <PrinterIcon /><span>Assets</span>
+                  <PrinterIcon/>Assets
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton>
-                  <WarehouseIcon size={60}/>
-                  <span>Arrivals</span>
+                  <WarehouseIcon/>Arrivals
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>

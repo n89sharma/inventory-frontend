@@ -232,6 +232,11 @@ function mapAssetDetail(r: AssetDetailResponse): AssetDetails {
 }
 
 export async function getAssetDetail(params: { barcode: string }): Promise<AssetDetails> {
-    const res = await api.get<AssetDetailResponse[]>(`/fassets/${params.barcode}`)
-    return mapAssetDetail(res.data[0])
+    const res = await api.get<AssetDetailResponse>(`/assets/${params.barcode}`)
+    return mapAssetDetail(res.data)
+}
+
+export async function getAssetAccessories(params: { barcode: string }): Promise<string[]> {
+    const res = await api.get<string[]>(`/assets/${params.barcode}/accessories`)
+    return res.data
 }

@@ -1,6 +1,8 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
+import { Checkbox } from "@/components/ui/checkbox"
+import type { Error } from "@/services/api"
 
 type ChildrenProps = {
   children: React.ReactNode
@@ -25,6 +27,11 @@ type CMYKDataProps = {
   m_value: number | undefined,
   y_value: number | undefined,
   k_value: number | undefined,
+  className?: string
+}
+
+type ErrorRowProps = {
+  error: Error,
   className?: string
 }
 
@@ -145,6 +152,30 @@ export function CMYKRow({
       </dd>
     </div>
   )
+}
+
+export function ErrorHeader({ className }: { className?: string }): React.JSX.Element {
+  return (
+    <div className={cn("flex border-b border-t-2 items-center py-0.5", className)}>
+      <dt className={cn("text-sm font-semibold text-muted-foreground min-w-[110px]", className)}>Code</dt>
+      <dd className={cn("text-sm font-semibold text-muted-foreground", className)}>Fixed?</dd>
+    </div>
+  )
+}
+
+export function ErrorRow({ error, className }: ErrorRowProps): React.JSX.Element {
+
+  return (
+    <div className={cn("flex border-b py-0.5", className)}>
+      <dt className={cn("text-left text-sm font-medium text-semibold min-w-[110px]", className)}>
+        {error.code}
+      </dt>
+      <dd className={cn("flex items-center gap-1 text-sm", className)}>
+        <Checkbox id={error.code} checked={error.is_fixed} />
+      </dd>
+    </div>
+  )
+
 }
 
 export function AccessoryRow({

@@ -1,11 +1,14 @@
-import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section, SectionRow, AssetTitle, AccessoryRow } from '../ui/datacomponents'
+import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section, SectionRow, AssetTitle, AccessoryRow, ErrorRow, ErrorHeader } from '../ui/datacomponents'
 import { useAssetStore } from "@/store/useAssetStore"
-import { AssetTabsSection } from '../layout/AssetTabsSection'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Comment } from '../layout/Comment'
 
 export function AssetDetailsPage() {
 
   const ad = useAssetStore((state) => state.assetDetails)
   const aa = useAssetStore((state) => state.accessories)
+  const ae = useAssetStore((state) => state.errors)
+  const ac = useAssetStore((state) => state.comments)
 
   return (
 
@@ -72,7 +75,14 @@ export function AssetDetailsPage() {
             <DataRow label="Cassettes" value={ad?.specs.cassettes} />
             <DataRow label="Internal Finisher" value={ad?.specs.internal_finisher} />
             <CMYKRow label="Drum Life" c_value={ad?.specs.drum_life_c} m_value={ad?.specs.drum_life_m} y_value={ad?.specs.drum_life_y} k_value={ad?.specs.drum_life_k} />
-            <AccessoryRow label="Core Functions" accessories={aa??[]}></AccessoryRow>
+            <AccessoryRow label="Core Functions" accessories={aa ?? []}></AccessoryRow>
+          </DataRowContainer>
+        </Section>
+        <Section>
+          <Header title="Errors"></Header>
+          <ErrorHeader />
+          <DataRowContainer>
+            {ae?.map((e) => <ErrorRow error={e}></ErrorRow>)}
           </DataRowContainer>
         </Section>
       </SectionRow>
@@ -103,7 +113,21 @@ export function AssetDetailsPage() {
         </Section>
       </SectionRow>
 
-      <AssetTabsSection/>
+      <Tabs defaultValue="comments">
+        <TabsList variant="line">
+          <TabsTrigger value="comments"><Header title="Comments" /></TabsTrigger>
+          <TabsTrigger value="history"><Header title="History" /></TabsTrigger>
+        </TabsList>
+        <TabsContent value="comments" className="flex flex-col gap-5">
+          {ac?.map((c) => (<Comment
+            user={c.username}
+            date={c.created_at}
+            avatarFallback={c.initials}
+            comment={c.comment}
+            tags={[]}
+          />))}
+        </TabsContent>
+      </Tabs>
 
     </DetailsContainer>
   )

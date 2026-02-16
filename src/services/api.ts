@@ -10,7 +10,7 @@ export const api = axios.create({
     }
 })
 
-export interface AssetDetailResponse {
+interface AssetDetailResponse {
     barcode: string,
     serial_number: string,
     model: string,
@@ -141,6 +141,32 @@ export type AssetDetails = {
     }
 }
 
+export interface Error {
+    code: string,
+    description: string,
+    category: string,
+    is_fixed: boolean,
+    added_at: string,
+    added_by: string,
+    fixed_at: string,
+    fixed_by: string
+}
+
+interface CommentResponse {
+    comment: string,
+    username: string,
+    created_at: string,
+    updated_at: string
+}
+
+export type Comment = {
+    comment: string,
+    username: string,
+    created_at: string,
+    updated_at: string,
+    initials: string
+}
+
 function formatThousandsK(value: number): string {
     if (value < 1000) return value.toString()
     return (value / 1000).toFixed(0) + " K"
@@ -157,6 +183,22 @@ function formatUSD(value: number) {
 
 function getFormattedDate(rawDate: string) {
     return format(new Date(rawDate), 'MMMM dd, yyyy')
+}
+
+function getInitials(name: string): string {
+  const words = name.trim().split(/\s+/)
+
+  if (words.length === 1) {
+    // Single word: take first 2 characters
+    return words[0].slice(0, 2).toUpperCase()
+  }
+
+  // Multiple words: take first letter of first 2 words
+  return words
+    .slice(0, 2)
+    .map(word => word[0])
+    .join('')
+    .toUpperCase()
 }
 
 function mapAssetDetail(r: AssetDetailResponse): AssetDetails {
@@ -231,6 +273,16 @@ function mapAssetDetail(r: AssetDetailResponse): AssetDetails {
     }
 }
 
+function mapAssetComments(c: CommentResponse) : Comment {
+    return {
+        comment: c.comment,
+        username: c.username,
+        created_at: getFormattedDate(c.created_at),
+        updated_at: getFormattedDate(c.updated_at),
+        initials: getInitials(c.username)
+    }
+}
+
 export async function getAssetDetail(params: { barcode: string }): Promise<AssetDetails> {
     const res = await api.get<AssetDetailResponse>(`/assets/${params.barcode}`)
     return mapAssetDetail(res.data)
@@ -239,4 +291,14 @@ export async function getAssetDetail(params: { barcode: string }): Promise<Asset
 export async function getAssetAccessories(params: { barcode: string }): Promise<string[]> {
     const res = await api.get<string[]>(`/assets/${params.barcode}/accessories`)
     return res.data
+}
+
+export async function getAssetErrors(params: { barcode: string }): Promise<Error[]> {
+    const res = await api.get<Error[]>(`/assets/${params.barcode}/errors`)
+    return res.data
+}
+
+export async function getAssetComments(params: { barcode: string }): Promise<Comment[]> {
+    const res = await api.get<Comment[]>(`/assets/${params.barcode}/comments`)
+    return res.data.map(mapAssetComments)
 }

@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils"
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
-import { getAssetAccessories, getAssetDetail } from "@/services/api"
+import { getAssetAccessories, getAssetComments, getAssetDetail, getAssetErrors } from "@/services/api"
 import { useState } from 'react'
 import { useAssetStore } from '@/store/useAssetStore'
 
@@ -16,6 +16,8 @@ export const SearchBar = ({ className }: SearchBarProps) => {
 
     const setAssetDetails = useAssetStore((state) => state.setAssetDetails)
     const setAssetAccessories = useAssetStore((state) => state.setAssetAccessories)
+    const setAssetErrors = useAssetStore((state) => state.setAssetErrors)
+    const setAssetComments = useAssetStore((state) => state.setAssetComments)
 
     async function handleSearch() {
         if (!inputBarcode.trim()) return
@@ -25,6 +27,11 @@ export const SearchBar = ({ className }: SearchBarProps) => {
             setAssetDetails(assetDetails)
             const accessories = await getAssetAccessories({ barcode: inputBarcode})
             setAssetAccessories(accessories)
+            const errors = await getAssetErrors({barcode: inputBarcode})
+            setAssetErrors(errors)
+            const comments = await getAssetComments({barcode: inputBarcode})
+            console.log(comments)
+            setAssetComments(comments)
         } catch (err) {
             console.error("Search failed", err)
         } finally {

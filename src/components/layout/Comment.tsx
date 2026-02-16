@@ -21,14 +21,14 @@ export function Comment({
     className
 }: CommentProps) {
     return (
-        <Card className={cn("flex flex-col p-2 gap-1", className)}>
-            <CardHeader className={cn("flex flex-row items-center gap-4", className)}>
-                <Avatar className="h-10 w-10">
+        <Card className={cn("flex flex-col p-2 gap-1 rounded-sm ring-0", className)}>
+            <CardHeader className={cn("flex flex-row gap-4 p-0", className)}>
+                <Avatar className="h-8 w-8">
                      <AvatarImage src="" />
                     <AvatarFallback>{avatarFallback}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col gap-1">
-                    <div className="flex flex-row items-center gap-4">
+                    <div className="flex flex-row gap-4">
                         <span className="text-sm font-semibold">{user}</span>
                         <span className="text-sm text-muted-foreground">{date}</span>
                     </div>
@@ -41,7 +41,7 @@ export function Comment({
                     </div>
                 </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pl-12">
                 <p>{comment}</p>
             </CardContent>
         </Card>

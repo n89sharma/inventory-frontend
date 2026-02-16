@@ -118,7 +118,7 @@ export function AssetDetailsPage() {
           <TabsTrigger value="comments"><Header title="Comments" /></TabsTrigger>
           <TabsTrigger value="history"><Header title="History" /></TabsTrigger>
         </TabsList>
-        <TabsContent value="comments" className="flex flex-col gap-5">
+        <TabsContent value="comments" className="flex flex-col gap-3">
           {ac?.map((c) => (<Comment
             user={c.username}
             date={c.created_at}

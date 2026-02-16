@@ -181,7 +181,10 @@ function formatUSD(value: number) {
     return currencyValue
 }
 
-function getFormattedDate(rawDate: string) {
+function getFormattedDate(rawDate: string, withTime?: boolean) {
+    if(withTime) {
+        return format(new Date(rawDate), 'MMMM dd, yyyy, h:mm a')
+    }
     return format(new Date(rawDate), 'MMMM dd, yyyy')
 }
 
@@ -277,8 +280,8 @@ function mapAssetComments(c: CommentResponse) : Comment {
     return {
         comment: c.comment,
         username: c.username,
-        created_at: getFormattedDate(c.created_at),
-        updated_at: getFormattedDate(c.updated_at),
+        created_at: getFormattedDate(c.created_at, true),
+        updated_at: getFormattedDate(c.updated_at, true),
         initials: getInitials(c.username)
     }
 }

@@ -68,7 +68,7 @@ interface AssetDetailResponse {
     departure_notes: string,
     departure_created_at: string,
     purchase_invoice_number: string,
-    purchase_invoice_is_cleared: string
+    purchase_invoice_is_cleared: boolean
 }
 
 export type AssetDetails = {
@@ -137,7 +137,7 @@ export type AssetDetails = {
     }
     purchase_invoice: {
         invoice_number: string,
-        is_cleared: string
+        is_cleared: boolean
     }
 }
 
@@ -271,7 +271,7 @@ function mapAssetDetail(r: AssetDetailResponse): AssetDetails {
         },
         purchase_invoice: {
             invoice_number: r.purchase_invoice_number,
-            is_cleared: String(!!r.purchase_invoice_is_cleared)
+            is_cleared: r.purchase_invoice_is_cleared
         }
     }
 }

@@ -1,4 +1,4 @@
-import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section, SectionRow, AssetTitle, AccessoryRow, ErrorRow, ErrorHeader } from '../ui/datacomponents'
+import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section, SectionRow, AssetTitle, AccessoryRow, ErrorRow, ErrorHeader, InvoiceClearedRow } from '../ui/datacomponents'
 import { useAssetStore } from "@/store/useAssetStore"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Comment } from '../layout/Comment'
@@ -97,7 +97,7 @@ export function AssetDetailsPage() {
             <DataRow label="Arrival #" value={ad?.arrival.arrival_number}></DataRow>
             <DataRow label="Transporter" value={ad?.arrival.transporter}></DataRow>
             <DataRow label="Invoice #" value={ad?.purchase_invoice.invoice_number}></DataRow>
-            <DataRow label="Is Cleared" value={ad?.purchase_invoice.is_cleared}></DataRow>
+            <InvoiceClearedRow isCleared={!!ad?.purchase_invoice.is_cleared}/>
           </DataRowContainer>
         </Section>
 

@@ -35,6 +35,11 @@ type ErrorRowProps = {
   className?: string
 }
 
+type InvoiceClearedRowProps = {
+  isCleared: boolean,
+  className?: string
+}
+
 type AccessoryDataProps = {
   label: string,
   accessories: string[],
@@ -176,6 +181,19 @@ export function ErrorRow({ error, className }: ErrorRowProps): React.JSX.Element
     </div>
   )
 
+}
+
+export function InvoiceClearedRow({ isCleared, className }: InvoiceClearedRowProps): React.JSX.Element {
+  return (
+    <div className={cn("flex items-center gap-4 py-1.5 border-b first:border-t-2", className)}>
+      <dt className={cn("text-left text-sm font-medium text-muted-foreground min-w-[110px]", className)}>
+        Cleared?
+      </dt>
+      <dd className={cn("flex items-center gap-1 text-sm", className)}>
+        <Checkbox checked={isCleared} />
+      </dd>
+    </div>
+  )
 }
 
 export function AccessoryRow({

@@ -2,13 +2,37 @@ import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section, 
 import { useAssetStore } from "@/store/useAssetStore"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Comment } from '../layout/Comment'
+import { useState, useEffect } from 'react'
+import { Button } from '../ui/button'
+import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react'
 
-export function AssetDetailsPage() {
+export const AssetDetailsPage = () => {
 
   const ad = useAssetStore((state) => state.assetDetails)
   const aa = useAssetStore((state) => state.accessories)
   const ae = useAssetStore((state) => state.errors)
   const ac = useAssetStore((state) => state.comments)
+  const at = useAssetStore((state) => state.transfers)
+
+
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  useEffect(() => {
+    setCurrentIndex(0)
+  }, [at])
+
+  function handleNextTransfer() {
+    if (at.length === 0) return
+    setCurrentIndex((prev) => (prev + 1) % at.length)
+  }
+
+  function handlePreviousTransfer() {
+    if (at.length === 0) return
+    setCurrentIndex((prev) => (prev - 1 + at.length) % at.length)
+  }
+
+  const currTransfer = at[currentIndex] || null
+
 
   return (
 
@@ -97,9 +121,36 @@ export function AssetDetailsPage() {
             <DataRow label="Arrival #" value={ad?.arrival.arrival_number}></DataRow>
             <DataRow label="Transporter" value={ad?.arrival.transporter}></DataRow>
             <DataRow label="Invoice #" value={ad?.purchase_invoice.invoice_number}></DataRow>
-            <InvoiceClearedRow isCleared={!!ad?.purchase_invoice.is_cleared}/>
+            <InvoiceClearedRow isCleared={!!ad?.purchase_invoice.is_cleared} />
           </DataRowContainer>
         </Section>
+
+        <Section>
+          <Header title="Transfer">
+            <span className="text-sm font-medium text-muted-foreground">{`${currentIndex+1}/${at.length}`}</span>
+            <div>
+              <Button variant="outline" size="xs" onClick={handlePreviousTransfer}>
+                <CaretLeftIcon />
+              </Button>
+              <Button variant="outline" size="xs" onClick={handleNextTransfer}>
+                <CaretRightIcon />
+              </Button>
+            </div>
+          </Header>
+          <DataRowContainer>
+            <DataRow label="Transferred On" value={currTransfer ? currTransfer.created_at : '-'}></DataRow>
+            <DataRow label="Source" value={currTransfer ? currTransfer.source_code : '-'}></DataRow>
+            <DataRow label="Destination" value={currTransfer ? currTransfer.destination_code : '-'}></DataRow>
+            <DataRow label="Transfer #" value={currTransfer ? currTransfer.transfer_number : '-'}></DataRow>
+            <DataRow label="Transporter" value={currTransfer ? currTransfer.transporter : '-'}></DataRow>
+          </DataRowContainer>
+
+        </Section>
+
+        {
+          //date, source, destination, transfer, transportation, invoice}
+        }
+
 
         <Section>
           <Header title="Departure"></Header>

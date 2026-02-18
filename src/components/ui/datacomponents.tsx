@@ -10,7 +10,8 @@ type ChildrenProps = {
 }
 
 type HeaderProps = {
-  title: string
+  title: string,
+  children?: React.ReactNode
   className?: string
 }
 
@@ -100,11 +101,14 @@ export function AssetTitle({ brand, model, barcode, className }: TitleProps): Re
   )
 }
 
-export function Header({ title, className }: HeaderProps): React.JSX.Element {
+export function Header({ title, children, className }: HeaderProps): React.JSX.Element {
   return (
-    <h2 className={cn("text-2xl font-bold tracking-tight text-left", className)}>
-      {title}
-    </h2>
+    <div className={cn("flex items-center justify-between", className)}>
+      <h2 className={cn("text-2xl font-bold tracking-tight text-left", className)}>
+        {title}
+      </h2>
+      {children}
+    </div>
   )
 }
 

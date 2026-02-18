@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils"
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
-import { getAssetAccessories, getAssetComments, getAssetDetail, getAssetErrors } from "@/services/api"
+import { getAssetAccessories, getAssetComments, getAssetDetail, getAssetErrors, getAssetTransfers } from "@/services/api"
 import { useState } from 'react'
 import { useAssetStore } from '@/store/useAssetStore'
 
@@ -18,25 +18,26 @@ export const SearchBar = ({ className }: SearchBarProps) => {
     const setAssetAccessories = useAssetStore((state) => state.setAssetAccessories)
     const setAssetErrors = useAssetStore((state) => state.setAssetErrors)
     const setAssetComments = useAssetStore((state) => state.setAssetComments)
+    const setAssetTransfers = useAssetStore((state) => state.setAssetTransfers)
 
     async function handleSearch() {
-        if (!inputBarcode.trim()) return
-        try {
-            setLoading(true)
-            const assetDetails = await getAssetDetail({ barcode: inputBarcode })
-            setAssetDetails(assetDetails)
-            const accessories = await getAssetAccessories({ barcode: inputBarcode})
-            setAssetAccessories(accessories)
-            const errors = await getAssetErrors({barcode: inputBarcode})
-            setAssetErrors(errors)
-            const comments = await getAssetComments({barcode: inputBarcode})
-            console.log(comments)
-            setAssetComments(comments)
-        } catch (err) {
-            console.error("Search failed", err)
-        } finally {
-            setLoading(false)
-        }
+        if (!inputBarcode) return
+
+        const results = await Promise.allSettled([
+            getAssetDetail({ barcode: inputBarcode }),
+            getAssetAccessories({ barcode: inputBarcode }),
+            getAssetErrors({ barcode: inputBarcode }),
+            getAssetComments({ barcode: inputBarcode }),
+            getAssetTransfers({ barcode: inputBarcode })
+        ])
+
+        if (results[0].status === 'fulfilled') setAssetDetails(results[0].value)
+        if (results[1].status === 'fulfilled') setAssetAccessories(results[1].value)
+        if (results[2].status === 'fulfilled') setAssetErrors(results[2].value)
+        if (results[3].status === 'fulfilled') setAssetComments(results[3].value)
+        if (results[4].status === 'fulfilled') setAssetTransfers(results[4].value)
+
+        setLoading(false)
     }
 
 
@@ -49,9 +50,12 @@ export const SearchBar = ({ className }: SearchBarProps) => {
                 type="text"
                 placeholder="Barcode"
                 value={inputBarcode}
-                onChange={(e) => setInputBarcode(e.target.value)}
+                onChange={(e) => setInputBarcode(e.target.value.trim())}
             />
-            <Button type="submit" variant="default" onClick={handleSearch} disabled={loading}>
+            <Button
+                type="submit"
+                disabled={loading}
+            >
                 {loading ? "Searching..." : "Search"}
             </Button>
         </form>

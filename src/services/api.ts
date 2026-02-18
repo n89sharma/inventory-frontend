@@ -167,6 +167,16 @@ export type Comment = {
     initials: string
 }
 
+export type Transfer = {
+    created_at: string,
+    source_code: string,
+    source_stree: string,
+    destination_code: string,
+    destination_street: string,
+    transfer_number: string,
+    transporter: string
+}
+
 function formatThousandsK(value: number): string {
     if (value < 1000) return value.toString()
     return (value / 1000).toFixed(0) + " K"
@@ -286,6 +296,18 @@ function mapAssetComments(c: CommentResponse) : Comment {
     }
 }
 
+function mapAssetTransfers(t: Transfer): Transfer {
+    return {
+        created_at: getFormattedDate(t.created_at),
+        source_code: t.source_code,
+        source_stree: t.source_stree,
+        destination_code: t.destination_code,
+        destination_street: t.destination_street,
+        transfer_number: t.transfer_number,
+        transporter: t.transporter
+    }
+}
+
 export async function getAssetDetail(params: { barcode: string }): Promise<AssetDetails> {
     const res = await api.get<AssetDetailResponse>(`/assets/${params.barcode}`)
     return mapAssetDetail(res.data)
@@ -304,4 +326,9 @@ export async function getAssetErrors(params: { barcode: string }): Promise<Error
 export async function getAssetComments(params: { barcode: string }): Promise<Comment[]> {
     const res = await api.get<Comment[]>(`/assets/${params.barcode}/comments`)
     return res.data.map(mapAssetComments)
+}
+
+export async function getAssetTransfers(params: {barcode: string}): Promise<Transfer[]> {
+    const res = await api.get<Transfer[]>(`/assets/${params.barcode}/transfers`)
+    return res.data.map(mapAssetTransfers)
 }

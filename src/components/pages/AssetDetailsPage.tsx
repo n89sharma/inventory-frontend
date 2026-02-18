@@ -1,4 +1,4 @@
-import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section, SectionRow, AssetTitle, AccessoryRow, ErrorRow, ErrorHeader, InvoiceClearedRow } from '../ui/datacomponents'
+import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section, SectionRow, AssetTitle, AccessoryRow, ErrorRow, ErrorHeader, InvoiceClearedRow, PartsHeader } from '../ui/datacomponents'
 import { useAssetStore } from "@/store/useAssetStore"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Comment } from '../layout/Comment'
@@ -13,6 +13,7 @@ export const AssetDetailsPage = () => {
   const ae = useAssetStore((state) => state.errors)
   const ac = useAssetStore((state) => state.comments)
   const at = useAssetStore((state) => state.transfers)
+  const ap = useAssetStore((state) => state.parts)
 
 
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -37,7 +38,6 @@ export const AssetDetailsPage = () => {
   return (
 
     <DetailsContainer>
-
 
       <SectionRow className="flex-col">
         <Section>
@@ -88,12 +88,11 @@ export const AssetDetailsPage = () => {
           </DataRowContainer>
         </Section>
 
-
       </SectionRow>
 
       <SectionRow>
-        <Section>
 
+        <Section>
           <Header title="Specifications"></Header>
           <DataRowContainer>
             <DataRow label="Cassettes" value={ad?.specs.cassettes} />
@@ -102,6 +101,7 @@ export const AssetDetailsPage = () => {
             <AccessoryRow label="Core Functions" accessories={aa ?? []}></AccessoryRow>
           </DataRowContainer>
         </Section>
+
         <Section>
           <Header title="Errors"></Header>
           <ErrorHeader />
@@ -109,9 +109,17 @@ export const AssetDetailsPage = () => {
             {ae?.map((e) => <ErrorRow error={e}></ErrorRow>)}
           </DataRowContainer>
         </Section>
+
+        <Section>
+          <Header title="Installed Parts"/>
+          <PartsHeader/>
+          {ap?.map((p) => <DataRow label={p.part} value={p.donor}/>)}
+        </Section>
+
       </SectionRow>
 
       <SectionRow>
+
         <Section>
           <Header title="Arrival"></Header>
           <DataRowContainer>
@@ -126,17 +134,20 @@ export const AssetDetailsPage = () => {
         </Section>
 
         <Section>
-          <Header title="Transfer">
-            <span className="text-sm font-medium text-muted-foreground">{`${currentIndex+1}/${at.length}`}</span>
-            <div>
-              <Button variant="outline" size="xs" onClick={handlePreviousTransfer}>
-                <CaretLeftIcon />
-              </Button>
-              <Button variant="outline" size="xs" onClick={handleNextTransfer}>
-                <CaretRightIcon />
-              </Button>
+          <div className="flex items-center">
+            <Header title="Transfer" />
+            <div className={`flex items-center justify-between w-full ml-10 ${ !at.length && "hidden"}`}>
+              <span className="text-sm font-medium text-muted-foreground">{`${currentIndex + 1}/${at.length}`}</span>
+              <div>
+                <Button variant="outline" size="xs" onClick={handlePreviousTransfer}>
+                  <CaretLeftIcon weight="fill"/>
+                </Button>
+                <Button variant="outline" size="xs" onClick={handleNextTransfer}>
+                  <CaretRightIcon weight="fill"/>
+                </Button>
+              </div>
             </div>
-          </Header>
+          </div>
           <DataRowContainer>
             <DataRow label="Transferred On" value={currTransfer ? currTransfer.created_at : '-'}></DataRow>
             <DataRow label="Source" value={currTransfer ? currTransfer.source_code : '-'}></DataRow>
@@ -144,13 +155,7 @@ export const AssetDetailsPage = () => {
             <DataRow label="Transfer #" value={currTransfer ? currTransfer.transfer_number : '-'}></DataRow>
             <DataRow label="Transporter" value={currTransfer ? currTransfer.transporter : '-'}></DataRow>
           </DataRowContainer>
-
         </Section>
-
-        {
-          //date, source, destination, transfer, transportation, invoice}
-        }
-
 
         <Section>
           <Header title="Departure"></Header>
@@ -162,6 +167,7 @@ export const AssetDetailsPage = () => {
             <DataRow label="Transporter" value={ad?.departure?.transporter}></DataRow>
           </DataRowContainer>
         </Section>
+
       </SectionRow>
 
       <Tabs defaultValue="comments">

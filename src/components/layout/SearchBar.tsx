@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils"
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
-import { getAssetAccessories, getAssetComments, getAssetDetail, getAssetErrors, getAssetTransfers } from "@/services/api"
+import { getAssetAccessories, getAssetComments, getAssetDetail, getAssetErrors, getAssetParts, getAssetTransfers } from "@/services/api"
 import { useState } from 'react'
 import { useAssetStore } from '@/store/useAssetStore'
 
@@ -19,6 +19,7 @@ export const SearchBar = ({ className }: SearchBarProps) => {
     const setAssetErrors = useAssetStore((state) => state.setAssetErrors)
     const setAssetComments = useAssetStore((state) => state.setAssetComments)
     const setAssetTransfers = useAssetStore((state) => state.setAssetTransfers)
+    const setAssetParts = useAssetStore((state) => state.setAssetParts)
 
     async function handleSearch() {
         if (!inputBarcode) return
@@ -28,7 +29,8 @@ export const SearchBar = ({ className }: SearchBarProps) => {
             getAssetAccessories({ barcode: inputBarcode }),
             getAssetErrors({ barcode: inputBarcode }),
             getAssetComments({ barcode: inputBarcode }),
-            getAssetTransfers({ barcode: inputBarcode })
+            getAssetTransfers({ barcode: inputBarcode }),
+            getAssetParts({ barcode: inputBarcode })
         ])
 
         if (results[0].status === 'fulfilled') setAssetDetails(results[0].value)
@@ -36,6 +38,7 @@ export const SearchBar = ({ className }: SearchBarProps) => {
         if (results[2].status === 'fulfilled') setAssetErrors(results[2].value)
         if (results[3].status === 'fulfilled') setAssetComments(results[3].value)
         if (results[4].status === 'fulfilled') setAssetTransfers(results[4].value)
+        if (results[5].status === 'fulfilled') setAssetParts(results[5].value)
 
         setLoading(false)
     }

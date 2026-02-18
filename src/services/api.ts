@@ -177,6 +177,23 @@ export type Transfer = {
     transporter: string
 }
 
+interface PartResponse {
+    recipient: string,
+    donor: string,
+    store_part_number: string,
+    updated_at: string,
+    username: string,
+    notes: string
+}
+
+export type Part = {
+    recipient: string,
+    donor: string,
+    store_part_number: string,
+    type: string,
+    part: string
+}
+
 function formatThousandsK(value: number): string {
     if (value < 1000) return value.toString()
     return (value / 1000).toFixed(0) + " K"
@@ -308,6 +325,27 @@ function mapAssetTransfers(t: Transfer): Transfer {
     }
 }
 
+function getPartNames(notes: string) : string {
+    const sqrBracketRegex = /\[(.*?)\]/g
+    const goodBadRegex = /Exchanged(.*?)\(GOOD\)/g
+    
+    const sqrBracketResults = Array.from(notes.matchAll(sqrBracketRegex)).map((m) => m[1])
+    const goodBadResults = Array.from(notes.matchAll(goodBadRegex)).map((m) => m[1])
+
+    if(sqrBracketResults[0]) return sqrBracketResults[0]
+    return goodBadResults[0]
+}
+
+function mapAssetParts(p: PartResponse): Part {
+    return {
+        recipient: p.recipient,
+        donor: p.donor,
+        store_part_number: p.store_part_number,
+        type: p.store_part_number ? 'STORE' : 'MACHINE',
+        part: getPartNames(p.notes)
+    }
+}
+
 export async function getAssetDetail(params: { barcode: string }): Promise<AssetDetails> {
     const res = await api.get<AssetDetailResponse>(`/assets/${params.barcode}`)
     return mapAssetDetail(res.data)
@@ -324,11 +362,16 @@ export async function getAssetErrors(params: { barcode: string }): Promise<Error
 }
 
 export async function getAssetComments(params: { barcode: string }): Promise<Comment[]> {
-    const res = await api.get<Comment[]>(`/assets/${params.barcode}/comments`)
+    const res = await api.get<CommentResponse[]>(`/assets/${params.barcode}/comments`)
     return res.data.map(mapAssetComments)
 }
 
 export async function getAssetTransfers(params: {barcode: string}): Promise<Transfer[]> {
     const res = await api.get<Transfer[]>(`/assets/${params.barcode}/transfers`)
     return res.data.map(mapAssetTransfers)
+}
+
+export async function getAssetParts(params: {barcode: string}): Promise<Part[]> {
+    const res = await api.get<PartResponse[]>(`/assets/${params.barcode}/parts`)
+    return res.data.map(mapAssetParts)
 }

@@ -11,7 +11,6 @@ type ChildrenProps = {
 
 type HeaderProps = {
   title: string,
-  children?: React.ReactNode
   className?: string
 }
 
@@ -101,14 +100,11 @@ export function AssetTitle({ brand, model, barcode, className }: TitleProps): Re
   )
 }
 
-export function Header({ title, children, className }: HeaderProps): React.JSX.Element {
+export function Header({ title, className }: HeaderProps): React.JSX.Element {
   return (
-    <div className={cn("flex items-center justify-between", className)}>
-      <h2 className={cn("text-2xl font-bold tracking-tight text-left", className)}>
+    <h2 className={cn("text-2xl font-bold tracking-tight text-left", className)}>
         {title}
-      </h2>
-      {children}
-    </div>
+    </h2>
   )
 }
 
@@ -172,6 +168,7 @@ export function ErrorHeader({ className }: { className?: string }): React.JSX.El
   )
 }
 
+
 export function ErrorRow({ error, className }: ErrorRowProps): React.JSX.Element {
 
   return (
@@ -214,6 +211,15 @@ export function AccessoryRow({
         ))}
 
       </div>
+    </div>
+  )
+}
+
+export function PartsHeader({ className }: { className?: string }): React.JSX.Element {
+  return (
+    <div className={cn("flex border-b border-t-2 items-center py-0.5", className)}>
+      <dt className={cn("text-sm font-semibold text-muted-foreground min-w-[110px]", className)}>Part</dt>
+      <dd className={cn("text-sm font-semibold text-muted-foreground", className)}>Source</dd>
     </div>
   )
 }

@@ -1,8 +1,7 @@
-import * as React from "react"
 import { cn } from "@/lib/utils"
-import { Badge } from "@/components/ui/badge"
-import { Checkbox } from "@/components/ui/checkbox"
-import type { Error } from "@/services/api"
+import { Badge } from "@/components/shadcn/badge"
+import { Checkbox } from "@/components/shadcn/checkbox"
+import type { Error } from "@/api/asset"
 
 type ChildrenProps = {
   children: React.ReactNode
@@ -103,7 +102,7 @@ export function AssetTitle({ brand, model, barcode, className }: TitleProps): Re
 export function Header({ title, className }: HeaderProps): React.JSX.Element {
   return (
     <h2 className={cn("text-2xl font-bold tracking-tight text-left", className)}>
-        {title}
+      {title}
     </h2>
   )
 }

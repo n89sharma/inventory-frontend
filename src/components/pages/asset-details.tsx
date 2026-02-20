@@ -1,9 +1,9 @@
-import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section, SectionRow, AssetTitle, AccessoryRow, ErrorRow, ErrorHeader, InvoiceClearedRow, PartsHeader } from '../ui/datacomponents'
-import { useAssetStore } from "@/store/useAssetStore"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Comment } from '../layout/Comment'
 import { useState, useEffect } from 'react'
-import { Button } from '../ui/button'
+import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section, SectionRow, AssetTitle, AccessoryRow, ErrorRow, ErrorHeader, InvoiceClearedRow, PartsHeader } from '../ui/asset-detail'
+import { useAssetStore } from "@/store/asset-store"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/shadcn/tabs"
+import { Button } from '@/components/shadcn/button'
+import { Comment } from '@/components/layout/comment'
 import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react'
 
 export const AssetDetailsPage = () => {
@@ -111,9 +111,9 @@ export const AssetDetailsPage = () => {
         </Section>
 
         <Section>
-          <Header title="Installed Parts"/>
-          <PartsHeader/>
-          {ap?.map((p) => <DataRow label={p.part} value={p.donor}/>)}
+          <Header title="Installed Parts" />
+          <PartsHeader />
+          {ap?.map((p) => <DataRow label={p.part} value={p.donor} />)}
         </Section>
 
       </SectionRow>
@@ -136,14 +136,14 @@ export const AssetDetailsPage = () => {
         <Section>
           <div className="flex items-center">
             <Header title="Transfer" />
-            <div className={`flex items-center justify-between w-full ml-10 ${ !at.length && "hidden"}`}>
+            <div className={`flex items-center justify-between w-full ml-10 ${!at.length && "hidden"}`}>
               <span className="text-sm font-medium text-muted-foreground">{`${currentIndex + 1}/${at.length}`}</span>
               <div>
                 <Button variant="outline" size="xs" onClick={handlePreviousTransfer}>
-                  <CaretLeftIcon weight="fill"/>
+                  <CaretLeftIcon weight="fill" />
                 </Button>
                 <Button variant="outline" size="xs" onClick={handleNextTransfer}>
-                  <CaretRightIcon weight="fill"/>
+                  <CaretRightIcon weight="fill" />
                 </Button>
               </div>
             </div>

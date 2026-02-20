@@ -4,14 +4,14 @@ import * as React from "react"
 import { Combobox as ComboboxPrimitive } from "@base-ui/react"
 
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/shadcn/button"
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-} from "@/components/ui/input-group"
-import { ChevronDownIcon, XIcon, CheckIcon } from "lucide-react"
+} from "@/components/shadcn/input-group"
+import { CaretDownIcon, XIcon, CheckIcon } from "@phosphor-icons/react"
 
 const Combobox = ComboboxPrimitive.Root
 
@@ -31,7 +31,7 @@ function ComboboxTrigger({
       {...props}
     >
       {children}
-      <ChevronDownIcon className="text-muted-foreground size-4 pointer-events-none" />
+      <CaretDownIcon className="text-muted-foreground size-4 pointer-events-none" />
     </ComboboxPrimitive.Trigger>
   )
 }

@@ -1,12 +1,13 @@
 import { cn } from "@/lib/utils"
 import { SidebarTrigger } from "@/components/shadcn/sidebar"
-import { SearchBar } from "./search-bar"
+import { SearchBar } from "@/components/layout/search-bar"
+import type { JSX } from "react"
 
 interface HeaderProps {
   className?: string
 }
 
-export const Header = ({ className }: HeaderProps) => {
+export function Header ({ className }: HeaderProps): JSX.Element {
   return (
     <header className={cn("flex flex-row items-center px-4 py-2 gap-4 border-b", className)}>
       <div>

@@ -12,7 +12,7 @@ import { useArrivalStore } from "@/store/arrival-store"
 import { getArrivals } from "@/api/arrival"
 import type { Arrival } from "@/api/arrival"
 import type { ColumnDef } from "@tanstack/react-table"
-import { DataTable } from "../shadcn/data-table"
+import { DataTable } from "@/components/shadcn/data-table"
 import { ArrowsDownUpIcon } from "@phosphor-icons/react"
 
 export const columns: ColumnDef<Arrival>[] = [

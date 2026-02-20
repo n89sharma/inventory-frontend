@@ -1,4 +1,4 @@
-import { api } from './axios-client'
+import { api } from '@/api/axios-client'
 
 export type Arrival = {
   arrival_number: string,

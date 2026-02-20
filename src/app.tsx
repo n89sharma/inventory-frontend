@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { MainLayout } from './components/layout/layout'
-import { AssetDetailsPage } from './components/pages/asset-details'
-import { ArrivalsPage } from './components/pages/arrivals'
+import { MainLayout } from '@/components/layout/layout'
+import { AssetDetailsPage } from '@/components/pages/asset-details'
+import { ArrivalsPage } from '@/components/pages/arrivals'
 
 function App() {
 

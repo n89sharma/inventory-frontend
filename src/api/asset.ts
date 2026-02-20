@@ -1,4 +1,4 @@
-import { api } from './axios-client'
+import { api } from '@/api/axios-client'
 import { format } from 'date-fns'
 
 interface AssetDetailResponse {

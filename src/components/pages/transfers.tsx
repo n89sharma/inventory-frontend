@@ -1,22 +1,22 @@
 import { Button } from "@/components/shadcn/button"
 import { format } from "date-fns"
-import { useArrivalStore } from "@/store/arrival-store"
-import { getArrivals } from "@/api/arrival"
-import type { Arrival } from "@/api/arrival"
+import { useTransferStore } from "@/store/transfer-store"
+import { getTransfers } from "@/api/transfer"
+import type { Transfer } from "@/api/transfer"
 import type { ColumnDef } from "@tanstack/react-table"
 import { ArrowsDownUpIcon } from "@phosphor-icons/react"
 import { CollectionPage } from "./collection"
 
-export const arrivalTableColumns: ColumnDef<Arrival>[] = [
+export const transferTableColumns: ColumnDef<Transfer>[] = [
   {
-    accessorKey: "arrival_number",
+    accessorKey: "transfer_number",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Arrival Number
+          Transfer Number
           <ArrowsDownUpIcon />
         </Button>
       )
@@ -41,36 +41,36 @@ export const arrivalTableColumns: ColumnDef<Arrival>[] = [
     },
   },
   {
-    accessorKey: "created_by",
-    header: "Created By"
+    accessorKey: "origin_code",
+    header: "Origin"
   },
   {
     accessorKey: "destination_code",
-    header: "Warehouse"
+    header: "Destination"
   },
   {
     accessorKey: "transporter",
     header: "Transporter"
   },
   {
-    accessorKey: "vendor",
-    header: "Vendor"
+    accessorKey: "created_by",
+    header: "Created By"
   }
 ]
 
-export function ArrivalsPage(): React.JSX.Element {
-  const arrivals = useArrivalStore((state) => state.arrivals)
-  const setArrivals = useArrivalStore((state) => state.setArrivals)
+export function TransferPage(): React.JSX.Element {
+  const departures = useTransferStore((state) => state.transfers)
+  const setTransfers = useTransferStore((state) => state.setTransfers)
 
   async function onSearchSetData(from: Date, to: Date) {
-    setArrivals(await getArrivals(from, to))
+    setTransfers(await getTransfers(from, to))
   }
 
   return (
     <CollectionPage
-      collection={arrivals}
+      collection={departures}
       onSearchSetData={onSearchSetData}
-      columns={arrivalTableColumns}
+      columns={transferTableColumns}
     />
   )
 }

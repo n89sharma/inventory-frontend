@@ -1,26 +1,34 @@
 import { Button } from "@/components/shadcn/button"
 import { format } from "date-fns"
-import { useArrivalStore } from "@/store/arrival-store"
-import { getArrivals } from "@/api/arrival"
-import type { Arrival } from "@/api/arrival"
+import { useInvoiceStore } from "@/store/invoice-store"
+import { getInvoices } from "@/api/invoice"
+import type { Invoice } from "@/api/invoice"
 import type { ColumnDef } from "@tanstack/react-table"
 import { ArrowsDownUpIcon } from "@phosphor-icons/react"
 import { CollectionPage } from "./collection"
 
-export const arrivalTableColumns: ColumnDef<Arrival>[] = [
+export const invoiceTableColumns: ColumnDef<Invoice>[] = [
   {
-    accessorKey: "arrival_number",
+    accessorKey: "invoice_number",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Arrival Number
+          Invoice Number
           <ArrowsDownUpIcon />
         </Button>
       )
     },
+  },
+  {
+    accessorKey: "created_by",
+    header: "Created By"
+  },
+  {
+    accessorKey: "organization",
+    header: "Organization"
   },
   {
     accessorKey: "created_at",
@@ -41,36 +49,28 @@ export const arrivalTableColumns: ColumnDef<Arrival>[] = [
     },
   },
   {
-    accessorKey: "created_by",
-    header: "Created By"
+    accessorKey: "is_cleared",
+    header: "Cleared"
   },
   {
-    accessorKey: "destination_code",
-    header: "Warehouse"
-  },
-  {
-    accessorKey: "transporter",
-    header: "Transporter"
-  },
-  {
-    accessorKey: "vendor",
-    header: "Vendor"
+    accessorKey: "invoice_type",
+    header: "Invoice Type"
   }
 ]
 
-export function ArrivalsPage(): React.JSX.Element {
-  const arrivals = useArrivalStore((state) => state.arrivals)
-  const setArrivals = useArrivalStore((state) => state.setArrivals)
+export function InvoicesPage(): React.JSX.Element {
+  const invoices = useInvoiceStore((state) => state.invoices)
+  const setInvoices = useInvoiceStore((state) => state.setInvoices)
 
   async function onSearchSetData(from: Date, to: Date) {
-    setArrivals(await getArrivals(from, to))
+    setInvoices(await getInvoices(from, to))
   }
 
   return (
     <CollectionPage
-      collection={arrivals}
+      collection={invoices}
       onSearchSetData={onSearchSetData}
-      columns={arrivalTableColumns}
+      columns={invoiceTableColumns}
     />
   )
 }

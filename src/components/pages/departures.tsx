@@ -1,22 +1,22 @@
 import { Button } from "@/components/shadcn/button"
 import { format } from "date-fns"
-import { useArrivalStore } from "@/store/arrival-store"
-import { getArrivals } from "@/api/arrival"
-import type { Arrival } from "@/api/arrival"
+import { useDepartureStore } from "@/store/departure-store"
+import { getDepartures } from "@/api/departure"
+import type { Departure } from "@/api/departure"
 import type { ColumnDef } from "@tanstack/react-table"
 import { ArrowsDownUpIcon } from "@phosphor-icons/react"
 import { CollectionPage } from "./collection"
 
-export const arrivalTableColumns: ColumnDef<Arrival>[] = [
+export const departureTableColumns: ColumnDef<Departure>[] = [
   {
-    accessorKey: "arrival_number",
+    accessorKey: "departure_number",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Arrival Number
+          Departure Number
           <ArrowsDownUpIcon />
         </Button>
       )
@@ -45,7 +45,7 @@ export const arrivalTableColumns: ColumnDef<Arrival>[] = [
     header: "Created By"
   },
   {
-    accessorKey: "destination_code",
+    accessorKey: "origin_code",
     header: "Warehouse"
   },
   {
@@ -53,24 +53,24 @@ export const arrivalTableColumns: ColumnDef<Arrival>[] = [
     header: "Transporter"
   },
   {
-    accessorKey: "vendor",
-    header: "Vendor"
+    accessorKey: "destination",
+    header: "Customer"
   }
 ]
 
-export function ArrivalsPage(): React.JSX.Element {
-  const arrivals = useArrivalStore((state) => state.arrivals)
-  const setArrivals = useArrivalStore((state) => state.setArrivals)
+export function DeparturePage(): React.JSX.Element {
+  const departures = useDepartureStore((state) => state.departures)
+  const setDepartures = useDepartureStore((state) => state.setDepartures)
 
   async function onSearchSetData(from: Date, to: Date) {
-    setArrivals(await getArrivals(from, to))
+    setDepartures(await getDepartures(from, to))
   }
 
   return (
     <CollectionPage
-      collection={arrivals}
+      collection={departures}
       onSearchSetData={onSearchSetData}
-      columns={arrivalTableColumns}
+      columns={departureTableColumns}
     />
   )
 }

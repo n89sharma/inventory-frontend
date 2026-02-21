@@ -1,26 +1,38 @@
 import { Button } from "@/components/shadcn/button"
 import { format } from "date-fns"
-import { useArrivalStore } from "@/store/arrival-store"
-import { getArrivals } from "@/api/arrival"
-import type { Arrival } from "@/api/arrival"
+import { useHoldStore } from "@/store/hold-store"
+import { getHolds } from "@/api/hold"
+import type { Hold } from "@/api/hold"
 import type { ColumnDef } from "@tanstack/react-table"
 import { ArrowsDownUpIcon } from "@phosphor-icons/react"
 import { CollectionPage } from "./collection"
 
-export const arrivalTableColumns: ColumnDef<Arrival>[] = [
+export const holdTableColumns: ColumnDef<Hold>[] = [
   {
-    accessorKey: "arrival_number",
+    accessorKey: "hold_number",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Arrival Number
+          Hold Number
           <ArrowsDownUpIcon />
         </Button>
       )
     },
+  },
+  {
+    accessorKey: "created_by",
+    header: "Created By"
+  },
+  {
+    accessorKey: "created_for",
+    header: "Created By"
+  },
+  {
+    accessorKey: "customer",
+    header: "Customer"
   },
   {
     accessorKey: "created_at",
@@ -39,38 +51,22 @@ export const arrivalTableColumns: ColumnDef<Arrival>[] = [
         </Button>
       )
     },
-  },
-  {
-    accessorKey: "created_by",
-    header: "Created By"
-  },
-  {
-    accessorKey: "destination_code",
-    header: "Warehouse"
-  },
-  {
-    accessorKey: "transporter",
-    header: "Transporter"
-  },
-  {
-    accessorKey: "vendor",
-    header: "Vendor"
   }
 ]
 
-export function ArrivalsPage(): React.JSX.Element {
-  const arrivals = useArrivalStore((state) => state.arrivals)
-  const setArrivals = useArrivalStore((state) => state.setArrivals)
+export function HoldPage(): React.JSX.Element {
+  const holds = useHoldStore((state) => state.holds)
+  const setHolds = useHoldStore((state) => state.setHolds)
 
   async function onSearchSetData(from: Date, to: Date) {
-    setArrivals(await getArrivals(from, to))
+    setHolds(await getHolds(from, to))
   }
 
   return (
     <CollectionPage
-      collection={arrivals}
+      collection={holds}
       onSearchSetData={onSearchSetData}
-      columns={arrivalTableColumns}
+      columns={holdTableColumns}
     />
   )
 }

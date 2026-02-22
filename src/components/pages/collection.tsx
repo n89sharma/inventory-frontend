@@ -3,7 +3,7 @@ import { subDays } from "date-fns"
 import { Button } from "@/components/shadcn/button"
 import { DataTable } from "@/components/shadcn/data-table"
 import type { ColumnDef } from '@tanstack/react-table'
-import { DatePickerField } from '../ui/date-picker-field'
+import { DatePickerField } from '../custom/date-picker'
 import { FieldGroup } from "@/components/shadcn/field"
 
 interface CollectionPageProps<T> {

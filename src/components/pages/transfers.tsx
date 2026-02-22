@@ -6,6 +6,7 @@ import type { Transfer } from "@/api/transfer"
 import type { ColumnDef } from "@tanstack/react-table"
 import { ArrowsDownUpIcon } from "@phosphor-icons/react"
 import { CollectionPage } from "./collection"
+import { Link } from "react-router-dom"
 
 export const transferTableColumns: ColumnDef<Transfer>[] = [
   {
@@ -21,6 +22,13 @@ export const transferTableColumns: ColumnDef<Transfer>[] = [
         </Button>
       )
     },
+    cell: ({ row }) => (
+      <Button asChild variant="link" className="h-0">
+        <Link to={`/transfers/${row.original.transfer_number}`}>
+          {row.getValue('transfer_number')}
+        </Link>
+      </Button>
+    )
   },
   {
     accessorKey: "created_at",

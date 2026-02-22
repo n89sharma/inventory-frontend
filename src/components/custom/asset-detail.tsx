@@ -4,6 +4,7 @@ import { Checkbox } from "@/components/shadcn/checkbox"
 import type { Error } from "@/api/asset"
 
 type ChildrenProps = {
+  isActive?: boolean,
   children: React.ReactNode
   className?: string
 }
@@ -64,7 +65,9 @@ type ValueProps = {
 
 }
 
-export function DetailsContainer({ children, className }: ChildrenProps): React.JSX.Element {
+export function DetailsContainer({ isActive, children, className }: ChildrenProps): React.JSX.Element {
+  if (!isActive) return <></>
+
   return (
     <div className={cn("flex flex-col rounded-sm border bg-card p-6 gap-8", className)}>
       {children}

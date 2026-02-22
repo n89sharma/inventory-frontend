@@ -6,6 +6,7 @@ import type { Hold } from "@/api/hold"
 import type { ColumnDef } from "@tanstack/react-table"
 import { ArrowsDownUpIcon } from "@phosphor-icons/react"
 import { CollectionPage } from "./collection"
+import { Link } from "react-router-dom"
 
 export const holdTableColumns: ColumnDef<Hold>[] = [
   {
@@ -21,6 +22,13 @@ export const holdTableColumns: ColumnDef<Hold>[] = [
         </Button>
       )
     },
+    cell: ({ row }) => (
+      <Button asChild variant="link" className="h-0">
+        <Link to={`/holds/${row.original.hold_number}`}>
+          {row.getValue('hold_number')}
+        </Link>
+      </Button>
+    )
   },
   {
     accessorKey: "created_by",

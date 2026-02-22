@@ -6,6 +6,7 @@ import type { Arrival } from "@/api/arrival"
 import type { ColumnDef } from "@tanstack/react-table"
 import { ArrowsDownUpIcon } from "@phosphor-icons/react"
 import { CollectionPage } from "./collection"
+import { Link } from "react-router-dom"
 
 export const arrivalTableColumns: ColumnDef<Arrival>[] = [
   {
@@ -21,6 +22,13 @@ export const arrivalTableColumns: ColumnDef<Arrival>[] = [
         </Button>
       )
     },
+    cell: ({ row }) => (
+      <Button asChild variant="link" className="h-0">
+        <Link to={`/arrivals/${row.original.arrival_number}`}>
+          {row.getValue('arrival_number')}
+        </Link>
+      </Button>
+    )
   },
   {
     accessorKey: "created_at",

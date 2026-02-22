@@ -1,5 +1,17 @@
 import { api } from '@/api/axios-client'
-import { format } from 'date-fns'
+import { formatThousandsK, formatUSD, getFormattedDate, getInitials, getPartNames } from '@/lib/formatters'
+import { z } from 'zod'
+
+export const AssetSummarySchema = z.object({
+  brand: z.string(),
+  model: z.string(),
+  barcode: z.string(),
+  serial_number: z.string(),
+  technical_status: z.string(),
+  meter_total: z.string()
+})
+
+export type AssetSummary = z.infer<typeof AssetSummarySchema>
 
 interface AssetDetailResponse {
   barcode: string,
@@ -185,43 +197,6 @@ export type Part = {
   part: string
 }
 
-function formatThousandsK(value: number): string {
-  if (value < 1000) return value.toString()
-  return (value / 1000).toFixed(0) + " K"
-}
-
-function formatUSD(value: number) {
-  const currencyValue = new Intl.NumberFormat('en-US', {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(value)
-  return currencyValue
-}
-
-function getFormattedDate(rawDate: string, withTime?: boolean) {
-  if (withTime) {
-    return format(new Date(rawDate), 'MMMM dd, yyyy, h:mm a')
-  }
-  return format(new Date(rawDate), 'MMMM dd, yyyy')
-}
-
-function getInitials(name: string): string {
-  const words = name.trim().split(/\s+/)
-
-  if (words.length === 1) {
-    // Single word: take first 2 characters
-    return words[0].slice(0, 2).toUpperCase()
-  }
-
-  // Multiple words: take first letter of first 2 words
-  return words
-    .slice(0, 2)
-    .map(word => word[0])
-    .join('')
-    .toUpperCase()
-}
-
 function mapAssetDetail(r: AssetDetailResponse): AssetDetails {
   return {
     barcode: r.barcode,
@@ -316,17 +291,6 @@ function mapAssetTransfers(t: Transfer): Transfer {
   }
 }
 
-function getPartNames(notes: string): string {
-  const sqrBracketRegex = /\[(.*?)\]/g
-  const goodBadRegex = /Exchanged(.*?)\(GOOD\)/g
-
-  const sqrBracketResults = Array.from(notes.matchAll(sqrBracketRegex)).map((m) => m[1])
-  const goodBadResults = Array.from(notes.matchAll(goodBadRegex)).map((m) => m[1])
-
-  if (sqrBracketResults[0]) return sqrBracketResults[0]
-  return goodBadResults[0]
-}
-
 function mapAssetParts(p: PartResponse): Part {
   return {
     recipient: p.recipient,
@@ -365,4 +329,56 @@ export async function getAssetTransfers(params: { barcode: string }): Promise<Tr
 export async function getAssetParts(params: { barcode: string }): Promise<Part[]> {
   const res = await api.get<PartResponse[]>(`/assets/${params.barcode}/parts`)
   return res.data.map(mapAssetParts)
+}
+
+function getPromiseResult<T>(result: PromiseSettledResult<T>) {
+  return {
+    status: result.status,
+    result: result.status === 'fulfilled' ? result.value : result.reason
+  }
+}
+
+export async function getAllAssetDetails(barcode: string) {
+  const results = await Promise.allSettled([
+    getAssetDetail({ barcode }),
+    getAssetAccessories({ barcode }),
+    getAssetErrors({ barcode }),
+    getAssetComments({ barcode }),
+    getAssetTransfers({ barcode }),
+    getAssetParts({ barcode })
+  ])
+
+  return {
+    assetDetails: getPromiseResult(results[0]),
+    assetAccessories: getPromiseResult(results[1]),
+    assetErrors: getPromiseResult(results[2]),
+    assetComments: getPromiseResult(results[3]),
+    assetTransfers: getPromiseResult(results[4]),
+    assetParts: getPromiseResult(results[5])
+  }
+}
+
+export async function getAssetsForArrival(arrivalNumber: string): Promise<AssetSummary[]> {
+  const res = await api.get(`/arrivals/${arrivalNumber}`)
+  return z.array(AssetSummarySchema).parse(res.data)
+}
+
+export async function getAssetsForDeparture(departureNumber: string): Promise<AssetSummary[]> {
+  const res = await api.get(`/departures/${departureNumber}`)
+  return z.array(AssetSummarySchema).parse(res.data)
+}
+
+export async function getAssetsForInvoices(invoiceNumber: string): Promise<AssetSummary[]> {
+  const res = await api.get(`/invoices/${invoiceNumber}`)
+  return z.array(AssetSummarySchema).parse(res.data)
+}
+
+export async function getAssetsForTransfers(transferNumber: string): Promise<AssetSummary[]> {
+  const res = await api.get(`/transfers/${transferNumber}`)
+  return z.array(AssetSummarySchema).parse(res.data)
+}
+
+export async function getAssetsForHolds(holdNumber: string): Promise<AssetSummary[]> {
+  const res = await api.get(`/holds/${holdNumber}`)
+  return z.array(AssetSummarySchema).parse(res.data)
 }

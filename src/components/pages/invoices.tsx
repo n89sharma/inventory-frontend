@@ -6,6 +6,7 @@ import type { Invoice } from "@/api/invoice"
 import type { ColumnDef } from "@tanstack/react-table"
 import { ArrowsDownUpIcon } from "@phosphor-icons/react"
 import { CollectionPage } from "./collection"
+import { Link } from "react-router-dom"
 
 export const invoiceTableColumns: ColumnDef<Invoice>[] = [
   {
@@ -21,6 +22,13 @@ export const invoiceTableColumns: ColumnDef<Invoice>[] = [
         </Button>
       )
     },
+    cell: ({ row }) => (
+      <Button asChild variant="link" className="h-0">
+        <Link to={`/invoices/${row.original.invoice_number}`}>
+          {row.getValue('invoice_number')}
+        </Link>
+      </Button>
+    )
   },
   {
     accessorKey: "created_by",

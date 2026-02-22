@@ -8,7 +8,6 @@ import { getAssetsForArrival, getAssetsForDeparture, getAssetsForHolds, getAsset
 import { useAssetStore } from "@/store/asset-store"
 import { formatThousandsK } from "@/lib/formatters"
 import { DataTable } from "../shadcn/data-table"
-import { SectionRow, Section, AssetTitle } from '../custom/asset-detail'
 
 export const assetSummaryTable: ColumnDef<AssetSummary>[] = [
   {

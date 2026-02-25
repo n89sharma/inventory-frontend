@@ -1,4 +1,4 @@
-import { api } from '@/api/axios-client'
+import { api } from '@/data/api/axios-client'
 import { formatThousandsK, formatUSD, getFormattedDate, getInitials, getPartNames } from '@/lib/formatters'
 import { z } from 'zod'
 
@@ -380,5 +380,20 @@ export async function getAssetsForTransfers(transferNumber: string): Promise<Ass
 
 export async function getAssetsForHolds(holdNumber: string): Promise<AssetSummary[]> {
   const res = await api.get(`/holds/${holdNumber}`)
+  return z.array(AssetSummarySchema).parse(res.data)
+}
+
+export type SearchQuery = {
+  brand: string | null,
+  model: string | null,
+  assetType: string | null,
+  trackingStatus: string | null,
+  location: string | null,
+  meter: number | null
+}
+
+export async function getAssetsForQuery(searchQuery: SearchQuery): Promise<AssetSummary[]> {
+  const { brand, model, assetType, trackingStatus, location, meter } = searchQuery
+  const res = await api.get(`/assets`, { params: { brand, model, assetType, trackingStatus, location, meter } })
   return z.array(AssetSummarySchema).parse(res.data)
 }

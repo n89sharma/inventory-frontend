@@ -1,4 +1,4 @@
-import type { Hold } from '@/api/hold'
+import type { Hold } from '@/data/api/hold-api'
 import { create } from 'zustand'
 
 interface HoldStore {

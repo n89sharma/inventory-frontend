@@ -1,4 +1,4 @@
-import { api } from '@/api/axios-client'
+import { api } from '@/data/api/axios-client'
 import { z } from 'zod'
 
 const InvoiceSchema = z.object({

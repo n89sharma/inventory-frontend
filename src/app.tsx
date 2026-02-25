@@ -7,9 +7,11 @@ import { TransferPage } from './components/pages/transfers'
 import { HoldPage } from './components/pages/holds'
 import { InvoicesPage } from './components/pages/invoices'
 import { AssetSummaryPage } from './components/pages/asset-summary'
+import { QueryPage } from './components/pages/query'
+import { useModelData } from './hooks/use-model-data'
 
 function App() {
-
+  useModelData()
   return (
     <BrowserRouter>
       <MainLayout>
@@ -31,7 +33,7 @@ function App() {
           <Route path="/invoices" element={<InvoicesPage />} />
           <Route path="/invoices/:id" element={<AssetSummaryPage />} />
 
-          <Route path="/query" element={<ArrivalsPage />} />
+          <Route path="/query" element={<QueryPage />} />
           <Route path="/reports" element={<ArrivalsPage />} />
           <Route path="/assets" element={<AssetDetailsPage />} />
           <Route path="/assets/:id" element={<AssetDetailsPage />} />

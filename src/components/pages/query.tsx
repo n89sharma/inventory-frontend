@@ -1,13 +1,13 @@
-import { useLocation, useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Button } from "@/components/shadcn/button"
 import type { ColumnDef } from "@tanstack/react-table"
 import { ArrowsDownUpIcon } from "@phosphor-icons/react"
 import { Link } from "react-router-dom"
-import { getAssetsForArrival, getAssetsForDeparture, getAssetsForHolds, getAssetsForInvoices, getAssetsForTransfers, type AssetSummary } from "@/data/api/asset-api"
+import { getAssetsForQuery, type AssetSummary } from "@/data/api/asset-api"
 import { useAssetStore } from "@/data/store/asset-store"
 import { formatThousandsK } from "@/lib/formatters"
 import { DataTable } from "../shadcn/data-table"
+import { ModelDropdownSelect } from '../custom/model-dropdown-select'
 
 export const assetSummaryTable: ColumnDef<AssetSummary>[] = [
   {
@@ -56,59 +56,55 @@ export const assetSummaryTable: ColumnDef<AssetSummary>[] = [
   }
 ]
 
-export function AssetSummaryPage(): React.JSX.Element {
-  const { id } = useParams()
-  const { pathname } = useLocation()
-  const [loading, setLoading] = useState(true)
-  const [title, setTitle] = useState('')
-
+export function QueryPage(): React.JSX.Element {
+  const [searchQuery, setSearchQuery] = useState({
+    brand: null,
+    model: null,
+    assetType: null,
+    trackingStatus: null,
+    location: null,
+    meter: null
+  })
+  const [loading, setLoading] = useState(false)
   const assets = useAssetStore((state) => state.assets)
   const setAssets = useAssetStore((state) => state.setAssets)
 
-  const isArrival = pathname.startsWith('/arrivals')
-  const isTransfer = pathname.startsWith('/transfers')
-  const isDeparture = pathname.startsWith('/departures')
-  const isHolds = pathname.startsWith('/holds')
-  const isInvoice = pathname.startsWith('/invoices')
 
-  useEffect(() => {
-    async function loadAssets() {
-      if (!id) return
+  function handleSearchQueryUpdate(field: string, value: string) {
+    setSearchQuery(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
 
-      setLoading(true)
-      try {
-        if (isArrival) {
-          setTitle(`Arrival ${id}`)
-          setAssets(await getAssetsForArrival(id))
-        } else if (isTransfer) {
-          setTitle(`Transfer ${id}`)
-          setAssets(await getAssetsForTransfers(id))
-        } else if (isDeparture) {
-          setTitle(`Departure ${id}`)
-          setAssets(await getAssetsForDeparture(id))
-        } else if (isHolds) {
-          setTitle(`Hold ${id}`)
-          setAssets(await getAssetsForHolds(id))
-        } else if (isInvoice) {
-          setTitle(`Invoice ${id}`)
-          setAssets(await getAssetsForInvoices(id))
-        }
-      } finally {
-        setLoading(false)
+  async function submitQuery() {
+    setLoading(true)
+    try {
+      if (!!searchQuery.brand || !!searchQuery.model || !!searchQuery.assetType || !!searchQuery.trackingStatus || !!searchQuery.location || !!searchQuery.meter) {
+        setAssets(await getAssetsForQuery(searchQuery))
       }
+    } finally {
+      setLoading(false)
     }
-
-    loadAssets()
-  }, [id])
+  }
 
   if (loading) return <div>Loading...</div>
   if (!assets) return <div>No assets!</div>
 
   return (
     <div className="flex flex-col gap-2">
-      <h1 className="text-3xl font-bold p-2">
-        {title}
-      </h1>
+      <div className="flex flex-row gap-2 border rounded-md p-2">
+
+        <ModelDropdownSelect onSelection={handleSearchQueryUpdate} />
+        <Button
+          className="rounded-md"
+          onClick={submitQuery}
+        >Search</Button>
+
+        <div className="border">
+          {Object.values(searchQuery).map((e) => <p>{e}</p>)}
+        </div>
+      </div>
       <DataTable columns={assetSummaryTable} data={assets} />
     </div>
   )

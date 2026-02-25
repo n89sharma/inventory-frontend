@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/shadcn/badge"
 import { Checkbox } from "@/components/shadcn/checkbox"
-import type { Error } from "@/api/asset"
+import type { Error } from "@/data/api/asset-api"
 
 type ChildrenProps = {
   isActive?: boolean,

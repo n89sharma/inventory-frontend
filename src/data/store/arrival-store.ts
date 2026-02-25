@@ -1,4 +1,4 @@
-import type { Arrival } from '@/api/arrival'
+import type { Arrival } from '@/data/api/arrival-api'
 import { create } from 'zustand'
 
 interface ArrivalStore {

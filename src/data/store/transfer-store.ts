@@ -1,4 +1,4 @@
-import type { Transfer } from '@/api/transfer'
+import type { Transfer } from '@/data/api/transfer-api'
 import { create } from 'zustand'
 
 interface TransferStore {

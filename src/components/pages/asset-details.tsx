@@ -1,13 +1,13 @@
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section, SectionRow, AssetTitle, AccessoryRow, ErrorRow, ErrorHeader, InvoiceClearedRow, PartsHeader } from '@/components/custom/asset-detail'
-import { useAssetStore } from "@/store/asset-store"
+import { useAssetStore } from "@/data/store/asset-store"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/shadcn/tabs"
 import { Button } from '@/components/shadcn/button'
 import { Comment } from '@/components/custom/comment'
 import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react'
 import { SearchBar } from '../custom/asset-search'
-import { getAllAssetDetails } from '@/api/asset'
+import { getAllAssetDetails } from '@/data/api/asset-api'
 
 export const AssetDetailsPage = () => {
 

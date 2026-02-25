@@ -1,4 +1,4 @@
-import type { Invoice } from '@/api/invoice'
+import type { Invoice } from '@/data/api/invoice-api'
 import { create } from 'zustand'
 
 interface InvoiceStore {

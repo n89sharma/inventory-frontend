@@ -1,4 +1,4 @@
-import type { AssetDetails, AssetSummary, Comment, Error, Part, Transfer } from '@/api/asset'
+import type { AssetDetails, AssetSummary, Comment, Error, Part, Transfer } from '@/data/api/asset-api'
 import { create } from 'zustand'
 
 interface AssetStore {
@@ -12,7 +12,7 @@ interface AssetStore {
   parts: Part[]
 
   //actions
-  setAssets:(assets: AssetSummary[]) => void
+  setAssets: (assets: AssetSummary[]) => void
   setAssetDetails: (assetDetails: AssetDetails) => void
   setAssetAccessories: (accessories: string[]) => void
   setAssetErrors: (errors: Error[]) => void

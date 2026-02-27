@@ -9,9 +9,11 @@ import { InvoicesPage } from './components/pages/invoices'
 import { AssetSummaryPage } from './components/pages/asset-summary'
 import { QueryPage } from './components/pages/query'
 import { useModelData } from './hooks/use-model-data'
+import { useConstantsData } from './hooks/use-constants'
 
 function App() {
   useModelData()
+  useConstantsData()
   return (
     <BrowserRouter>
       <MainLayout>

@@ -1,7 +1,7 @@
 Tasks
 
 Asset
-- [ ] Add search options in Assets to match Query. Make/model/type/status/warehouse/meter
+- [x] Add search options in Assets to match Query. type/make/model/status/warehouse/meter
 
 Navigation
 - [ ] Add bredcrumb trail

@@ -5,10 +5,15 @@ import { z } from 'zod'
 export const AssetSummarySchema = z.object({
   brand: z.string(),
   model: z.string(),
+  asset_type: z.string(),
   barcode: z.string(),
   serial_number: z.string(),
-  technical_status: z.string(),
-  meter_total: z.string()
+  meter_total: z.string(),
+  warehouse_city_code: z.string().nullable(),
+  warehouse_street: z.string().nullable(),
+  tracking_status: z.string(),
+  availability_status: z.string(),
+  technical_status: z.string()
 })
 
 export type AssetSummary = z.infer<typeof AssetSummarySchema>
@@ -384,16 +389,16 @@ export async function getAssetsForHolds(holdNumber: string): Promise<AssetSummar
 }
 
 export type SearchQuery = {
-  brand: string | null,
-  model: string | null,
-  assetType: string | null,
-  trackingStatus: string | null,
-  location: string | null,
+  model: string,
+  trackingStatusId: number | null,
+  availabilityStatusId: number | null,
+  technicalStatusId: number | null,
+  warehouseId: number | null,
   meter: number | null
 }
 
 export async function getAssetsForQuery(searchQuery: SearchQuery): Promise<AssetSummary[]> {
-  const { brand, model, assetType, trackingStatus, location, meter } = searchQuery
-  const res = await api.get(`/assets`, { params: { brand, model, assetType, trackingStatus, location, meter } })
+  let { model, trackingStatusId, availabilityStatusId, technicalStatusId, warehouseId, meter } = searchQuery
+  const res = await api.get(`/assets`, { params: { model, trackingStatusId, availabilityStatusId, technicalStatusId, warehouseId, meter } })
   return z.array(AssetSummarySchema).parse(res.data)
 }

@@ -1,18 +1,25 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef } from 'react'
 import Fuse from 'fuse.js'
 import { useModelStore } from '@/data/store/model-store'
 import type { Model } from '@/data/api/model-api'
-import { Input } from '../shadcn/input'
-import { Field, FieldLabel } from '../shadcn/field'
-import { Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTrigger } from '../shadcn/popover'
+import { Popover, PopoverAnchor, PopoverContent, PopoverDescription, PopoverHeader, PopoverTrigger } from '../shadcn/popover'
 import { ScrollArea } from '../shadcn/scroll-area'
+import { XCircleIcon } from '@phosphor-icons/react'
+import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '../shadcn/input-group'
+import { Field, FieldLabel } from '../shadcn/field'
 
-export function ModelDropdownSelect({ onSelection }: { onSelection: (field: string, val: string) => void }): React.JSX.Element {
+type ModelDropdownProps = {
+  defaultVal: string
+  onSelection: (field: string, val: string | null) => void
+}
+
+export function ModelDropdownSelect({ defaultVal, onSelection }: ModelDropdownProps): React.JSX.Element {
 
   const [modelOptions, setModelOptions] = useState<Model[]>([])
-  const [modelInput, setModelInput] = useState('')
+  const [modelInput, setModelInput] = useState(defaultVal)
   const [popoverOpen, setPopoverOpen] = useState(false)
   const allModels = useModelStore((state) => state.models)
+  const inputRef = useRef<HTMLInputElement>(null);
 
   let fuse = useMemo(() => {
     return new Fuse(
@@ -33,7 +40,6 @@ export function ModelDropdownSelect({ onSelection }: { onSelection: (field: stri
     }
     const modelSearchResults = fuse.search(modelVal).slice(0, 6).map(r => r.item)
     setModelOptions(modelSearchResults)
-    console.log(modelSearchResults)
     setPopoverOpen(true)
   }
 
@@ -45,42 +51,70 @@ export function ModelDropdownSelect({ onSelection }: { onSelection: (field: stri
     setModelOptions([])
   }
 
-  return (
-    <Popover
-      open={popoverOpen}
-      onOpenChange={setPopoverOpen}
-    >
-      <PopoverTrigger asChild>
-        <Field className="max-w-96">
-          <FieldLabel htmlFor="model-input">Model</FieldLabel>
-          <Input
-            id="model-input"
-            value={modelInput}
-            onChange={(e) => updateModelSearch(e.target.value)}
-          />
-        </Field>
-      </PopoverTrigger>
+  function clearModelSelect() {
+    setModelInput('')
+    onSelection('brand', null)
+    onSelection('model', null)
+    setPopoverOpen(false)
+    setModelOptions([])
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }
 
-      <PopoverContent
-        align="start"
-        onOpenAutoFocus={(e) => { e.preventDefault() }}
-        onCloseAutoFocus={(e) => { e.preventDefault() }}
+  return (
+    <div>
+      <Popover
+        open={popoverOpen}
+        onOpenChange={setPopoverOpen}
       >
-        <PopoverHeader>
-          <PopoverDescription>Start typing to see suggestions...</PopoverDescription>
-        </PopoverHeader>
-        <ScrollArea>
-          {modelOptions.map((m) => (
-            <div
-              key={`${m.brand_name}:${m.model_name}`}
-              className="p-2 hover:bg-accent cursor-pointer"
-              onClick={() => handleModelSelect(m)}
-              onMouseDown={(e) => { e.preventDefault() }}
-            >
-              {m.brand_name} {m.model_name}
-            </div>))}
-        </ScrollArea>
-      </PopoverContent>
-    </Popover>
+
+        <PopoverTrigger asChild>
+          <div />
+        </PopoverTrigger>
+        <PopoverAnchor asChild>
+
+
+          <Field>
+            <FieldLabel>Model</FieldLabel>
+            <InputGroup>
+              <InputGroupInput
+                id="model-input"
+                value={modelInput}
+                onChange={(e) => updateModelSearch(e.target.value)}
+                ref={inputRef}
+                placeholder='Start typing to see suggestions...'
+              />
+              <InputGroupAddon align="inline-end">
+                <InputGroupButton
+                  size="icon-sm"
+                  onClick={clearModelSelect}
+                  hidden={!modelInput.length}
+                >
+                  <XCircleIcon />
+                </InputGroupButton>
+              </InputGroupAddon>
+            </InputGroup>
+          </Field>
+        </PopoverAnchor>
+        <PopoverContent
+          align="start"
+          onOpenAutoFocus={(e) => { e.preventDefault() }}
+          onCloseAutoFocus={(e) => { e.preventDefault() }}
+        >
+          <ScrollArea>
+            {modelOptions.map((m) => (
+              <div
+                key={`${m.brand_name}:${m.model_name}`}
+                className="p-2 hover:bg-accent cursor-pointer"
+                onClick={() => handleModelSelect(m)}
+                onMouseDown={(e) => { e.preventDefault() }}
+              >
+                {m.brand_name} {m.model_name}
+              </div>))}
+          </ScrollArea>
+        </PopoverContent>
+      </Popover>
+    </div>
   )
 }

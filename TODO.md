@@ -2,6 +2,7 @@ Tasks
 
 Asset
 - [x] Add search options in Assets to match Query. type/make/model/status/warehouse/meter
+- [] Allow user to copy paste model and search in query
 
 Navigation
 - [ ] Add bredcrumb trail

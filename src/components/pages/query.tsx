@@ -7,9 +7,15 @@ import { getAssetsForQuery, type AssetSummary } from "@/data/api/asset-api"
 import { useAssetStore } from "@/data/store/asset-store"
 import { formatThousandsK } from "@/lib/formatters"
 import { DataTable } from "../shadcn/data-table"
-import { ModelDropdownSelect } from '../custom/model-dropdown-select'
-import { GeneralDropdownSelect } from '../custom/general-dropdown-select'
+import { PopoverSearchModel } from '../custom/popover-search-model'
+import { DropdownSelectType } from '../custom/dropdown-select-type'
 import { useConstantsStore } from '@/data/store/constants-store'
+import { InputMeter } from '../custom/input-meter'
+
+export type InputProps = {
+  defaultVal: string | null
+  onSelection: (field: string, val: string | null) => void
+}
 
 export const assetSummaryTable: ColumnDef<AssetSummary>[] = [
   {
@@ -58,6 +64,10 @@ export const assetSummaryTable: ColumnDef<AssetSummary>[] = [
     header: "Availability Status"
   },
   {
+    accessorKey: "tracking_status",
+    header: "Tracking Status"
+  },
+  {
     accessorKey: "technical_status",
     header: "Technical Status"
   },
@@ -86,7 +96,6 @@ export function QueryPage(): React.JSX.Element {
 
 
   function handleSearchQueryUpdate(field: string, value: string | number | null) {
-    console.log(`${field}:${value}`)
     setSearchQuery(prev => ({
       ...prev,
       [field]: value
@@ -116,35 +125,44 @@ export function QueryPage(): React.JSX.Element {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex flex-row gap-2 border rounded-md p-2 items-end">
+      <form className="flex flex-row gap-2 border rounded-md p-2 items-end">
 
-        <ModelDropdownSelect
+        <PopoverSearchModel
           defaultVal={getDefaultModelVal()}
           onSelection={handleSearchQueryUpdate}
         />
-        <GeneralDropdownSelect
+        <DropdownSelectType
           fieldDisplay='Availability'
           defaultVal={searchQuery.availabilityStatusId.toString()}
           options={availabilityStatuses.map((s) => ({ id: s.id, val: s.status }))}
           onSelection={(id) => handleSearchQueryUpdate('availabilityStatusId', id)}
         />
-        <GeneralDropdownSelect
+        <DropdownSelectType
           fieldDisplay='Testing Status'
           defaultVal={searchQuery.technicalStatusId.toString()}
           options={technicalStatuses.map((s) => ({ id: s.id, val: s.status }))}
           onSelection={(id) => handleSearchQueryUpdate('technicalStatusId', id)}
         />
-        <GeneralDropdownSelect
+        <DropdownSelectType
           fieldDisplay='Warehouse'
           defaultVal={searchQuery.warehouseId.toString()}
           options={warehouses.map((w) => ({ id: w.id, val: w.city_code }))}
           onSelection={(id) => handleSearchQueryUpdate('warehouseId', id)}
         />
+
+        <InputMeter
+          defaultVal={searchQuery.meter}
+          onSelection={handleSearchQueryUpdate}
+        >
+        </InputMeter>
+
         <Button
           className="rounded-md"
           onClick={submitQuery}
-        >Search</Button>
-      </div>
+        >
+          Search
+        </Button>
+      </form>
       <DataTable columns={assetSummaryTable} data={assets} />
     </div>
   )

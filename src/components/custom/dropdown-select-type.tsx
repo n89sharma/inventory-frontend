@@ -18,17 +18,17 @@ type SelectOption = {
   val: string
 }
 
-type GeneralDropdownProps = {
+type DropdownSelectTypeProps = {
   fieldDisplay: string
   defaultVal: string
   options: SelectOption[]
   onSelection: (value: string | number | null) => void
 }
-export function GeneralDropdownSelect({
+export function DropdownSelectType({
   fieldDisplay,
   defaultVal,
   options,
-  onSelection }: GeneralDropdownProps): React.JSX.Element {
+  onSelection }: DropdownSelectTypeProps): React.JSX.Element {
 
 
   return (

@@ -7,13 +7,9 @@ import { ScrollArea } from '../shadcn/scroll-area'
 import { XCircleIcon } from '@phosphor-icons/react'
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '../shadcn/input-group'
 import { Field, FieldLabel } from '../shadcn/field'
+import type { InputProps } from '../pages/query'
 
-type ModelDropdownProps = {
-  defaultVal: string
-  onSelection: (field: string, val: string | null) => void
-}
-
-export function ModelDropdownSelect({ defaultVal, onSelection }: ModelDropdownProps): React.JSX.Element {
+export function PopoverSearchModel({ defaultVal, onSelection }: InputProps): React.JSX.Element {
 
   const [modelOptions, setModelOptions] = useState<Model[]>([])
   const [modelInput, setModelInput] = useState(defaultVal)
@@ -80,16 +76,17 @@ export function ModelDropdownSelect({ defaultVal, onSelection }: ModelDropdownPr
             <InputGroup>
               <InputGroupInput
                 id="model-input"
-                value={modelInput}
+                value={modelInput ?? ''}
                 onChange={(e) => updateModelSearch(e.target.value)}
                 ref={inputRef}
                 placeholder='Start typing to see suggestions...'
+                required
               />
               <InputGroupAddon align="inline-end">
                 <InputGroupButton
                   size="icon-sm"
                   onClick={clearModelSelect}
-                  hidden={!modelInput.length}
+                  hidden={!modelInput || !modelInput.length}
                 >
                   <XCircleIcon />
                 </InputGroupButton>

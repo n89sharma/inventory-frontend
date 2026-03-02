@@ -19,13 +19,13 @@ type SelectOption = {
 }
 
 type DropdownSelectTypeProps = {
-  fieldDisplay: string
+  fieldLabel: string
   defaultVal: string
   options: SelectOption[]
   onSelection: (value: string | number | null) => void
 }
 export function DropdownSelectType({
-  fieldDisplay,
+  fieldLabel,
   defaultVal,
   options,
   onSelection }: DropdownSelectTypeProps): React.JSX.Element {
@@ -34,7 +34,7 @@ export function DropdownSelectType({
   return (
     <FieldGroup className="w-36">
       <Field>
-        <FieldLabel>{fieldDisplay}</FieldLabel>
+        <FieldLabel>{fieldLabel}</FieldLabel>
         <Select defaultValue={defaultVal} onValueChange={(v) => onSelection(v)}>
           <SelectTrigger>
             <SelectValue />

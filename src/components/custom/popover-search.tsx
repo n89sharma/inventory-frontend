@@ -1,58 +1,70 @@
 import { useState, useMemo, useRef } from 'react'
 import Fuse from 'fuse.js'
-import { useModelStore } from '@/data/store/model-store'
-import type { Model } from '@/data/api/model-api'
 import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from '../shadcn/popover'
 import { ScrollArea } from '../shadcn/scroll-area'
 import { XCircleIcon } from '@phosphor-icons/react'
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '../shadcn/input-group'
 import { Field, FieldLabel } from '../shadcn/field'
-import type { InputProps } from '../pages/query'
 
-export function PopoverSearchModel({ defaultVal, onSelection }: InputProps): React.JSX.Element {
+export type PopoverSearchProps<T> = {
+  defaultVal: string | null
+  onSelection: (i: T | null) => void
+  onClear: () => void
+  allOptions: T[]
+  searchKey: string
+  displayString: (i: T) => string
+  fieldLabel: string
+  fieldRequired: boolean
+}
 
-  const [modelOptions, setModelOptions] = useState<Model[]>([])
-  const [modelInput, setModelInput] = useState(defaultVal)
+export function PopoverSearch<T>({
+  defaultVal,
+  onSelection,
+  onClear,
+  allOptions,
+  searchKey,
+  displayString,
+  fieldLabel,
+  fieldRequired }: PopoverSearchProps<T>): React.JSX.Element {
+
+  const [matches, setMatches] = useState<T[]>([])
+  const [userInput, setUserInput] = useState(defaultVal)
   const [popoverOpen, setPopoverOpen] = useState(false)
-  const allModels = useModelStore((state) => state.models)
   const inputRef = useRef<HTMLInputElement>(null);
 
   let fuse = useMemo(() => {
     return new Fuse(
-      allModels,
+      allOptions,
       {
-        keys: ['model_name'],
+        keys: [searchKey],
         threshold: 0.9,
       })
-  }, [allModels])
+  }, [allOptions])
 
-  function updateModelSearch(modelVal: string) {
-    setModelInput(modelVal)
+  function updateSearch(inputVal: string) {
+    setUserInput(inputVal)
 
-    if (!modelVal.trim()) {
-      setModelOptions([])
+    if (!inputVal.trim()) {
+      setMatches([])
       setPopoverOpen(false)
       return
     }
-    const modelSearchResults = fuse.search(modelVal).slice(0, 6).map(r => r.item)
-    setModelOptions(modelSearchResults)
+    setMatches(fuse.search(inputVal).slice(0, 6).map(r => r.item))
     setPopoverOpen(true)
   }
 
-  function handleModelSelect(model: Model) {
-    setModelInput(`${model.brand_name} ${model.model_name}`)
-    onSelection('brand', model.brand_name)
-    onSelection('model', model.model_name)
+  function handleSelect(item: T) {
+    setUserInput(displayString(item))
+    onSelection(item)
     setPopoverOpen(false)
-    setModelOptions([])
+    setMatches([])
   }
 
-  function clearModelSelect() {
-    setModelInput('')
-    onSelection('brand', null)
-    onSelection('model', null)
+  function handleClear() {
+    setUserInput('')
+    onClear()
     setPopoverOpen(false)
-    setModelOptions([])
+    setMatches([])
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -64,29 +76,25 @@ export function PopoverSearchModel({ defaultVal, onSelection }: InputProps): Rea
         open={popoverOpen}
         onOpenChange={setPopoverOpen}
       >
-
         <PopoverTrigger asChild>
           <div />
         </PopoverTrigger>
         <PopoverAnchor asChild>
-
-
           <Field>
-            <FieldLabel>Model</FieldLabel>
+            <FieldLabel>{fieldLabel}</FieldLabel>
             <InputGroup>
               <InputGroupInput
-                id="model-input"
-                value={modelInput ?? ''}
-                onChange={(e) => updateModelSearch(e.target.value)}
+                value={userInput ?? ''}
+                onChange={(e) => updateSearch(e.target.value)}
                 ref={inputRef}
                 placeholder='Start typing to see suggestions...'
-                required
+                required={fieldRequired}
               />
               <InputGroupAddon align="inline-end">
                 <InputGroupButton
                   size="icon-sm"
-                  onClick={clearModelSelect}
-                  hidden={!modelInput || !modelInput.length}
+                  onClick={handleClear}
+                  hidden={!userInput || !userInput.length}
                 >
                   <XCircleIcon />
                 </InputGroupButton>
@@ -100,14 +108,14 @@ export function PopoverSearchModel({ defaultVal, onSelection }: InputProps): Rea
           onCloseAutoFocus={(e) => { e.preventDefault() }}
         >
           <ScrollArea>
-            {modelOptions.map((m) => (
+            {matches.map((m) => (
               <div
-                key={`${m.brand_name}:${m.model_name}`}
+                key={displayString(m)}
                 className="p-2 hover:bg-accent cursor-pointer"
-                onClick={() => handleModelSelect(m)}
+                onClick={() => handleSelect(m)}
                 onMouseDown={(e) => { e.preventDefault() }}
               >
-                {m.brand_name} {m.model_name}
+                {displayString(m)}
               </div>))}
           </ScrollArea>
         </PopoverContent>

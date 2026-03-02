@@ -3,9 +3,10 @@ Tasks
 Asset
 - [x] Add search options in Assets to match Query. type/make/model/status/warehouse/meter
 - [] Allow user to copy paste model and search in query
+- [] Print barcode react-barcode
 
 Navigation
-- [ ] Add bredcrumb trail
+- [ ] Add bredcrumb trail 
 - [ ] Match URL to the status of the page / Add dates as URL parameters
 
 Search 
@@ -13,6 +14,14 @@ Search
 
 Arrival
 - [ ] Create Arrival
+  - [x] Generalize Model dropdown
+  - [ ] Add keyboard navigation on popover
+  - [ ] Add form with Warehouse, Transporter, Vendor, Invoice input
+  - [ ] Add active inactive in warehouse
+  - [ ] Use generalized dropdown for transporter, vendor
+  - [ ] Save form
+  - [ ] Generate Arrival ID
+  - [ ] Add asset with model, serial, meter, error, accessories, cassettes, internal finisher, drum quality, remark
 - [ ] Edit Arrival
 - [ ] Auto load Arrivals of the last 7 days
 - [ ] Add warehouse in the main search or quick search
@@ -73,3 +82,12 @@ Discussion
 - [ ] Do we need Merge Arrival?
 - [ ] What is consignment management? Do we need it?
 - [ ] What is stores machine codes?
+- [ ] Arrival number doesnt have warehouse reference but barcode does.
+
+- ADFW-260325-001
+- TDFW-260325-001
+- DDFW-260325-001
+
+- AD-260325-001
+- TD-260325-001
+- DD-260325-001

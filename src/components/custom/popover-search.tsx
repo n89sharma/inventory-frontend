@@ -5,6 +5,7 @@ import { ScrollArea } from '../shadcn/scroll-area'
 import { XCircleIcon } from '@phosphor-icons/react'
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '../shadcn/input-group'
 import { Field, FieldLabel } from '../shadcn/field'
+import { cn } from '@/lib/utils'
 
 export type PopoverSearchProps<T> = {
   defaultVal: string | null
@@ -30,14 +31,17 @@ export function PopoverSearch<T>({
   const [matches, setMatches] = useState<T[]>([])
   const [userInput, setUserInput] = useState(defaultVal)
   const [popoverOpen, setPopoverOpen] = useState(false)
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [highlightedIndex, setHighlightedIndex] = useState(-1)
+
 
   let fuse = useMemo(() => {
     return new Fuse(
       allOptions,
       {
         keys: [searchKey],
-        threshold: 0.9,
+        threshold: 0.5,
+        shouldSort: true
       })
   }, [allOptions])
 
@@ -49,7 +53,7 @@ export function PopoverSearch<T>({
       setPopoverOpen(false)
       return
     }
-    setMatches(fuse.search(inputVal).slice(0, 6).map(r => r.item))
+    setMatches(fuse.search(inputVal, { limit: 6 }).map(r => r.item))
     setPopoverOpen(true)
   }
 
@@ -70,6 +74,36 @@ export function PopoverSearch<T>({
     }
   }
 
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+
+    switch (e.key) {
+      case 'ArrowDown':
+        setHighlightedIndex(prev => prev < matches.length - 1 ? prev + 1 : prev)
+        break
+
+      case 'ArrowUp':
+        setHighlightedIndex(prev => prev > 0 ? prev - 1 : -1)
+        break
+
+      case 'Enter':
+        e.preventDefault()
+        if (highlightedIndex >= 0 && highlightedIndex < matches.length) {
+          handleSelect(matches[highlightedIndex])
+        }
+        break
+
+      case 'Escape':
+        setPopoverOpen(false)
+        setHighlightedIndex(-1)
+        break
+
+      case 'Tab':
+        setPopoverOpen(false)
+        setHighlightedIndex(-1)
+        break
+    }
+  }
+
   return (
     <div>
       <Popover
@@ -86,15 +120,20 @@ export function PopoverSearch<T>({
               <InputGroupInput
                 value={userInput ?? ''}
                 onChange={(e) => updateSearch(e.target.value)}
+                onKeyDown={handleKeyDown}
                 ref={inputRef}
                 placeholder='Start typing to see suggestions...'
                 required={fieldRequired}
+                autoComplete="off"
+                role="combobox"
+
               />
               <InputGroupAddon align="inline-end">
                 <InputGroupButton
                   size="icon-sm"
                   onClick={handleClear}
                   hidden={!userInput || !userInput.length}
+                  type="button"
                 >
                   <XCircleIcon />
                 </InputGroupButton>
@@ -106,14 +145,20 @@ export function PopoverSearch<T>({
           align="start"
           onOpenAutoFocus={(e) => { e.preventDefault() }}
           onCloseAutoFocus={(e) => { e.preventDefault() }}
+          className="w-[var(--radix-popover-trigger-width)]"
         >
           <ScrollArea>
-            {matches.map((m) => (
+            {matches.map((m, i) => (
               <div
-                key={displayString(m)}
-                className="p-2 hover:bg-accent cursor-pointer"
+                key={`${displayString(m)}-${i}`}
                 onClick={() => handleSelect(m)}
                 onMouseDown={(e) => { e.preventDefault() }}
+                className={cn(
+                  "p-2 cursor-pointer rounded-sm",
+                  highlightedIndex === i
+                    ? "bg-accent text-accent-foreground"
+                    : "hover:bg-accent/50"
+                )}
               >
                 {displayString(m)}
               </div>))}

@@ -15,7 +15,7 @@ Search
 Arrival
 - [ ] Create Arrival
   - [x] Generalize Model dropdown
-  - [ ] Add keyboard navigation on popover
+  - [x] Add keyboard navigation on popover
   - [ ] Add form with Warehouse, Transporter, Vendor, Invoice input
   - [ ] Add active inactive in warehouse
   - [ ] Use generalized dropdown for transporter, vendor

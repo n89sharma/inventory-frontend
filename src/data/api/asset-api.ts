@@ -390,7 +390,6 @@ export async function getAssetsForHolds(holdNumber: string): Promise<AssetSummar
 
 export type SearchQuery = {
   model: string,
-  trackingStatusId: number | null,
   availabilityStatusId: number | null,
   technicalStatusId: number | null,
   warehouseId: number | null,
@@ -398,7 +397,7 @@ export type SearchQuery = {
 }
 
 export async function getAssetsForQuery(searchQuery: SearchQuery): Promise<AssetSummary[]> {
-  let { model, trackingStatusId, availabilityStatusId, technicalStatusId, warehouseId, meter } = searchQuery
-  const res = await api.get(`/assets`, { params: { model, trackingStatusId, availabilityStatusId, technicalStatusId, warehouseId, meter } })
+  let { model, availabilityStatusId, technicalStatusId, warehouseId, meter } = searchQuery
+  const res = await api.get(`/assets`, { params: { model, availabilityStatusId, technicalStatusId, warehouseId, meter } })
   return z.array(AssetSummarySchema).parse(res.data)
 }

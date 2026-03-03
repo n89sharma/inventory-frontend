@@ -8,7 +8,7 @@ import { Field, FieldLabel } from '../shadcn/field'
 import { cn } from '@/lib/utils'
 
 export type PopoverSearchProps<T> = {
-  defaultVal: string | null
+  defaultVal: string | null | undefined
   onSelection: (i: T | null) => void
   onClear: () => void
   allOptions: T[]

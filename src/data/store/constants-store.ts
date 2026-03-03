@@ -1,40 +1,8 @@
-import type { Constants } from '@/data/api/constants-api'
+import type { Constants, CoreFunction, AssetType, Status, Role, InvoiceType, Warehouse } from '@/data/api/constants-api'
 import { create } from 'zustand'
 
-interface Status {
-  id: number
-  status: string
-}
-
-interface Accessory {
-  id: number
-  accessory: string
-}
-
-interface AssetType {
-  id: number
-  asset_type: string
-}
-
-interface Role {
-  id: number
-  role: string
-}
-
-interface InvoiceType {
-  id: number
-  type: string
-}
-
-interface Warehouse {
-  id: number
-  city_code: string
-  street: string
-  is_active: boolean
-}
-
 interface ConstantsStore {
-  coreFunctions: Accessory[]
+  coreFunctions: CoreFunction[]
   assetTypes: AssetType[]
   trackingStatuses: Status[]
   availabilityStatuses: Status[]
@@ -64,12 +32,12 @@ export const useConstantsStore = create<ConstantsStore>((set) => ({
   setConstants: (constants) => set({
     coreFunctions: constants.coreFunctions,
     assetTypes: constants.assetTypes,
-    trackingStatuses: [{ id: 0, status: 'Any' }, ...constants.trackingStatuses],
-    availabilityStatuses: [{ id: 0, status: 'Any' }, ...constants.availabilityStatuses],
-    technicalStatuses: [{ id: 0, status: 'Any' }, ...constants.technicalStatuses],
+    trackingStatuses: constants.trackingStatuses,
+    availabilityStatuses: constants.availabilityStatuses,
+    technicalStatuses: constants.technicalStatuses,
     roles: constants.roles,
     invoiceTypes: constants.invoiceTypes,
-    warehouses: [{ id: 0, city_code: 'Any', street: '', is_active: true }, ...constants.warehouses]
+    warehouses: constants.warehouses
   }),
   setLoading: (loading) => set({ loading }),
   clearConstants: () => set({

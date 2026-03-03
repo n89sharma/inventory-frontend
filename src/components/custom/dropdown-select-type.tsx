@@ -1,7 +1,6 @@
 import type React from "react"
 import {
   Field,
-  FieldGroup,
   FieldLabel
 } from "@/components/shadcn/field"
 import {
@@ -22,7 +21,7 @@ type DropdownSelectTypeProps = {
   fieldLabel: string
   defaultVal: string
   options: SelectOption[]
-  onSelection: (value: string | number | null) => void
+  onSelection: (value: string | null) => void
 }
 export function DropdownSelectType({
   fieldLabel,
@@ -34,7 +33,7 @@ export function DropdownSelectType({
   return (
     <Field className="w-36">
       <FieldLabel>{fieldLabel}</FieldLabel>
-      <Select defaultValue={defaultVal} onValueChange={(v) => onSelection(v)}>
+      <Select defaultValue={defaultVal} onValueChange={onSelection}>
         <SelectTrigger>
           <SelectValue />
         </SelectTrigger>
@@ -42,7 +41,7 @@ export function DropdownSelectType({
           position="popper"
         >
           <SelectGroup>
-            {options?.map((o) => (
+            {options?.map(o => (
               <SelectItem key={o.id} value={o.id.toString()}>{o.val}</SelectItem>
             ))}
           </SelectGroup>

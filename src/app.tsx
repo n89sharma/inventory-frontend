@@ -11,10 +11,13 @@ import { QueryPage } from './components/pages/query'
 import { useModelData } from './hooks/use-model-data'
 import { useConstantsData } from './hooks/use-constants'
 import { ArrivalCreatePage } from './components/pages/arrival-create'
+import { useOrgData } from './hooks/us-org-data'
 
 function App() {
   useModelData()
+  useOrgData()
   useConstantsData()
+
   return (
     <BrowserRouter>
       <MainLayout>

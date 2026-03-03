@@ -31,7 +31,7 @@ export function InputMeter({ defaultVal, onSelection }: InputProps): React.JSX.E
           <InputGroupInput
             type="number"
             value={meterInput ?? ''}
-            onChange={(e) => handleMeterInputChange(e.target.value)}
+            onChange={e => handleMeterInputChange(e.target.value)}
           >
           </InputGroupInput>
 

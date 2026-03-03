@@ -20,19 +20,22 @@ export function QueryPage(): React.JSX.Element {
   const [searchQuery, setSearchQuery] = useState({
     brand: '',
     model: '',
-    trackingStatusId: 0,
     availabilityStatusId: 0,
     technicalStatusId: 0,
     warehouseId: 0,
     meter: null
   })
   const [loading, setLoading] = useState(false)
+  const models = useModelStore((state) => state.models)
+  const availabilityStatuses = addAnyOption(useConstantsStore((state) => state.availabilityStatuses))
+  const technicalStatuses = addAnyOption(useConstantsStore((state) => state.technicalStatuses))
+  const warehouses = [{ id: 0, city_code: 'Any', street: '', is_active: true }, ...useConstantsStore((state) => state.warehouses)]
   const assets = useAssetStore((state) => state.assets)
   const setAssets = useAssetStore((state) => state.setAssets)
-  const availabilityStatuses = useConstantsStore((state) => state.availabilityStatuses)
-  const technicalStatuses = useConstantsStore((state) => state.technicalStatuses)
-  const warehouses = useConstantsStore((state) => state.warehouses)
-  const models = useModelStore((state) => state.models)
+
+  function addAnyOption(arr: any[]) {
+    return [{ id: 0, status: 'Any' }, ...arr]
+  }
 
   function handleSearchQueryUpdate(field: string, value: string | number | null) {
     setSearchQuery(prev => ({

@@ -208,7 +208,7 @@ export function AccessoryRow({
     <div className={cn("flex items-center gap-4 py-1.5 border-b", className)}>
       <DataLabel label={label} />
       <div className="grid grid-cols-2">
-        {accessories.map((a) => (
+        {accessories.map(a => (
           <Badge variant="outline" key={a}>{a}</Badge>
         ))}
 

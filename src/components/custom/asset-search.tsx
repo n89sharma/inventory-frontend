@@ -20,7 +20,7 @@ export const SearchBar = ({ loading, className }: SearchBarProps) => {
 
 
   return (
-    <form onSubmit={(e) => {
+    <form onSubmit={e => {
       e.preventDefault()
       handleSearch()
     }} className={cn("flex flex-row gap-2", className)}>
@@ -28,7 +28,7 @@ export const SearchBar = ({ loading, className }: SearchBarProps) => {
         type="text"
         placeholder="Search"
         value={barcode}
-        onChange={(e) => setBarcode(e.target.value.trim())}
+        onChange={e => setBarcode(e.target.value.trim())}
       />
       <Button
         type="submit"

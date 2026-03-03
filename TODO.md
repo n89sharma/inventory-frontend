@@ -18,13 +18,22 @@ Arrival
   - [x] Add keyboard navigation on popover
   - [x] Add active inactive in warehouse
   - [x] Use generalized dropdown for transporter, vendor
+  - [x] Add organizations endpoint in backend
+  - [x] Add org api/ store/ hook
   - [ ] Add form with Vendor, Warehouse, Transporter, Invoice input
   - [ ] Save form
   - [ ] Generate Arrival ID
-  - [ ] Add asset with model, serial, meter, error, accessories, cassettes, internal finisher, drum quality, remark
+  - [ ] Add new asset with model, serial, meter, error, accessories, cassettes, 
+  internal finisher, drum quality, remark
+  - [ ] Add new asset on existing arrival
 - [ ] Edit Arrival
 - [ ] Auto load Arrivals of the last 7 days
 - [ ] Add warehouse in the main search or quick search
+
+Invoice 
+- [ ] Create new invoice
+- [ ] Attach existing assets to invoice
+- [ ] Add new assets to invoice
 
 Transfer
 - [ ] Create Transfer

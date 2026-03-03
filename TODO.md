@@ -17,8 +17,8 @@ Arrival
   - [x] Generalize Model dropdown
   - [x] Add keyboard navigation on popover
   - [x] Add active inactive in warehouse
-  - [ ] Add form with Warehouse, Transporter, Vendor, Invoice input
-  - [ ] Use generalized dropdown for transporter, vendor
+  - [x] Use generalized dropdown for transporter, vendor
+  - [ ] Add form with Vendor, Warehouse, Transporter, Invoice input
   - [ ] Save form
   - [ ] Generate Arrival ID
   - [ ] Add asset with model, serial, meter, error, accessories, cassettes, internal finisher, drum quality, remark

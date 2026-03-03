@@ -32,24 +32,22 @@ export function DropdownSelectType({
 
 
   return (
-    <FieldGroup className="w-36">
-      <Field>
-        <FieldLabel>{fieldLabel}</FieldLabel>
-        <Select defaultValue={defaultVal} onValueChange={(v) => onSelection(v)}>
-          <SelectTrigger>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent
-            position="popper"
-          >
-            <SelectGroup>
-              {options?.map((o) => (
-                <SelectItem key={o.id} value={o.id.toString()}>{o.val}</SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-      </Field>
-    </FieldGroup >
+    <Field className="w-36">
+      <FieldLabel>{fieldLabel}</FieldLabel>
+      <Select defaultValue={defaultVal} onValueChange={(v) => onSelection(v)}>
+        <SelectTrigger>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent
+          position="popper"
+        >
+          <SelectGroup>
+            {options?.map((o) => (
+              <SelectItem key={o.id} value={o.id.toString()}>{o.val}</SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    </Field>
   )
 }

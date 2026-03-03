@@ -55,9 +55,12 @@ export function CollectionPage<T>({
         />
 
         <Button
+          variant="secondary"
           className="rounded-md"
           onClick={handleSearch}
-        >Search</Button>
+        >
+          Search
+        </Button>
       </FieldGroup>
       <div>
         <Button variant="secondary" className="rounded-r-none" onClick={() => handleQuickSearch(1)}>1d</Button>

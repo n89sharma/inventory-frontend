@@ -10,6 +10,7 @@ import { AssetSummaryPage } from './components/pages/asset-summary'
 import { QueryPage } from './components/pages/query'
 import { useModelData } from './hooks/use-model-data'
 import { useConstantsData } from './hooks/use-constants'
+import { ArrivalCreatePage } from './components/pages/arrival-create'
 
 function App() {
   useModelData()
@@ -22,6 +23,7 @@ function App() {
 
           <Route path="/arrivals" element={<ArrivalsPage />} />
           <Route path="/arrivals/:id" element={<AssetSummaryPage />} />
+          <Route path="/arrivals/new" element={<ArrivalCreatePage />} />
 
           <Route path="/transfers" element={<TransferPage />} />
           <Route path="/transfers/:id" element={<AssetSummaryPage />} />

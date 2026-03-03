@@ -30,6 +30,7 @@ interface Warehouse {
   id: number
   city_code: string
   street: string
+  is_active: boolean
 }
 
 interface ConstantsStore {
@@ -68,7 +69,7 @@ export const useConstantsStore = create<ConstantsStore>((set) => ({
     technicalStatuses: [{ id: 0, status: 'Any' }, ...constants.technicalStatuses],
     roles: constants.roles,
     invoiceTypes: constants.invoiceTypes,
-    warehouses: [{ id: 0, city_code: 'Any', street: '' }, ...constants.warehouses]
+    warehouses: [{ id: 0, city_code: 'Any', street: '', is_active: true }, ...constants.warehouses]
   }),
   setLoading: (loading) => set({ loading }),
   clearConstants: () => set({

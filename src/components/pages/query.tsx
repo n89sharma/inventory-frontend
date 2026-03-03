@@ -1,11 +1,7 @@
 import { useState } from 'react'
 import { Button } from "@/components/shadcn/button"
-import type { ColumnDef } from "@tanstack/react-table"
-import { ArrowsDownUpIcon } from "@phosphor-icons/react"
-import { Link } from "react-router-dom"
-import { getAssetsForQuery, type AssetSummary } from "@/data/api/asset-api"
+import { getAssetsForQuery } from "@/data/api/asset-api"
 import { useAssetStore } from "@/data/store/asset-store"
-import { formatThousandsK } from "@/lib/formatters"
 import { DataTable } from "../shadcn/data-table"
 import { DropdownSelectType } from '../custom/dropdown-select-type'
 import { useConstantsStore } from '@/data/store/constants-store'
@@ -13,71 +9,12 @@ import { InputMeter } from '../custom/input-meter'
 import { PopoverSearch } from '../custom/popover-search'
 import type { Model } from '@/data/api/model-api'
 import { useModelStore } from '@/data/store/model-store'
+import { assetSummaryTable } from './column-defs/query-summary-columns'
 
 export type InputProps = {
   defaultVal: string | null
   onSelection: (field: string, val: string | null) => void
 }
-
-export const assetSummaryTable: ColumnDef<AssetSummary>[] = [
-  {
-    accessorKey: "barcode",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Barcode
-          <ArrowsDownUpIcon />
-        </Button>
-      )
-    },
-    cell: ({ row }) => (
-      <Link
-        to={`/assets/${row.original.barcode}`}
-        className="text-primary hover:underline font-medium"
-      >
-        {row.getValue('barcode')}
-      </Link>
-    )
-  },
-  {
-    accessorKey: "brand",
-    header: "Brand"
-  },
-  {
-    accessorKey: "model",
-    header: "Model"
-  },
-  {
-    accessorKey: "serial_number",
-    header: "Serial Number"
-  },
-  {
-    accessorKey: "meter_total",
-    cell: ({ row }) => {
-      return formatThousandsK(row.getValue('meter_total'))
-    },
-    header: "Total Meter"
-  },
-  {
-    accessorKey: "availability_status",
-    header: "Availability Status"
-  },
-  {
-    accessorKey: "tracking_status",
-    header: "Tracking Status"
-  },
-  {
-    accessorKey: "technical_status",
-    header: "Technical Status"
-  },
-  {
-    accessorKey: "warehouse_city_code",
-    header: "Warehouse"
-  }
-]
 
 export function QueryPage(): React.JSX.Element {
   const [searchQuery, setSearchQuery] = useState({
@@ -166,7 +103,7 @@ export function QueryPage(): React.JSX.Element {
         <DropdownSelectType
           fieldLabel='Warehouse'
           defaultVal={searchQuery.warehouseId.toString()}
-          options={warehouses.map((w) => ({ id: w.id, val: w.city_code }))}
+          options={warehouses.filter(w => w.is_active).map(w => ({ id: w.id, val: w.city_code }))}
           onSelection={(id) => handleSearchQueryUpdate('warehouseId', id)}
         />
 

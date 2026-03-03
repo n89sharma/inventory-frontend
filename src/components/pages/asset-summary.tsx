@@ -1,60 +1,9 @@
 import { useLocation, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { Button } from "@/components/shadcn/button"
-import type { ColumnDef } from "@tanstack/react-table"
-import { ArrowsDownUpIcon } from "@phosphor-icons/react"
-import { Link } from "react-router-dom"
-import { getAssetsForArrival, getAssetsForDeparture, getAssetsForHolds, getAssetsForInvoices, getAssetsForTransfers, type AssetSummary } from "@/data/api/asset-api"
+import { getAssetsForArrival, getAssetsForDeparture, getAssetsForHolds, getAssetsForInvoices, getAssetsForTransfers } from "@/data/api/asset-api"
 import { useAssetStore } from "@/data/store/asset-store"
-import { formatThousandsK } from "@/lib/formatters"
 import { DataTable } from "../shadcn/data-table"
-
-export const assetSummaryTable: ColumnDef<AssetSummary>[] = [
-  {
-    accessorKey: "barcode",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Barcode
-          <ArrowsDownUpIcon />
-        </Button>
-      )
-    },
-    cell: ({ row }) => (
-      <Link
-        to={`/assets/${row.original.barcode}`}
-        className="text-primary hover:underline font-medium"
-      >
-        {row.getValue('barcode')}
-      </Link>
-    )
-  },
-  {
-    accessorKey: "brand",
-    header: "Brand"
-  },
-  {
-    accessorKey: "model",
-    header: "Model"
-  },
-  {
-    accessorKey: "serial_number",
-    header: "Serial Number"
-  },
-  {
-    accessorKey: "meter_total",
-    cell: ({ row }) => {
-      return formatThousandsK(row.getValue('meter_total'))
-    }
-  },
-  {
-    accessorKey: "technical_status",
-    header: "Technical Status"
-  }
-]
+import { assetSummaryTableColumns } from './column-defs/asset-summary-columns'
 
 export function AssetSummaryPage(): React.JSX.Element {
   const { id } = useParams()
@@ -109,7 +58,7 @@ export function AssetSummaryPage(): React.JSX.Element {
       <h1 className="text-3xl font-bold p-2">
         {title}
       </h1>
-      <DataTable columns={assetSummaryTable} data={assets} />
+      <DataTable columns={assetSummaryTableColumns} data={assets} />
     </div>
   )
 }

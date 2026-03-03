@@ -9,7 +9,7 @@ const ConstantsSchema = z.object({
   technicalStatuses: z.array(z.object({ id: z.number(), status: z.string() })),
   roles: z.array(z.object({ id: z.number(), role: z.string() })),
   invoiceTypes: z.array(z.object({ id: z.number(), type: z.string() })),
-  warehouses: z.array(z.object({ id: z.number(), city_code: z.string(), street: z.string() }))
+  warehouses: z.array(z.object({ id: z.number(), city_code: z.string(), street: z.string(), is_active: z.boolean() }))
 })
 
 export type Constants = z.infer<typeof ConstantsSchema>

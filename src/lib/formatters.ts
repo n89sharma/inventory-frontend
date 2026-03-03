@@ -41,8 +41,8 @@ export function getPartNames(notes: string): string {
   const sqrBracketRegex = /\[(.*?)\]/g
   const goodBadRegex = /Exchanged(.*?)\(GOOD\)/g
 
-  const sqrBracketResults = Array.from(notes.matchAll(sqrBracketRegex)).map((m) => m[1])
-  const goodBadResults = Array.from(notes.matchAll(goodBadRegex)).map((m) => m[1])
+  const sqrBracketResults = Array.from(notes.matchAll(sqrBracketRegex)).map(m => m[1])
+  const goodBadResults = Array.from(notes.matchAll(goodBadRegex)).map(m => m[1])
 
   if (sqrBracketResults[0]) return sqrBracketResults[0]
   return goodBadResults[0]

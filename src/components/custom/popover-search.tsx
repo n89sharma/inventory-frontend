@@ -119,7 +119,7 @@ export function PopoverSearch<T>({
             <InputGroup>
               <InputGroupInput
                 value={userInput ?? ''}
-                onChange={(e) => updateSearch(e.target.value)}
+                onChange={e => updateSearch(e.target.value)}
                 onKeyDown={handleKeyDown}
                 ref={inputRef}
                 placeholder='Start typing to see suggestions...'
@@ -143,8 +143,8 @@ export function PopoverSearch<T>({
         </PopoverAnchor>
         <PopoverContent
           align="start"
-          onOpenAutoFocus={(e) => { e.preventDefault() }}
-          onCloseAutoFocus={(e) => { e.preventDefault() }}
+          onOpenAutoFocus={e => { e.preventDefault() }}
+          onCloseAutoFocus={e => { e.preventDefault() }}
           className="w-[var(--radix-popover-trigger-width)]"
         >
           <ScrollArea>
@@ -152,7 +152,7 @@ export function PopoverSearch<T>({
               <div
                 key={`${displayString(m)}-${i}`}
                 onClick={() => handleSelect(m)}
-                onMouseDown={(e) => { e.preventDefault() }}
+                onMouseDown={e => { e.preventDefault() }}
                 className={cn(
                   "p-2 cursor-pointer rounded-sm",
                   highlightedIndex === i

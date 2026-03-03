@@ -66,7 +66,7 @@ export function QueryPage(): React.JSX.Element {
     <div className="flex flex-col gap-2">
       <form
         className="flex flex-row gap-2 border rounded-md p-2 items-end"
-        onSubmit={(e) => e.preventDefault()}
+        onSubmit={e => e.preventDefault()}
       >
 
         <PopoverSearch
@@ -92,14 +92,14 @@ export function QueryPage(): React.JSX.Element {
         <DropdownSelectType
           fieldLabel='Availability'
           defaultVal={searchQuery.availabilityStatusId.toString()}
-          options={availabilityStatuses.map((s) => ({ id: s.id, val: s.status }))}
+          options={availabilityStatuses.map(s => ({ id: s.id, val: s.status }))}
           onSelection={(id) => handleSearchQueryUpdate('availabilityStatusId', id)}
         />
 
         <DropdownSelectType
           fieldLabel='Testing Status'
           defaultVal={searchQuery.technicalStatusId.toString()}
-          options={technicalStatuses.map((s) => ({ id: s.id, val: s.status }))}
+          options={technicalStatuses.map(s => ({ id: s.id, val: s.status }))}
           onSelection={(id) => handleSearchQueryUpdate('technicalStatusId', id)}
         />
 

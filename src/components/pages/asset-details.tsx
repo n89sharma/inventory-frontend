@@ -134,14 +134,14 @@ export const AssetDetailsPage = () => {
             <Header title="Errors"></Header>
             <ErrorHeader />
             <DataRowContainer>
-              {ae?.map((e) => <ErrorRow error={e}></ErrorRow>)}
+              {ae?.map(e => <ErrorRow error={e}></ErrorRow>)}
             </DataRowContainer>
           </Section>
 
           <Section>
             <Header title="Installed Parts" />
             <PartsHeader />
-            {ap?.map((p) => <DataRow label={p.part} value={p.donor} />)}
+            {ap?.map(p => <DataRow label={p.part} value={p.donor} />)}
           </Section>
 
         </SectionRow>
@@ -204,7 +204,7 @@ export const AssetDetailsPage = () => {
             <TabsTrigger value="history"><Header title="History" /></TabsTrigger>
           </TabsList>
           <TabsContent value="comments" className="flex flex-col gap-3">
-            {ac?.map((c) => (<Comment
+            {ac?.map(c => (<Comment
               user={c.username}
               date={c.created_at}
               avatarFallback={c.initials}

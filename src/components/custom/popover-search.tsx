@@ -2,14 +2,14 @@ import { useState, useMemo, useRef } from 'react'
 import Fuse from 'fuse.js'
 import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from '../shadcn/popover'
 import { ScrollArea } from '../shadcn/scroll-area'
-import { XCircleIcon } from '@phosphor-icons/react'
+import { XIcon } from '@phosphor-icons/react'
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '../shadcn/input-group'
 import { Field, FieldLabel } from '../shadcn/field'
 import { cn } from '@/lib/utils'
 
 export type PopoverSearchProps<T> = {
   defaultVal: string | null | undefined
-  onSelection: (i: T | null) => void
+  onSelection: (i: T) => void
   onClear: () => void
   allOptions: T[]
   searchKey: string
@@ -135,7 +135,7 @@ export function PopoverSearch<T>({
                   hidden={!userInput || !userInput.length}
                   type="button"
                 >
-                  <XCircleIcon />
+                  <XIcon />
                 </InputGroupButton>
               </InputGroupAddon>
             </InputGroup>

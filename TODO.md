@@ -20,10 +20,11 @@ Arrival
   - [x] Use generalized dropdown for transporter, vendor
   - [x] Add organizations endpoint in backend
   - [x] Add org api/ store/ hook
+  - [x] Add multi selector
+  - [ ] Add new asset with model, serial, meter, accessories, cassettes internal finisher, remarks 
   - [ ] Add form with Vendor, Warehouse, Transporter, Invoice input
   - [ ] Save form
   - [ ] Generate Arrival ID
-  - [ ] Add new asset with model, serial, meter, error, accessories, cassettes, 
   internal finisher, drum quality, remark
   - [ ] Add new asset on existing arrival
 - [ ] Edit Arrival

@@ -5,16 +5,11 @@ import { useAssetStore } from "@/data/store/asset-store"
 import { DataTable } from "../shadcn/data-table"
 import { DropdownSelectType } from '../custom/dropdown-select-type'
 import { useConstantsStore } from '@/data/store/constants-store'
-import { InputMeter } from '../custom/input-meter'
+import { InputNumber } from '../custom/input-number'
 import { PopoverSearch } from '../custom/popover-search'
 import type { Model } from '@/data/api/model-api'
 import { useModelStore } from '@/data/store/model-store'
 import { assetSummaryTable } from './column-defs/query-summary-columns'
-
-export type InputProps = {
-  defaultVal: string | null
-  onSelection: (field: string, val: string | null) => void
-}
 
 export function QueryPage(): React.JSX.Element {
   const [searchQuery, setSearchQuery] = useState({
@@ -71,11 +66,9 @@ export function QueryPage(): React.JSX.Element {
 
         <PopoverSearch
           defaultVal={getDefaultModelVal()}
-          onSelection={(m: Model | null) => {
-            if (m) {
-              handleSearchQueryUpdate('brand', m.brand_name)
-              handleSearchQueryUpdate('model', m.model_name)
-            }
+          onSelection={m => {
+            handleSearchQueryUpdate('brand', m.brand_name)
+            handleSearchQueryUpdate('model', m.model_name)
           }}
           onClear={() => {
             handleSearchQueryUpdate('brand', null)
@@ -93,28 +86,29 @@ export function QueryPage(): React.JSX.Element {
           fieldLabel='Availability'
           defaultVal={searchQuery.availabilityStatusId.toString()}
           options={availabilityStatuses.map(s => ({ id: s.id, val: s.status }))}
-          onSelection={(id) => handleSearchQueryUpdate('availabilityStatusId', id)}
+          onSelection={id => handleSearchQueryUpdate('availabilityStatusId', id)}
         />
 
         <DropdownSelectType
           fieldLabel='Testing Status'
           defaultVal={searchQuery.technicalStatusId.toString()}
           options={technicalStatuses.map(s => ({ id: s.id, val: s.status }))}
-          onSelection={(id) => handleSearchQueryUpdate('technicalStatusId', id)}
+          onSelection={id => handleSearchQueryUpdate('technicalStatusId', id)}
         />
 
         <DropdownSelectType
           fieldLabel='Warehouse'
           defaultVal={searchQuery.warehouseId.toString()}
           options={warehouses.filter(w => w.is_active).map(w => ({ id: w.id, val: w.city_code }))}
-          onSelection={(id) => handleSearchQueryUpdate('warehouseId', id)}
+          onSelection={id => handleSearchQueryUpdate('warehouseId', id)}
         />
 
-        <InputMeter
+        <InputNumber
           defaultVal={searchQuery.meter}
-          onSelection={handleSearchQueryUpdate}
+          onSelection={meter => handleSearchQueryUpdate('meter', meter)}
+          fieldLabel='Meter'
         >
-        </InputMeter>
+        </InputNumber>
 
         <Button
           className="rounded-md"

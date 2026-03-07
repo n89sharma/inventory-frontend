@@ -1,7 +1,7 @@
 import { api } from '@/data/api/axios-client'
 import { z } from 'zod'
 
-const CoreFunctionsSchema = z.object({
+export const CoreFunctionsSchema = z.object({
   id: z.number(),
   accessory: z.string()
 })
@@ -11,7 +11,7 @@ const AssetTypeScehma = z.object({
   asset_type: z.string()
 })
 
-const StatusSchema = z.object({
+export const StatusSchema = z.object({
   id: z.number(),
   status: z.string()
 })
@@ -26,7 +26,7 @@ const InvoiceTypeSchema = z.object({
   type: z.string()
 })
 
-const WarehouseSchema = z.object({
+export const WarehouseSchema = z.object({
   id: z.number(),
   city_code: z.string(),
   street: z.string(),

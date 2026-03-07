@@ -1,7 +1,7 @@
 import { api } from '@/data/api/axios-client'
 import { z } from 'zod'
 
-const ModelSchema = z.object({
+export const ModelSchema = z.object({
   brand_name: z.string(),
   model_name: z.string(),
   asset_type: z.string(),

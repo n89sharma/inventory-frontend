@@ -1,7 +1,7 @@
 import { api } from '@/data/api/axios-client'
 import { z } from 'zod'
 
-const OrgSchema = z.object({
+export const OrgSchema = z.object({
   id: z.number(),
   account_number: z.string(),
   name: z.string()

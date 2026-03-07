@@ -14,35 +14,45 @@ import {
 
 type SelectOption = {
   id: number,
-  val: string
+  label: string
 }
 
 type DropdownSelectTypeProps = {
   fieldLabel: string
-  defaultVal: string
+  value: string
   options: SelectOption[]
   onSelection: (value: string | null) => void
+  fieldRequired?: boolean
+  error?: boolean
+  className?: string
 }
 export function DropdownSelectType({
   fieldLabel,
-  defaultVal,
+  value,
   options,
-  onSelection }: DropdownSelectTypeProps): React.JSX.Element {
+  onSelection,
+  fieldRequired,
+  error,
+  className }: DropdownSelectTypeProps): React.JSX.Element {
 
 
   return (
-    <Field className="w-36">
-      <FieldLabel>{fieldLabel}</FieldLabel>
-      <Select defaultValue={defaultVal} onValueChange={onSelection}>
-        <SelectTrigger>
+    <Field className={className} data-invalid={error}>
+      <FieldLabel>
+        {fieldLabel}
+        {fieldRequired && <span className="text-destructive">*</span>}
+      </FieldLabel>
+      <Select
+        value={value}
+        onValueChange={onSelection}
+      >
+        <SelectTrigger aria-invalid={error}>
           <SelectValue />
         </SelectTrigger>
-        <SelectContent
-          position="popper"
-        >
+        <SelectContent position="popper">
           <SelectGroup>
             {options?.map(o => (
-              <SelectItem key={o.id} value={o.id.toString()}>{o.val}</SelectItem>
+              <SelectItem key={o.id} value={o.id.toString()}>{o.label}</SelectItem>
             ))}
           </SelectGroup>
         </SelectContent>

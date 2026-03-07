@@ -21,12 +21,15 @@ Arrival
   - [x] Add organizations endpoint in backend
   - [x] Add org api/ store/ hook
   - [x] Add multi selector
-  - [ ] Add new asset with model, serial, meter, accessories, cassettes internal finisher, remarks 
-  - [ ] Add form with Vendor, Warehouse, Transporter, Invoice input
-  - [ ] Save form
+  - [x] Add form with Vendor, Warehouse, Transporter
+  - [x] Add new asset with model, serial, meter, accessories, cassettes internal finisher 
+  - [x] Change layout
+  - [x] Add data table to show assets
+  - [x] Use hook form with form validation for new asset
+  - [x] Use hook form with form validation for new arrival
   - [ ] Generate Arrival ID
-  internal finisher, drum quality, remark
-  - [ ] Add new asset on existing arrival
+  - [ ] Save form
+- [ ] Add new asset on existing arrival
 - [ ] Edit Arrival
 - [ ] Auto load Arrivals of the last 7 days
 - [ ] Add warehouse in the main search or quick search

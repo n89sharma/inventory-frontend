@@ -8,7 +8,7 @@ import { Field, FieldLabel } from '../shadcn/field'
 import { cn } from '@/lib/utils'
 
 export type PopoverSearchProps<T> = {
-  defaultVal: string | null | undefined
+  value: T | null | undefined
   onSelection: (i: T) => void
   onClear: () => void
   allOptions: T[]
@@ -16,20 +16,24 @@ export type PopoverSearchProps<T> = {
   displayString: (i: T) => string
   fieldLabel: string
   fieldRequired: boolean
+  error?: boolean
+  className?: string
 }
 
 export function PopoverSearch<T>({
-  defaultVal,
+  value,
   onSelection,
   onClear,
   allOptions,
   searchKey,
   displayString,
   fieldLabel,
-  fieldRequired }: PopoverSearchProps<T>): React.JSX.Element {
+  fieldRequired,
+  error,
+  className }: PopoverSearchProps<T>): React.JSX.Element {
 
   const [matches, setMatches] = useState<T[]>([])
-  const [userInput, setUserInput] = useState(defaultVal)
+  const [userInput, setUserInput] = useState(value ? displayString(value) : '')
   const [popoverOpen, setPopoverOpen] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const [highlightedIndex, setHighlightedIndex] = useState(-1)
@@ -70,7 +74,7 @@ export function PopoverSearch<T>({
     setPopoverOpen(false)
     setMatches([])
     if (inputRef.current) {
-      inputRef.current.focus();
+      inputRef.current.focus()
     }
   }
 
@@ -105,7 +109,7 @@ export function PopoverSearch<T>({
   }
 
   return (
-    <div>
+    <div className={className}>
       <Popover
         open={popoverOpen}
         onOpenChange={setPopoverOpen}
@@ -114,8 +118,11 @@ export function PopoverSearch<T>({
           <div />
         </PopoverTrigger>
         <PopoverAnchor asChild>
-          <Field>
-            <FieldLabel>{fieldLabel}</FieldLabel>
+          <Field data-invalid={error}>
+            <FieldLabel>
+              {fieldLabel}
+              {fieldRequired && <span className="text-destructive">*</span>}
+            </FieldLabel>
             <InputGroup>
               <InputGroupInput
                 value={userInput ?? ''}
@@ -126,7 +133,7 @@ export function PopoverSearch<T>({
                 required={fieldRequired}
                 autoComplete="off"
                 role="combobox"
-
+                aria-invalid={error}
               />
               <InputGroupAddon align="inline-end">
                 <InputGroupButton

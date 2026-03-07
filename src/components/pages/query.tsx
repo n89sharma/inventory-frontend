@@ -5,7 +5,7 @@ import { useAssetStore } from "@/data/store/asset-store"
 import { DataTable } from "../shadcn/data-table"
 import { DropdownSelectType } from '../custom/dropdown-select-type'
 import { useConstantsStore } from '@/data/store/constants-store'
-import { InputNumber } from '../custom/input-number'
+import { InputWithClear } from '../custom/input-with-clear'
 import { PopoverSearch } from '../custom/popover-search'
 import type { Model } from '@/data/api/model-api'
 import { useModelStore } from '@/data/store/model-store'
@@ -50,13 +50,6 @@ export function QueryPage(): React.JSX.Element {
     }
   }
 
-  function getDefaultModelVal() {
-    if (!!searchQuery.brand && !!searchQuery.model) {
-      return `${searchQuery.brand} ${searchQuery.model}`
-    }
-    return ''
-  }
-
   return (
     <div className="flex flex-col gap-2">
       <form
@@ -65,7 +58,7 @@ export function QueryPage(): React.JSX.Element {
       >
 
         <PopoverSearch
-          defaultVal={getDefaultModelVal()}
+          value={null}
           onSelection={m => {
             handleSearchQueryUpdate('brand', m.brand_name)
             handleSearchQueryUpdate('model', m.model_name)
@@ -84,31 +77,35 @@ export function QueryPage(): React.JSX.Element {
 
         <DropdownSelectType
           fieldLabel='Availability'
-          defaultVal={searchQuery.availabilityStatusId.toString()}
-          options={availabilityStatuses.map(s => ({ id: s.id, val: s.status }))}
+          value={searchQuery.availabilityStatusId.toString()}
+          options={availabilityStatuses.map(s => ({ id: s.id, label: s.status }))}
           onSelection={id => handleSearchQueryUpdate('availabilityStatusId', id)}
+          className='max-w-36'
         />
 
         <DropdownSelectType
           fieldLabel='Testing Status'
-          defaultVal={searchQuery.technicalStatusId.toString()}
-          options={technicalStatuses.map(s => ({ id: s.id, val: s.status }))}
+          value={searchQuery.technicalStatusId.toString()}
+          options={technicalStatuses.map(s => ({ id: s.id, label: s.status }))}
           onSelection={id => handleSearchQueryUpdate('technicalStatusId', id)}
+          className='max-w-36'
         />
 
         <DropdownSelectType
           fieldLabel='Warehouse'
-          defaultVal={searchQuery.warehouseId.toString()}
-          options={warehouses.filter(w => w.is_active).map(w => ({ id: w.id, val: w.city_code }))}
+          value={searchQuery.warehouseId.toString()}
+          options={warehouses.filter(w => w.is_active).map(w => ({ id: w.id, label: w.city_code }))}
           onSelection={id => handleSearchQueryUpdate('warehouseId', id)}
+          className='max-w-36'
         />
 
-        <InputNumber
-          defaultVal={searchQuery.meter}
+        <InputWithClear
+          value={searchQuery.meter}
           onSelection={meter => handleSearchQueryUpdate('meter', meter)}
           fieldLabel='Meter'
+          className='max-w-36'
         >
-        </InputNumber>
+        </InputWithClear>
 
         <Button
           className="rounded-md"

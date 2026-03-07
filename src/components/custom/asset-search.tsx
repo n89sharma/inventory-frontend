@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils"
 import { Button } from '@/components/shadcn/button'
 import { Input } from '@/components/shadcn/input'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 
 interface SearchBarProps {
   loading: boolean,

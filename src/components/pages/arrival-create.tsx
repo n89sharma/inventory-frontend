@@ -11,6 +11,8 @@ import { NewArrivalSchema } from '@/lib/arrival-validator'
 import type { NewArrival } from '@/lib/arrival-validator'
 import { ControlledPopoverSearch } from '../custom/controlled-popover-search'
 import { ArrivalAssetCreateSection } from './arrival-asset-create'
+import { createArrival } from '@/data/api/arrival-api'
+import { toast } from "sonner"
 
 export function ArrivalCreatePage(): React.JSX.Element {
   const newArrivalForm = useForm<NewArrival>({
@@ -33,12 +35,16 @@ export function ArrivalCreatePage(): React.JSX.Element {
   }
 
   function submitNewArrival() {
-    newArrivalForm.handleSubmit(onValidNewArrival, onInvalidArrival)()
+    newArrivalForm.handleSubmit(
+      onValidArrival,
+      onInvalidArrival)()
   }
 
-  function onValidNewArrival(newArrival: NewArrival) {
-    console.log('here?')
-    console.log(newArrival)
+  async function onValidArrival(newArrival: NewArrival) {
+    const res = await createArrival(newArrival)
+    console.log(res)
+    newArrivalForm.reset(getDefaultArrival())
+    toast.success(`Arrival ${res.data.arrivalNumber} created!`, { position: "top-center" })
   }
 
   function onInvalidArrival(errors: FieldErrors<NewArrival>) {

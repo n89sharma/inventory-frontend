@@ -1,3 +1,4 @@
+import type { ApiResponse } from "@/data/api/arrival-api";
 import { isAxiosError, type AxiosError } from "axios";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
@@ -6,32 +7,48 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export interface ApiErrorResponse {
-  message: string
-  errorCode?: string
-  details?: string[]
+export interface ApiError {
+  type: 'API_ERROR' | 'NETWORK_ERROR' | 'CONFIG'
+  status?: string
+  summary: string
+  details: string
 }
 
-export function axiosErrorHandler(error: Error | AxiosError<ApiErrorResponse>) {
-  // 2. Use the Type Guard provided by Axios
+export function apiErrorHandler(error: Error | AxiosError<ApiError>): ApiResponse {
+
   if (isAxiosError(error)) {
-    // Now 'error' is typed as AxiosError inside this block
+    //AxiosError
     if (error.response) {
-      // The server responded with a status code > 2xx
-      // Accessing data is now type-safe
-      console.log(error.response.data);
-      console.log(error.response.status);
-      console.log(error.response.headers);
+      //status code > 2xx
+      return {
+        isSuccessful: false,
+        error: error.response.data
+      }
     } else if (error.request) {
-      // Request was made but no response (Network error/Timeout)
-      console.log(error.request);
+      //no response
+      return {
+        isSuccessful: false,
+        error: {
+          type: 'NETWORK_ERROR',
+          summary: 'No response from server. Check connection',
+          details: error.request
+        }
+      }
     } else {
-      // Configuration setup error
-      console.log('Setup Error', error.message);
+      //config setup error
+      return {
+        isSuccessful: false,
+        error: {
+          type: 'CONFIG',
+          summary: 'Client configuration error.',
+          details: error.message
+        }
+      }
     }
-    console.log(error.config);
-  } else {
-    // 3. Handle non-Axios errors (e.g., a crash inside a .then block)
-    console.error('An unexpected error occurred:', error.message);
+  }
+
+  return {
+    isSuccessful: false,
+    error: error
   }
 }

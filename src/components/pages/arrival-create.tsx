@@ -41,10 +41,12 @@ export function ArrivalCreatePage(): React.JSX.Element {
   }
 
   async function onValidArrival(newArrival: NewArrival) {
-    const res = await createArrival(newArrival)
-    console.log(res)
-    newArrivalForm.reset(getDefaultArrival())
-    toast.success(`Arrival ${res.data.arrivalNumber} created!`, { position: "top-center" })
+    const apiResponse = await createArrival(newArrival)
+    if (apiResponse.isSuccessful) {
+      newArrivalForm.reset(getDefaultArrival())
+      toast.success(`Arrival ${apiResponse.data.arrivalNumber} created!`, { position: "top-center" })
+    }
+    console.log(apiResponse)
   }
 
   function onInvalidArrival(errors: FieldErrors<NewArrival>) {

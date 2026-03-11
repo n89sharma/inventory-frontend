@@ -1,6 +1,6 @@
 import { api } from '@/data/api/axios-client'
 import type { NewArrival } from '@/lib/arrival-validator'
-import { axiosErrorHandler } from '@/lib/utils'
+import { apiErrorHandler, type ApiError } from '@/lib/utils'
 import { z } from 'zod'
 
 const ArrivalSchema = z.object({
@@ -24,10 +24,21 @@ export async function getArrivals(
   return z.array(ArrivalSchema).parse(res.data)
 }
 
-export async function createArrival(newArrival: NewArrival) {
-  return await api.post(
+export type ApiResponse = {
+  isSuccessful: boolean,
+  data?: any,
+  error?: ApiError | Error
+}
+
+export async function createArrival(newArrival: NewArrival): Promise<ApiResponse> {
+  return api.post(
     '/arrivals',
     newArrival,
     { headers: { "Content-Type": "application/json" } }
-  ).catch(axiosErrorHandler)
+  )
+    .then(response => ({
+      isSuccessful: true,
+      data: response.data
+    }))
+    .catch(apiErrorHandler)
 }

@@ -6,6 +6,7 @@ import { DataTable } from "@/components/shadcn/data-table"
 import { Button } from "../shadcn/button"
 import { PlusIcon } from "@phosphor-icons/react"
 import { Link } from "react-router-dom"
+import { useAutoSearch } from "@/hooks/use-auto-search"
 
 export function ArrivalsPage(): React.JSX.Element {
   const arrivals = useArrivalStore(state => state.arrivals)
@@ -14,12 +15,17 @@ export function ArrivalsPage(): React.JSX.Element {
   const toDate = useArrivalStore(state => state.toDate)
   const setFromDate = useArrivalStore(state => state.setFromDate)
   const setToDate = useArrivalStore(state => state.setToDate)
+  const hasSearched = useArrivalStore(state => state.hasSearched)
+  const setHasSearched = useArrivalStore(state => state.setHasSearched)
 
   async function onSearchSetData(from: Date, to: Date) {
     setFromDate(from)
     setToDate(to)
+    setHasSearched(true)
     setArrivals(await getArrivals(from, to))
   }
+
+  useAutoSearch(hasSearched, onSearchSetData)
 
   return (
     <div className="flex flex-col gap-2">

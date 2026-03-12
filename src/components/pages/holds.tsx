@@ -26,6 +26,9 @@ export function HoldPage(): React.JSX.Element {
 
   return (
     <div className="flex flex-col gap-2">
+      <h1 className="text-3xl font-bold p-2">
+        Holds
+      </h1>
       <DateSearchBar onSearchSetData={onSearchSetData} initialFromDate={fromDate} initialToDate={toDate} />
       <DataTable columns={holdTableColumns} data={holds} />
     </div>

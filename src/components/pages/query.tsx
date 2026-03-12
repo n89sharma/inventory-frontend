@@ -52,6 +52,9 @@ export function QueryPage(): React.JSX.Element {
 
   return (
     <div className="flex flex-col gap-2">
+      <h1 className="text-3xl font-bold p-2">
+        Query
+      </h1>
       <form
         className="flex flex-row gap-2 border rounded-md p-2 items-end"
         onSubmit={e => e.preventDefault()}

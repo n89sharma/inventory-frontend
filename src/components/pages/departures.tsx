@@ -1,7 +1,8 @@
 import { useDepartureStore } from "@/data/store/departure-store"
 import { getDepartures } from "@/data/api/departure-api"
-import { CollectionPage } from "./collection"
+import { DateSearchBar } from "../custom/date-search-bar"
 import { departureTableColumns } from "./column-defs/departure-columns"
+import { DataTable } from "@/components/shadcn/data-table"
 
 export function DeparturePage(): React.JSX.Element {
   const departures = useDepartureStore((state) => state.departures)
@@ -12,10 +13,9 @@ export function DeparturePage(): React.JSX.Element {
   }
 
   return (
-    <CollectionPage
-      collection={departures}
-      onSearchSetData={onSearchSetData}
-      columns={departureTableColumns}
-    />
+    <div className="flex flex-col gap-2">
+      <DateSearchBar onSearchSetData={onSearchSetData} />
+      <DataTable columns={departureTableColumns} data={departures} />
+    </div>
   )
 }

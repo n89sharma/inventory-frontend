@@ -1,7 +1,8 @@
 import { useInvoiceStore } from "@/data/store/invoice-store"
 import { getInvoices } from "@/data/api/invoice-api"
-import { CollectionPage } from "./collection"
+import { DateSearchBar } from "../custom/date-search-bar"
 import { invoiceTableColumns } from "./column-defs/invoice-columns"
+import { DataTable } from "@/components/shadcn/data-table"
 
 export function InvoicesPage(): React.JSX.Element {
   const invoices = useInvoiceStore((state) => state.invoices)
@@ -12,10 +13,9 @@ export function InvoicesPage(): React.JSX.Element {
   }
 
   return (
-    <CollectionPage
-      collection={invoices}
-      onSearchSetData={onSearchSetData}
-      columns={invoiceTableColumns}
-    />
+    <div className="flex flex-col gap-2">
+      <DateSearchBar onSearchSetData={onSearchSetData} />
+      <DataTable columns={invoiceTableColumns} data={invoices} />
+    </div>
   )
 }

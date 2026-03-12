@@ -1,7 +1,8 @@
 import { useHoldStore } from "@/data/store/hold-store"
 import { getHolds } from "@/data/api/hold-api"
-import { CollectionPage } from "./collection"
+import { DateSearchBar } from "../custom/date-search-bar"
 import { holdTableColumns } from "./column-defs/hold-columns"
+import { DataTable } from "@/components/shadcn/data-table"
 
 export function HoldPage(): React.JSX.Element {
   const holds = useHoldStore((state) => state.holds)
@@ -12,10 +13,9 @@ export function HoldPage(): React.JSX.Element {
   }
 
   return (
-    <CollectionPage
-      collection={holds}
-      onSearchSetData={onSearchSetData}
-      columns={holdTableColumns}
-    />
+    <div className="flex flex-col gap-2">
+      <DateSearchBar onSearchSetData={onSearchSetData} />
+      <DataTable columns={holdTableColumns} data={holds} />
+    </div>
   )
 }

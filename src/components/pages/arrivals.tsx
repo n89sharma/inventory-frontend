@@ -1,7 +1,8 @@
 import { useArrivalStore } from "@/data/store/arrival-store"
 import { getArrivals } from "@/data/api/arrival-api"
-import { CollectionPage } from "./collection"
+import { DateSearchBar } from "../custom/date-search-bar"
 import { arrivalTableColumns } from "./column-defs/arrival-columns"
+import { DataTable } from "@/components/shadcn/data-table"
 import { Button } from "../shadcn/button"
 import { PlusIcon } from "@phosphor-icons/react"
 import { Link } from "react-router-dom"
@@ -25,11 +26,8 @@ export function ArrivalsPage(): React.JSX.Element {
         </Button>
       </div>
 
-      <CollectionPage
-        collection={arrivals}
-        onSearchSetData={onSearchSetData}
-        columns={arrivalTableColumns}
-      />
+      <DateSearchBar onSearchSetData={onSearchSetData} />
+      <DataTable columns={arrivalTableColumns} data={arrivals} />
     </div>
   )
 }

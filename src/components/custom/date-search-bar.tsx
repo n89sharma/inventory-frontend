@@ -1,23 +1,15 @@
 import React, { useState } from 'react'
 import { subDays } from "date-fns"
 import { Button } from "@/components/shadcn/button"
-import { DataTable } from "@/components/shadcn/data-table"
-import type { ColumnDef } from '@tanstack/react-table'
-import { DatePickerField } from '../custom/date-picker'
+import { DatePickerField } from './date-picker'
 import { FieldGroup } from "@/components/shadcn/field"
-import { QuickSearchButtons } from '../custom/quick-search-buttons'
+import { QuickSearchButtons } from './quick-search-buttons'
 
-interface CollectionPageProps<T> {
-  collection: T[],
-  onSearchSetData: (from: Date, to: Date) => Promise<void>,
-  columns: ColumnDef<T>[]
+interface DateSearchBarProps {
+  onSearchSetData: (from: Date, to: Date) => Promise<void>
 }
 
-export function CollectionPage<T>({
-  collection,
-  onSearchSetData,
-  columns
-}: CollectionPageProps<T>): React.JSX.Element {
+export function DateSearchBar({ onSearchSetData }: DateSearchBarProps): React.JSX.Element {
 
   const [fromDate, setFromDate] = useState<Date>()
   const [toDate, setToDate] = useState<Date>()
@@ -39,8 +31,9 @@ export function CollectionPage<T>({
   }
 
   return (
-    <div className="flex flex-col gap-2">
-      <FieldGroup className="flex flex-row gap-2 max-w-96 border rounded-md p-2 items-end">
+    <FieldGroup className="flex flex-col gap-2 border rounded-md p-2 max-w-96">
+      <QuickSearchButtons days={[7, 30, 60]} onSearch={handleQuickSearch} />
+      <div className="flex flex-row gap-2 items-end">
         <DatePickerField
           label="From Date"
           id="from-date"
@@ -62,9 +55,10 @@ export function CollectionPage<T>({
         >
           Search
         </Button>
-      </FieldGroup>
-      <QuickSearchButtons days={[7, 30, 60]} onSearch={handleQuickSearch} />
-      <DataTable columns={columns} data={collection} />
-    </div>
+      </div>
+
+
+    </FieldGroup>
+
   )
 }

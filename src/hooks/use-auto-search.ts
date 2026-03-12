@@ -4,7 +4,7 @@ import { subDays } from 'date-fns'
 export function useAutoSearch(
   hasSearched: boolean,
   onSearchSetData: (from: Date, to: Date) => Promise<void>,
-  defaultDays: number = 7
+  defaultDays: number = 60
 ) {
   useEffect(() => {
     if (!hasSearched) {

@@ -9,7 +9,7 @@ import { InputWithClear } from '../custom/input-with-clear'
 import { PopoverSearch } from '../custom/popover-search'
 import type { Model } from '@/data/api/model-api'
 import { useModelStore } from '@/data/store/model-store'
-import { assetSummaryTable } from './column-defs/query-summary-columns'
+import { assetSummaryTableColumns } from './column-defs/asset-summary-columns'
 
 export function QueryPage(): React.JSX.Element {
   const [searchQuery, setSearchQuery] = useState({
@@ -118,7 +118,7 @@ export function QueryPage(): React.JSX.Element {
       <div hidden={!loading}>
         <span>Loading...</span>
       </div>
-      <DataTable columns={assetSummaryTable} data={assets} />
+      <DataTable columns={assetSummaryTableColumns} data={assets} />
     </div>
   )
 }

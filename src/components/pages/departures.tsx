@@ -5,16 +5,22 @@ import { departureTableColumns } from "./column-defs/departure-columns"
 import { DataTable } from "@/components/shadcn/data-table"
 
 export function DeparturePage(): React.JSX.Element {
-  const departures = useDepartureStore((state) => state.departures)
-  const setDepartures = useDepartureStore((state) => state.setDepartures)
+  const departures = useDepartureStore(state => state.departures)
+  const setDepartures = useDepartureStore(state => state.setDepartures)
+  const fromDate = useDepartureStore(state => state.fromDate)
+  const toDate = useDepartureStore(state => state.toDate)
+  const setFromDate = useDepartureStore(state => state.setFromDate)
+  const setToDate = useDepartureStore(state => state.setToDate)
 
   async function onSearchSetData(from: Date, to: Date) {
+    setFromDate(from)
+    setToDate(to)
     setDepartures(await getDepartures(from, to))
   }
 
   return (
     <div className="flex flex-col gap-2">
-      <DateSearchBar onSearchSetData={onSearchSetData} />
+      <DateSearchBar onSearchSetData={onSearchSetData} initialFromDate={fromDate} initialToDate={toDate} />
       <DataTable columns={departureTableColumns} data={departures} />
     </div>
   )

@@ -4,9 +4,13 @@ import { create } from 'zustand'
 interface HoldStore {
   holds: Hold[]
   loading: boolean
+  fromDate: Date | undefined
+  toDate: Date | undefined
 
   setHolds: (holds: Hold[]) => void
   setLoading: (loading: boolean) => void
+  setFromDate: (date: Date | undefined) => void
+  setToDate: (date: Date | undefined) => void
 
   clearHolds: () => void
 }
@@ -14,8 +18,12 @@ interface HoldStore {
 export const useHoldStore = create<HoldStore>((set) => ({
   holds: [],
   loading: false,
+  fromDate: undefined,
+  toDate: undefined,
 
   setHolds: (holds) => set({ holds }),
   setLoading: (loading) => set({ loading }),
+  setFromDate: (fromDate) => set({ fromDate }),
+  setToDate: (toDate) => set({ toDate }),
   clearHolds: () => set({ holds: [] })
 }))

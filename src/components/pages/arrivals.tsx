@@ -8,10 +8,16 @@ import { PlusIcon } from "@phosphor-icons/react"
 import { Link } from "react-router-dom"
 
 export function ArrivalsPage(): React.JSX.Element {
-  const arrivals = useArrivalStore((state) => state.arrivals)
-  const setArrivals = useArrivalStore((state) => state.setArrivals)
+  const arrivals = useArrivalStore(state => state.arrivals)
+  const setArrivals = useArrivalStore(state => state.setArrivals)
+  const fromDate = useArrivalStore(state => state.fromDate)
+  const toDate = useArrivalStore(state => state.toDate)
+  const setFromDate = useArrivalStore(state => state.setFromDate)
+  const setToDate = useArrivalStore(state => state.setToDate)
 
   async function onSearchSetData(from: Date, to: Date) {
+    setFromDate(from)
+    setToDate(to)
     setArrivals(await getArrivals(from, to))
   }
 
@@ -26,7 +32,7 @@ export function ArrivalsPage(): React.JSX.Element {
         </Button>
       </div>
 
-      <DateSearchBar onSearchSetData={onSearchSetData} />
+      <DateSearchBar onSearchSetData={onSearchSetData} initialFromDate={fromDate} initialToDate={toDate} />
       <DataTable columns={arrivalTableColumns} data={arrivals} />
     </div>
   )

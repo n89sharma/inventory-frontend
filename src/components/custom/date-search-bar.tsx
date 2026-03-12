@@ -7,12 +7,14 @@ import { QuickSearchButtons } from './quick-search-buttons'
 
 interface DateSearchBarProps {
   onSearchSetData: (from: Date, to: Date) => Promise<void>
+  initialFromDate?: Date
+  initialToDate?: Date
 }
 
-export function DateSearchBar({ onSearchSetData }: DateSearchBarProps): React.JSX.Element {
+export function DateSearchBar({ onSearchSetData, initialFromDate, initialToDate }: DateSearchBarProps): React.JSX.Element {
 
-  const [fromDate, setFromDate] = useState<Date>()
-  const [toDate, setToDate] = useState<Date>()
+  const [fromDate, setFromDate] = useState<Date | undefined>(initialFromDate)
+  const [toDate, setToDate] = useState<Date | undefined>(initialToDate)
 
   async function handleSearch() {
     if (!fromDate) return

@@ -29,7 +29,7 @@ export function DeparturePage(): React.JSX.Element {
       <h1 className="text-3xl font-bold p-2">
         Departures
       </h1>
-      <DateSearchBar onSearchSetData={onSearchSetData} initialFromDate={fromDate} initialToDate={toDate} />
+      <DateSearchBar fromDate={fromDate} toDate={toDate} setFromDate={setFromDate} setToDate={setToDate} onSearchSetData={onSearchSetData} />
       <DataTable columns={departureTableColumns} data={departures} />
     </div>
   )

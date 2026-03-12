@@ -26,7 +26,7 @@ export function TransferPage(): React.JSX.Element {
 
   return (
     <div className="flex flex-col gap-2">
-      <DateSearchBar onSearchSetData={onSearchSetData} initialFromDate={fromDate} initialToDate={toDate} />
+      <DateSearchBar fromDate={fromDate} toDate={toDate} setFromDate={setFromDate} setToDate={setToDate} onSearchSetData={onSearchSetData} />
       <DataTable columns={transferTableColumns} data={transfers} />
     </div>
   )

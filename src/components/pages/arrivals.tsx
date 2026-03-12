@@ -38,7 +38,7 @@ export function ArrivalsPage(): React.JSX.Element {
         </Button>
       </div>
 
-      <DateSearchBar onSearchSetData={onSearchSetData} initialFromDate={fromDate} initialToDate={toDate} />
+      <DateSearchBar fromDate={fromDate} toDate={toDate} setFromDate={setFromDate} setToDate={setToDate} onSearchSetData={onSearchSetData} />
       <DataTable columns={arrivalTableColumns} data={arrivals} />
     </div>
   )

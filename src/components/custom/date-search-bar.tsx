@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { subDays } from "date-fns"
 import { Button } from "@/components/shadcn/button"
 import { DatePickerField } from './date-picker'
@@ -6,22 +6,20 @@ import { Field, FieldGroup, FieldLabel } from "@/components/shadcn/field"
 import { QuickSearchButtons } from './quick-search-buttons'
 
 interface DateSearchBarProps {
+  fromDate: Date | undefined
+  toDate: Date | undefined
+  setFromDate: (date: Date | undefined) => void
+  setToDate: (date: Date | undefined) => void
   onSearchSetData: (from: Date, to: Date) => Promise<void>
-  initialFromDate?: Date
-  initialToDate?: Date
 }
 
-export function DateSearchBar({ onSearchSetData, initialFromDate, initialToDate }: DateSearchBarProps): React.JSX.Element {
-
-  const [fromDate, setFromDate] = useState<Date | undefined>(initialFromDate)
-  const [toDate, setToDate] = useState<Date | undefined>(initialToDate)
+export function DateSearchBar({ fromDate, toDate, setFromDate, setToDate, onSearchSetData }: DateSearchBarProps): React.JSX.Element {
 
   async function handleSearch() {
     if (!fromDate) return
-    if (!toDate) {
-      setToDate(new Date())
-    }
-    await onSearchSetData(fromDate, toDate ?? new Date())
+    const to = toDate ?? new Date()
+    setToDate(to)
+    await onSearchSetData(fromDate, to)
   }
 
   async function handleQuickSearch(days: number) {
@@ -62,9 +60,6 @@ export function DateSearchBar({ onSearchSetData, initialFromDate, initialToDate 
           Search
         </Button>
       </div>
-
-
     </FieldGroup>
-
   )
 }

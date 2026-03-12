@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { subDays } from "date-fns"
 import { Button } from "@/components/shadcn/button"
 import { DatePickerField } from './date-picker'
-import { FieldGroup } from "@/components/shadcn/field"
+import { Field, FieldGroup, FieldLabel } from "@/components/shadcn/field"
 import { QuickSearchButtons } from './quick-search-buttons'
 
 interface DateSearchBarProps {
@@ -34,7 +34,11 @@ export function DateSearchBar({ onSearchSetData, initialFromDate, initialToDate 
 
   return (
     <FieldGroup className="flex flex-col gap-2 border rounded-md p-2 max-w-96">
-      <QuickSearchButtons days={[7, 30, 60]} onSearch={handleQuickSearch} />
+      <Field>
+        <FieldLabel>Quick Search</FieldLabel>
+        <QuickSearchButtons days={[7, 30, 60]} onSearch={handleQuickSearch} />
+      </Field>
+
       <div className="flex flex-row gap-2 items-end">
         <DatePickerField
           label="From Date"

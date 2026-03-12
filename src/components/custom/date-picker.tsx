@@ -17,8 +17,8 @@ interface DatePickerFieldProps {
 
 export function DatePickerField({ label, date, setDate, id }: DatePickerFieldProps): React.JSX.Element {
   return (
-    <Field className="mx-auto w-44 gap-1">
-      <FieldLabel className="text-xs px-1">{label}</FieldLabel>
+    <Field>
+      <FieldLabel>{label}</FieldLabel>
       <Popover>
         <PopoverTrigger asChild>
           <Button

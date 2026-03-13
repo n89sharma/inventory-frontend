@@ -1,7 +1,7 @@
 import type { Invoice } from '@/data/api/invoice-api'
 import { create } from 'zustand'
 import type { Warehouse } from '../api/constants-api'
-import {  ANY_OPTION, type SelectOption } from '@/components/custom/select-options'
+import { ANY_OPTION, type SelectOption } from '@/types/select-option-types'
 
 interface InvoiceStore {
   invoices: Invoice[]

@@ -8,7 +8,7 @@ import { PlusIcon } from "@phosphor-icons/react"
 import { Link } from "react-router-dom"
 import { useAutoSearch } from "@/hooks/use-auto-search"
 import type { Warehouse } from "@/data/api/constants-api"
-import type { SelectOption } from "../custom/select-options"
+import type { SelectOption } from "@/types/select-option-types"
 
 export function ArrivalsPage(): React.JSX.Element {
   const arrivals = useArrivalStore(state => state.arrivals)

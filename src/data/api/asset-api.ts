@@ -1,4 +1,4 @@
-import { type SelectOption } from '@/components/custom/select-options'
+import type { SelectOption } from '@/types/select-option-types'
 import { api } from '@/data/api/axios-client'
 import { formatThousandsK, formatUSD, getFormattedDate, getInitials, getPartNames } from '@/lib/formatters'
 import { z } from 'zod'

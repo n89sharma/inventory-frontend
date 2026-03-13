@@ -1,7 +1,7 @@
 import type { Arrival } from '@/data/api/arrival-api'
 import { create } from 'zustand'
 import type { Warehouse } from '../api/constants-api'
-import { ANY_OPTION, type SelectOption } from '@/components/custom/select-options'
+import { ANY_OPTION, type SelectOption } from '@/types/select-option-types'
 
 interface ArrivalStore {
   arrivals: Arrival[]

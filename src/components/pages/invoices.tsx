@@ -4,7 +4,7 @@ import { SearchBar } from "../custom/search-bar"
 import { invoiceTableColumns } from "./column-defs/invoice-columns"
 import { DataTable } from "@/components/shadcn/data-table"
 import { useAutoSearch } from "@/hooks/use-auto-search"
-import type { SelectOption } from "../custom/select-options"
+import type { SelectOption } from '@/types/select-option-types'
 import type { Warehouse } from "@/data/api/constants-api"
 
 export function InvoicesPage(): React.JSX.Element {

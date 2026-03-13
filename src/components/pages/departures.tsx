@@ -5,7 +5,8 @@ import { departureTableColumns } from "./column-defs/departure-columns"
 import { DataTable } from "@/components/shadcn/data-table"
 import { useAutoSearch } from "@/hooks/use-auto-search"
 import type { Warehouse } from "@/data/api/constants-api"
-import type { SelectOption } from "../custom/select-options"
+import type { SelectOption } from '@/types/select-option-types'
+
 
 export function DeparturePage(): React.JSX.Element {
   const departures = useDepartureStore(state => state.departures)

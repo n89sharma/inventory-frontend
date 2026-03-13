@@ -1,4 +1,4 @@
-import type { SelectOption } from "@/components/custom/select-options"
+import type { SelectOption } from '@/types/select-option-types'
 import { CoreFunctionsSchema, StatusSchema, WarehouseSchema, type CoreFunction, type Status, type Warehouse } from "@/data/api/constants-api"
 import { ModelSchema, type Model } from "@/data/api/model-api"
 import { OrgSchema, type Organization } from "@/data/api/org-api"

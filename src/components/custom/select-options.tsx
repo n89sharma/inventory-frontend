@@ -11,14 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/shadcn/select"
-
-export type SelectOption<T> =
-  | { state: 'SELECTED'; selected: T }
-  | { state: 'UNSELECTED' }
-  | { state: 'ANY' }
-
-export const ANY_OPTION: SelectOption<never> = { state: 'ANY' }
-export const UNSELECTED: SelectOption<never> = { state: 'UNSELECTED' }
+import { type SelectOption, ANY_OPTION, UNSELECTED } from "@/types/select-option-types"
 
 interface EntityWithId {
   id: number

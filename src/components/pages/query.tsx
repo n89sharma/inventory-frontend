@@ -3,7 +3,6 @@ import { Button } from "@/components/shadcn/button"
 import { getAssetsForQuery } from "@/data/api/asset-api"
 import { useAssetStore } from "@/data/store/asset-store"
 import { DataTable } from "../shadcn/data-table"
-import { ANY_OPTION, SelectOptions, type SelectOption } from '../custom/select-options'
 import { useConstantsStore } from '@/data/store/constants-store'
 import { InputWithClear } from '../custom/input-with-clear'
 import { PopoverSearch } from '../custom/popover-search'
@@ -11,6 +10,8 @@ import type { Model } from '@/data/api/model-api'
 import { useModelStore } from '@/data/store/model-store'
 import { assetSummaryTableColumns } from './column-defs/asset-summary-columns'
 import type { Status, Warehouse } from '@/data/api/constants-api'
+import { type SelectOption, ANY_OPTION } from '@/types/select-option-types'
+import { SelectOptions } from '../custom/select-options'
 
 export function QueryPage(): React.JSX.Element {
   const [model, setModel] = useState<Model | null>()

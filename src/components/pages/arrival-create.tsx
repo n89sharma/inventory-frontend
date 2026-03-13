@@ -1,4 +1,5 @@
-import { SelectOptions, UNSELECTED } from '../custom/select-options'
+import { SelectOptions } from '../custom/select-options'
+import { UNSELECTED } from '@/types/select-option-types'
 import { Button } from '../shadcn/button'
 import { FieldGroup, Field, FieldLabel, FieldLegend, FieldSet, FieldError } from '../shadcn/field'
 import { Textarea } from '../shadcn/textarea'

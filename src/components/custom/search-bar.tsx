@@ -6,7 +6,8 @@ import { Field, FieldGroup, FieldLabel } from "@/components/shadcn/field"
 import { QuickSearchButtons } from './quick-search-buttons'
 import { useConstantsStore } from '@/data/store/constants-store'
 import type { Warehouse } from '@/data/api/constants-api'
-import { ANY_OPTION, SelectOptions, type SelectOption } from './select-options'
+import { ANY_OPTION, type SelectOption } from '@/types/select-option-types'
+import { SelectOptions } from './select-options'
 
 export interface SearchCriteria {
   fromDate: Date | undefined

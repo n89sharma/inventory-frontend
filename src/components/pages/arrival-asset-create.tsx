@@ -1,7 +1,8 @@
 import type { Model } from "@/data/api/model-api";
 import { ControlledInputWithClear } from "../custom/controlled-input-with-clear";
 import { ControlledPopoverSearch } from "../custom/controlled-popover-search";
-import { SelectOptions, UNSELECTED } from "../custom/select-options";
+import { SelectOptions } from "../custom/select-options";
+import { UNSELECTED } from '@/types/select-option-types'
 import { FieldSet, FieldLegend, FieldGroup, Field, FieldLabel } from "../shadcn/field";
 import MultipleSelector from "../shadcn/multiple-selector";
 import { useModelStore } from '@/data/store/model-store'

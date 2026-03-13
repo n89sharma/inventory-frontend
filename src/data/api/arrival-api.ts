@@ -1,6 +1,7 @@
 import { api } from '@/data/api/axios-client'
 import type { NewArrival } from '@/lib/arrival-validator'
-import { apiErrorHandler, type ApiError } from '@/lib/error-handler'
+import { apiErrorHandler } from '@/lib/error-handler'
+import type { ApiResponse } from '@/types/api-response-types'
 import type { AxiosResponse } from 'axios'
 import { z } from 'zod'
 
@@ -28,10 +29,6 @@ export async function getArrivals(
 interface CreateArrivalResponse {
   arrivalNumber: string
 }
-
-export type ApiResponse<T> =
-  | { success: true; data: T }
-  | { success: false; error: ApiError | Error }
 
 export async function createArrival(newArrival: NewArrival): Promise<ApiResponse<CreateArrivalResponse>> {
   return api.post(

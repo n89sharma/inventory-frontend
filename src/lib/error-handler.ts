@@ -1,4 +1,4 @@
-import type { ApiResponse } from "@/data/api/arrival-api";
+import type { ApiResponse } from "@/types/api-response-types";
 import { isAxiosError, type AxiosError } from "axios";
 
 export interface ApiError {

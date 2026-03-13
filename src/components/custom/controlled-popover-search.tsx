@@ -4,9 +4,9 @@ import { PopoverSearch } from "./popover-search"
 type ControlledPopoverSearchProps<T, TForm extends FieldValues> = {
   control: Control<TForm>
   name: Path<TForm>
-  allOptions: T[]
+  options: T[]
   searchKey: string
-  displayString: (i: T) => string
+  getLabel: (i: T) => string
   fieldLabel: string
   fieldRequired: boolean
   className?: string
@@ -24,8 +24,8 @@ export function ControlledPopoverSearch<T, TForm extends FieldValues>({
 
   return (
     <PopoverSearch
-      value={field.value}
-      onSelection={val => field.onChange(val)}
+      selection={field.value}
+      onSelectionChange={val => field.onChange(val)}
       onClear={() => field.onChange(null)}
       error={error}
       {...props}

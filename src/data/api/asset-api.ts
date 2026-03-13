@@ -1,6 +1,9 @@
+import { type SelectOption } from '@/components/custom/select-options'
 import { api } from '@/data/api/axios-client'
 import { formatThousandsK, formatUSD, getFormattedDate, getInitials, getPartNames } from '@/lib/formatters'
 import { z } from 'zod'
+import type { Status, Warehouse } from './constants-api'
+import type { Model } from './model-api'
 
 export const AssetSummarySchema = z.object({
   brand: z.string(),
@@ -388,16 +391,28 @@ export async function getAssetsForHolds(holdNumber: string): Promise<AssetSummar
   return z.array(AssetSummarySchema).parse(res.data)
 }
 
-export type SearchQuery = {
-  model: string,
-  availabilityStatusId: number | null,
-  technicalStatusId: number | null,
-  warehouseId: number | null,
-  meter: number | null
+function getIdOrNullFromSelection(selection: SelectOption<any>) {
+  if (selection.state === 'SELECTED') {
+    return selection.selected.id
+  }
+  return null
 }
 
-export async function getAssetsForQuery(searchQuery: SearchQuery): Promise<AssetSummary[]> {
-  let { model, availabilityStatusId, technicalStatusId, warehouseId, meter } = searchQuery
-  const res = await api.get(`/assets`, { params: { model, availabilityStatusId, technicalStatusId, warehouseId, meter } })
+export async function getAssetsForQuery(
+  model: Model,
+  meter: number | null,
+  availabilityStatus: SelectOption<Status>,
+  technicalStatus: SelectOption<Status>,
+  warehouse: SelectOption<Warehouse>): Promise<AssetSummary[]> {
+
+  const res = await api.get(`/assets`, {
+    params: {
+      model: model.model_name,
+      meter: meter,
+      availabilityStatusId: getIdOrNullFromSelection(availabilityStatus),
+      technicalStatusId: getIdOrNullFromSelection(technicalStatus),
+      warehouseId: getIdOrNullFromSelection(warehouse)
+    }
+  })
   return z.array(AssetSummarySchema).parse(res.data)
 }

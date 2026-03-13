@@ -37,7 +37,7 @@ export const useConstantsStore = create<ConstantsStore>((set) => ({
     technicalStatuses: constants.technicalStatuses,
     roles: constants.roles,
     invoiceTypes: constants.invoiceTypes,
-    warehouses: constants.warehouses
+    warehouses: constants.warehouses,
   }),
   setLoading: (loading) => set({ loading }),
   clearConstants: () => set({
@@ -48,6 +48,6 @@ export const useConstantsStore = create<ConstantsStore>((set) => ({
     technicalStatuses: [],
     roles: [],
     invoiceTypes: [],
-    warehouses: []
+    warehouses: [],
   })
 }))

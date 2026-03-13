@@ -1,26 +1,31 @@
 import { useArrivalStore } from "@/data/store/arrival-store"
 import { getArrivals } from "@/data/api/arrival-api"
-import { DateSearchBar } from "../custom/date-search-bar"
+import { SearchBar } from "../custom/search-bar"
 import { arrivalTableColumns } from "./column-defs/arrival-columns"
 import { DataTable } from "@/components/shadcn/data-table"
 import { Button } from "../shadcn/button"
 import { PlusIcon } from "@phosphor-icons/react"
 import { Link } from "react-router-dom"
 import { useAutoSearch } from "@/hooks/use-auto-search"
+import type { Warehouse } from "@/data/api/constants-api"
+import type { SelectOption } from "../custom/select-options"
 
 export function ArrivalsPage(): React.JSX.Element {
   const arrivals = useArrivalStore(state => state.arrivals)
   const setArrivals = useArrivalStore(state => state.setArrivals)
   const fromDate = useArrivalStore(state => state.fromDate)
-  const toDate = useArrivalStore(state => state.toDate)
   const setFromDate = useArrivalStore(state => state.setFromDate)
+  const toDate = useArrivalStore(state => state.toDate)
   const setToDate = useArrivalStore(state => state.setToDate)
+  const warehouse = useArrivalStore(state => state.warehouse)
+  const setWarehouse = useArrivalStore(state => state.setWarehouse)
   const hasSearched = useArrivalStore(state => state.hasSearched)
   const setHasSearched = useArrivalStore(state => state.setHasSearched)
 
-  async function onSearchSetData(from: Date, to: Date) {
+  async function onSearchSetData(from: Date, to: Date, warehouse: SelectOption<Warehouse>) {
     setFromDate(from)
     setToDate(to)
+    setWarehouse(warehouse)
     setHasSearched(true)
     setArrivals(await getArrivals(from, to))
   }
@@ -38,7 +43,7 @@ export function ArrivalsPage(): React.JSX.Element {
         </Button>
       </div>
 
-      <DateSearchBar fromDate={fromDate} toDate={toDate} setFromDate={setFromDate} setToDate={setToDate} onSearchSetData={onSearchSetData} />
+      <SearchBar criteria={{ fromDate, toDate, warehouse, setFromDate, setToDate, setWarehouse }} onSearchSetData={onSearchSetData} />
       <DataTable columns={arrivalTableColumns} data={arrivals} />
     </div>
   )

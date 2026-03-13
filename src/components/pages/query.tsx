@@ -3,47 +3,37 @@ import { Button } from "@/components/shadcn/button"
 import { getAssetsForQuery } from "@/data/api/asset-api"
 import { useAssetStore } from "@/data/store/asset-store"
 import { DataTable } from "../shadcn/data-table"
-import { DropdownSelectType } from '../custom/dropdown-select-type'
+import { ANY_OPTION, SelectOptions, type SelectOption } from '../custom/select-options'
 import { useConstantsStore } from '@/data/store/constants-store'
 import { InputWithClear } from '../custom/input-with-clear'
 import { PopoverSearch } from '../custom/popover-search'
 import type { Model } from '@/data/api/model-api'
 import { useModelStore } from '@/data/store/model-store'
 import { assetSummaryTableColumns } from './column-defs/asset-summary-columns'
+import type { Status, Warehouse } from '@/data/api/constants-api'
 
 export function QueryPage(): React.JSX.Element {
-  const [searchQuery, setSearchQuery] = useState({
-    brand: '',
-    model: '',
-    availabilityStatusId: 0,
-    technicalStatusId: 0,
-    warehouseId: 0,
-    meter: null
-  })
+  const [model, setModel] = useState<Model | null>()
+  const [meter, setMeter] = useState<number | null>(null)
+  const [availabilityStatus, setAvailabilityStatus] = useState<SelectOption<Status>>(ANY_OPTION)
+  const [technicalStatus, setTechnicalStatus] = useState<SelectOption<Status>>(ANY_OPTION)
+  const [warehouse, setWarehouse] = useState<SelectOption<Warehouse>>(ANY_OPTION)
   const [loading, setLoading] = useState(false)
+
   const models = useModelStore((state) => state.models)
-  const availabilityStatuses = addAnyOption(useConstantsStore((state) => state.availabilityStatuses))
-  const technicalStatuses = addAnyOption(useConstantsStore((state) => state.technicalStatuses))
-  const warehouses = [{ id: 0, city_code: 'Any', street: '', is_active: true }, ...useConstantsStore((state) => state.warehouses)]
+  const availabilityStatuses = useConstantsStore((state) => state.availabilityStatuses)
+  const technicalStatuses = useConstantsStore((state) => state.technicalStatuses)
+  const warehouses = useConstantsStore((state) => state.warehouses)
+  const activeWarehouses = warehouses.filter(w => w.is_active)
+
   const assets = useAssetStore((state) => state.assets)
   const setAssets = useAssetStore((state) => state.setAssets)
-
-  function addAnyOption(arr: any[]) {
-    return [{ id: 0, status: 'Any' }, ...arr]
-  }
-
-  function handleSearchQueryUpdate(field: string, value: string | number | null) {
-    setSearchQuery(prev => ({
-      ...prev,
-      [field]: value
-    }))
-  }
 
   async function submitQuery() {
     setLoading(true)
     try {
-      if (searchQuery.model && !!searchQuery.model.trim()) {
-        setAssets(await getAssetsForQuery(searchQuery))
+      if (model) {
+        setAssets(await getAssetsForQuery(model, meter, availabilityStatus, technicalStatus, warehouse))
       }
     } finally {
       setLoading(false)
@@ -61,50 +51,50 @@ export function QueryPage(): React.JSX.Element {
       >
 
         <PopoverSearch
-          value={null}
-          onSelection={m => {
-            handleSearchQueryUpdate('brand', m.brand_name)
-            handleSearchQueryUpdate('model', m.model_name)
-          }}
-          onClear={() => {
-            handleSearchQueryUpdate('brand', null)
-            handleSearchQueryUpdate('model', null)
-          }}
-          allOptions={models}
+          selection={null}
+          onSelectionChange={setModel}
+          onClear={() => setModel(null)}
+          options={models}
           searchKey='model_name'
-          displayString={(m: Model) => `${m.brand_name} ${m.model_name}`}
+          getLabel={m => `${m.brand_name} ${m.model_name}`}
           fieldLabel='Model'
           fieldRequired={true}
-        >
-        </PopoverSearch>
+        />
 
-        <DropdownSelectType
+        <SelectOptions
+          selection={availabilityStatus}
+          onSelectionChange={setAvailabilityStatus}
+          options={availabilityStatuses}
+          getLabel={s => s.status}
           fieldLabel='Availability'
-          value={searchQuery.availabilityStatusId.toString()}
-          options={availabilityStatuses.map(s => ({ id: s.id, label: s.status }))}
-          onSelection={id => handleSearchQueryUpdate('availabilityStatusId', id)}
+          anyAllowed={true}
           className='max-w-36'
         />
 
-        <DropdownSelectType
+        <SelectOptions
+          selection={technicalStatus}
+          onSelectionChange={setTechnicalStatus}
+          options={technicalStatuses}
+          getLabel={s => s.status}
           fieldLabel='Testing Status'
-          value={searchQuery.technicalStatusId.toString()}
-          options={technicalStatuses.map(s => ({ id: s.id, label: s.status }))}
-          onSelection={id => handleSearchQueryUpdate('technicalStatusId', id)}
+          anyAllowed={true}
           className='max-w-36'
         />
 
-        <DropdownSelectType
+        <SelectOptions
+          selection={warehouse}
+          onSelectionChange={setWarehouse}
+          options={activeWarehouses}
+          getLabel={w => w.city_code}
           fieldLabel='Warehouse'
-          value={searchQuery.warehouseId.toString()}
-          options={warehouses.filter(w => w.is_active).map(w => ({ id: w.id, label: w.city_code }))}
-          onSelection={id => handleSearchQueryUpdate('warehouseId', id)}
+          anyAllowed={true}
           className='max-w-36'
         />
 
         <InputWithClear
-          value={searchQuery.meter}
-          onSelection={meter => handleSearchQueryUpdate('meter', meter)}
+          valueType='number'
+          value={meter}
+          onValueChange={val => setMeter(typeof val === 'string' ? null : val)}
           fieldLabel='Meter'
           className='max-w-36'
         >

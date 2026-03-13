@@ -23,7 +23,7 @@ export function ControlledInputWithClear<TForm extends FieldValues>({
   return (
     <InputWithClear
       value={field.value}
-      onSelection={val => field.onChange(val)}
+      onValueChange={val => field.onChange(val)}
       error={error}
       {...props}
     />

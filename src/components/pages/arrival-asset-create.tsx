@@ -1,11 +1,11 @@
 import type { Model } from "@/data/api/model-api";
 import { ControlledInputWithClear } from "../custom/controlled-input-with-clear";
 import { ControlledPopoverSearch } from "../custom/controlled-popover-search";
-import { DropdownSelectType } from "../custom/dropdown-select-type";
+import { SelectOptions, UNSELECTED } from "../custom/select-options";
 import { FieldSet, FieldLegend, FieldGroup, Field, FieldLabel } from "../shadcn/field";
 import MultipleSelector from "../shadcn/multiple-selector";
 import { useModelStore } from '@/data/store/model-store'
-import type { CoreFunction, Status } from '@/data/api/constants-api'
+import type { CoreFunction } from '@/data/api/constants-api'
 import { NewAssetSchema } from '@/lib/arrival-validator'
 import { Controller, useForm, type FieldArrayWithId, type UseFieldArrayAppend, type UseFieldArrayRemove } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,7 +34,6 @@ export function ArrivalAssetCreateSection({
   })
   const tempId = newAssetForm.watch('tempId')
   const technicalStatuses = useConstantsStore((state) => state.technicalStatuses)
-  const getTechnicalStatusOptions = (ts: Status[]) => ts.map(s => ({ id: s.id, label: s.status }))
   const coreFunctions = useConstantsStore((state) => state.coreFunctions)
   const getCoreFunctionOptions = (cfs: CoreFunction[]) => cfs.map(f => ({ id: f.id, label: f.accessory, value: f.accessory }))
   const models = useModelStore((state) => state.models)
@@ -57,7 +56,7 @@ export function ArrivalAssetCreateSection({
       tempId: crypto.randomUUID(),
       serialNumber: '',
       model: null,
-      technicalStatus: null,
+      technicalStatus: UNSELECTED,
       meterBlack: '',
       meterColour: '',
       cassettes: '',
@@ -79,9 +78,9 @@ export function ArrivalAssetCreateSection({
             <ControlledPopoverSearch
               control={newAssetForm.control}
               name='model'
-              allOptions={models}
+              options={models}
               searchKey='model_name'
-              displayString={(m: Model) => `${m.brand_name} ${m.model_name}`}
+              getLabel={(m: Model) => `${m.brand_name} ${m.model_name}`}
               fieldLabel='Model'
               fieldRequired={true}
               className='max-w-60'
@@ -99,13 +98,14 @@ export function ArrivalAssetCreateSection({
             <Controller
               control={newAssetForm.control}
               name='technicalStatus'
-              render={({ field: { onChange, value }, fieldState }) => (
-                <DropdownSelectType
+              render={({ field: { onChange, value: technicalStatus }, fieldState }) => (
+                <SelectOptions
+                  selection={technicalStatus}
+                  onSelectionChange={onChange}
+                  options={technicalStatuses}
+                  getLabel={t => t.status}
                   fieldLabel='Testing Status'
                   fieldRequired={true}
-                  value={value ? value.id.toString() : ''}
-                  options={getTechnicalStatusOptions(technicalStatuses)}
-                  onSelection={id => onChange(technicalStatuses.find(s => s.id === parseInt(id!)))}
                   error={fieldState.invalid}
                   className='max-w-60'
                 />

@@ -13,11 +13,12 @@ interface DatePickerFieldProps {
   date: Date | undefined
   setDate: (date: Date | undefined) => void
   id: string
+  className?: string
 }
 
-export function DatePickerField({ label, date, setDate, id }: DatePickerFieldProps): React.JSX.Element {
+export function DatePickerField({ label, date, setDate, id, className }: DatePickerFieldProps): React.JSX.Element {
   return (
-    <Field>
+    <Field className={className}>
       <FieldLabel>{label}</FieldLabel>
       <Popover>
         <PopoverTrigger asChild>

@@ -1,10 +1,9 @@
-import { DropdownSelectType } from '../custom/dropdown-select-type'
+import { SelectOptions, UNSELECTED } from '../custom/select-options'
 import { Button } from '../shadcn/button'
 import { FieldGroup, Field, FieldLabel, FieldLegend, FieldSet, FieldError } from '../shadcn/field'
 import { Textarea } from '../shadcn/textarea'
 import { useConstantsStore } from '@/data/store/constants-store'
 import { useOrgStore } from '@/data/store/org-store'
-import type { Warehouse } from '@/data/api/constants-api'
 import { Controller, useFieldArray, useForm, type FieldErrors } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { NewArrivalSchema } from '@/lib/arrival-validator'
@@ -20,7 +19,7 @@ export function ArrivalCreatePage(): React.JSX.Element {
     defaultValues: getDefaultArrival()
   })
   const warehouses = useConstantsStore((state) => state.warehouses)
-  const getWarehouseOptions = (w: Warehouse[]) => w.filter(w => w.is_active).map(w => ({ id: w.id, label: w.city_code }))
+  const activeWarehouses = warehouses.filter(w => w.is_active)
   const orgs = useOrgStore((state) => state.organizations)
   const { fields: newAssets, append: addNewAsset, remove: deleteNewAsset } = useFieldArray({ control: newArrivalForm.control, name: "assets" })
 
@@ -28,7 +27,7 @@ export function ArrivalCreatePage(): React.JSX.Element {
     return {
       vendor: null,
       transporter: null,
-      warehouse: null,
+      warehouse: UNSELECTED,
       assets: [],
       comment: ''
     }
@@ -42,11 +41,10 @@ export function ArrivalCreatePage(): React.JSX.Element {
 
   async function onValidArrival(newArrival: NewArrival) {
     const apiResponse = await createArrival(newArrival)
-    if (apiResponse.isSuccessful) {
+    if (apiResponse.success) {
       newArrivalForm.reset(getDefaultArrival())
       toast.success(`Arrival ${apiResponse.data.arrivalNumber} created!`, { position: "top-center" })
     }
-    console.log(apiResponse)
   }
 
   function onInvalidArrival(errors: FieldErrors<NewArrival>) {
@@ -66,9 +64,9 @@ export function ArrivalCreatePage(): React.JSX.Element {
             <ControlledPopoverSearch
               control={newArrivalForm.control}
               name='vendor'
-              allOptions={orgs}
+              options={orgs}
               searchKey='name'
-              displayString={o => o.name}
+              getLabel={o => o.name}
               fieldLabel='Vendor'
               fieldRequired={true}
               className='max-w-60'
@@ -77,9 +75,9 @@ export function ArrivalCreatePage(): React.JSX.Element {
             <ControlledPopoverSearch
               control={newArrivalForm.control}
               name='transporter'
-              allOptions={orgs}
+              options={orgs}
               searchKey='name'
-              displayString={o => o.name}
+              getLabel={o => o.name}
               fieldLabel='Transporter'
               fieldRequired={true}
               className='max-w-60'
@@ -88,13 +86,15 @@ export function ArrivalCreatePage(): React.JSX.Element {
             <Controller
               control={newArrivalForm.control}
               name='warehouse'
-              render={({ field: { onChange, value }, fieldState }) => (
-                <DropdownSelectType
+              render={({ field: { onChange, value: warehouse }, fieldState }) => (
+                <SelectOptions
+                  selection={warehouse}
+                  onSelectionChange={onChange}
+                  options={activeWarehouses}
+                  getLabel={w => w.city_code}
                   fieldLabel='Warehouse'
+                  anyAllowed={false}
                   fieldRequired={true}
-                  value={value ? value.id.toString() : ''}
-                  options={getWarehouseOptions(warehouses)}
-                  onSelection={id => onChange(warehouses.find(w => w.id === parseInt(id!)))}
                   error={fieldState.invalid}
                   className='max-w-60'
                 />

@@ -1,7 +1,18 @@
+import type { SelectOption } from "@/components/custom/select-options"
 import { CoreFunctionsSchema, StatusSchema, WarehouseSchema, type CoreFunction, type Status, type Warehouse } from "@/data/api/constants-api"
 import { ModelSchema, type Model } from "@/data/api/model-api"
 import { OrgSchema, type Organization } from "@/data/api/org-api"
 import { z } from "zod"
+
+const SelectOptionSchema = <T extends z.ZodTypeAny>(selectedSchema: T) =>
+  z.discriminatedUnion('state', [
+    z.object({ state: z.literal('SELECTED'), selected: selectedSchema }),
+    z.object({ state: z.literal('UNSELECTED') }),
+    z.object({ state: z.literal('ANY') }),
+  ])
+
+const StatusSelectOptionSchema = SelectOptionSchema(StatusSchema)
+const WarehouseSelectOptionSchema = SelectOptionSchema(WarehouseSchema)
 
 export const NewAssetSchema = z.object({
   tempId: z.uuid(),
@@ -10,7 +21,7 @@ export const NewAssetSchema = z.object({
   meterBlack: z.string().min(1, "Meter must be positive"),
   meterColour: z.string().min(1, "Meter must be positive"),
   cassettes: z.string().min(1, "Cassettes are required"),
-  technicalStatus: StatusSchema.nullable().refine(val => !!val, "Technical status is required"),
+  technicalStatus: StatusSelectOptionSchema.refine(val => val.state === 'SELECTED', "Technical status is required"),
   internalFinisher: z.string(),
   coreFunctions: z.array(CoreFunctionsSchema)
 })
@@ -22,7 +33,7 @@ export type NewAsset = {
   meterBlack: string,
   meterColour: string,
   cassettes: string,
-  technicalStatus: Status | null,
+  technicalStatus: SelectOption<Status>,
   internalFinisher: string,
   coreFunctions: CoreFunction[]
 }
@@ -30,7 +41,7 @@ export type NewAsset = {
 export const NewArrivalSchema = z.object({
   vendor: OrgSchema.nullable().refine(val => !!val, "Vendor required"),
   transporter: OrgSchema.nullable().refine(val => !!val, "Transporter required"),
-  warehouse: WarehouseSchema.nullable().refine(val => !!val, "Warehouse required"),
+  warehouse: WarehouseSelectOptionSchema.refine(val => val.state === 'SELECTED', "Warehouse required"),
   comment: z.string(),
   assets: z.array(NewAssetSchema).nonempty("No assets in the arrival")
 })
@@ -38,7 +49,7 @@ export const NewArrivalSchema = z.object({
 export type NewArrival = {
   vendor: Organization | null,
   transporter: Organization | null,
-  warehouse: Warehouse | null,
+  warehouse: SelectOption<Warehouse>,
   comment: string
   assets: NewAsset[]
 }

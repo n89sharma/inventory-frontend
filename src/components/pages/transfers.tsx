@@ -1,6 +1,6 @@
 import { useTransferStore } from "@/data/store/transfer-store"
 import { getTransfers } from "@/data/api/transfer-api"
-import { DateSearchBar } from "../custom/date-search-bar"
+import { SearchBar } from "../custom/search-bar"
 import { transferTableColumns } from "./column-defs/transfer-columns"
 import { DataTable } from "@/components/shadcn/data-table"
 import { useAutoSearch } from "@/hooks/use-auto-search"
@@ -12,6 +12,8 @@ export function TransferPage(): React.JSX.Element {
   const toDate = useTransferStore(state => state.toDate)
   const setFromDate = useTransferStore(state => state.setFromDate)
   const setToDate = useTransferStore(state => state.setToDate)
+  const warehouse = useTransferStore(state => state.warehouse)
+  const setWarehouse = useTransferStore(state => state.setWarehouse)
   const hasSearched = useTransferStore(state => state.hasSearched)
   const setHasSearched = useTransferStore(state => state.setHasSearched)
 
@@ -26,7 +28,10 @@ export function TransferPage(): React.JSX.Element {
 
   return (
     <div className="flex flex-col gap-2">
-      <DateSearchBar fromDate={fromDate} toDate={toDate} setFromDate={setFromDate} setToDate={setToDate} onSearchSetData={onSearchSetData} />
+      <h1 className="text-3xl font-bold p-2">
+        Transfers
+      </h1>
+      <SearchBar criteria={{ fromDate, toDate, warehouse, setFromDate, setToDate, setWarehouse }} onSearchSetData={onSearchSetData} />
       <DataTable columns={transferTableColumns} data={transfers} />
     </div>
   )

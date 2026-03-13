@@ -1,41 +1,41 @@
 import { XIcon } from "@phosphor-icons/react"
 import { Field, FieldLabel } from "../shadcn/field"
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "../shadcn/input-group"
-import { useState } from "react"
 
 export type InputWithClearProps = {
-  value: string | null
-  onSelection: (val: string | null) => void
+  valueType?: 'string' | 'number'
+  value: string | number | null
+  onValueChange: (val: string | number | null) => void
   fieldLabel: string
   fieldRequired?: boolean
   error?: boolean
   className?: string
-  inputType?: string
 }
 
 export function InputWithClear({
+  valueType,
   value,
-  onSelection,
+  onValueChange,
   fieldLabel,
   fieldRequired,
   error,
-  className,
-  inputType }: InputWithClearProps): React.JSX.Element {
+  className }: InputWithClearProps): React.JSX.Element {
 
-  const [numberInput, setNumberInput] = useState(value)
+  const resolvedType = valueType ?? (typeof value === 'number' ? 'number' : 'string')
 
-  function handleInputChange(val: string) {
-    setNumberInput(val)
-    if (!val.trim()) {
-      onSelection(null)
-      return
+  function coerce(raw: string): string | number | null {
+    if (raw === '') return null
+    if (resolvedType === 'number') {
+      const parsed = Number(raw)
+      return isNaN(parsed) ? null : parsed
     }
-    onSelection(val)
+    return raw
   }
 
-  function clearInput() {
-    setNumberInput('')
-    onSelection(null)
+  function isValuePresent() {
+    if (value == null) return false
+    if (typeof value === 'string') return !!value.length
+    return true
   }
 
   return (
@@ -46,9 +46,9 @@ export function InputWithClear({
       </FieldLabel>
       <InputGroup>
         <InputGroupInput
-          type={inputType ?? "number"}
-          value={numberInput ?? ''}
-          onChange={e => handleInputChange(e.target.value)}
+          type={resolvedType}
+          value={value ?? ''}
+          onChange={e => onValueChange(coerce(e.target.value))}
           aria-invalid={error}
         >
         </InputGroupInput>
@@ -56,8 +56,8 @@ export function InputWithClear({
         <InputGroupAddon align="inline-end">
           <InputGroupButton
             size="icon-sm"
-            onClick={clearInput}
-            hidden={!numberInput || !numberInput.length}
+            onClick={() => onValueChange(null)}
+            hidden={isValuePresent()}
           >
             <XIcon />
           </InputGroupButton>

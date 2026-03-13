@@ -8,12 +8,12 @@ import { Field, FieldLabel } from '../shadcn/field'
 import { cn } from '@/lib/utils'
 
 export type PopoverSearchProps<T> = {
-  value: T | null | undefined
-  onSelection: (i: T) => void
+  selection: T | null | undefined
+  onSelectionChange: (i: T) => void
   onClear: () => void
-  allOptions: T[]
+  options: T[]
+  getLabel: (i: T) => string
   searchKey: string
-  displayString: (i: T) => string
   fieldLabel: string
   fieldRequired: boolean
   error?: boolean
@@ -21,19 +21,19 @@ export type PopoverSearchProps<T> = {
 }
 
 export function PopoverSearch<T>({
-  value,
-  onSelection,
+  selection,
+  onSelectionChange,
   onClear,
-  allOptions,
+  options,
+  getLabel,
   searchKey,
-  displayString,
   fieldLabel,
   fieldRequired,
   error,
   className }: PopoverSearchProps<T>): React.JSX.Element {
 
   const [matches, setMatches] = useState<T[]>([])
-  const [userInput, setUserInput] = useState(value ? displayString(value) : '')
+  const [userInput, setUserInput] = useState(selection ? getLabel(selection) : '')
   const [popoverOpen, setPopoverOpen] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const [highlightedIndex, setHighlightedIndex] = useState(-1)
@@ -41,13 +41,13 @@ export function PopoverSearch<T>({
 
   let fuse = useMemo(() => {
     return new Fuse(
-      allOptions,
+      options,
       {
         keys: [searchKey],
         threshold: 0.5,
         shouldSort: true
       })
-  }, [allOptions])
+  }, [options])
 
   function updateSearch(inputVal: string) {
     setUserInput(inputVal)
@@ -62,8 +62,8 @@ export function PopoverSearch<T>({
   }
 
   function handleSelect(item: T) {
-    setUserInput(displayString(item))
-    onSelection(item)
+    setUserInput(getLabel(item))
+    onSelectionChange(item)
     setPopoverOpen(false)
     setMatches([])
   }
@@ -157,7 +157,7 @@ export function PopoverSearch<T>({
           <ScrollArea>
             {matches.map((m, i) => (
               <div
-                key={`${displayString(m)}-${i}`}
+                key={`${getLabel(m)}-${i}`}
                 onClick={() => handleSelect(m)}
                 onMouseDown={e => { e.preventDefault() }}
                 className={cn(
@@ -167,7 +167,7 @@ export function PopoverSearch<T>({
                     : "hover:bg-accent/50"
                 )}
               >
-                {displayString(m)}
+                {getLabel(m)}
               </div>))}
           </ScrollArea>
         </PopoverContent>

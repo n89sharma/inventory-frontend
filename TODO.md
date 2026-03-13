@@ -14,7 +14,6 @@ Search
 Arrival
 - [ ] Add new asset on existing arrival
 - [ ] Edit Arrival
-- [ ] Auto load Arrivals of the last 7 days
 - [ ] Add warehouse in the main search or quick search
 - [ ] Create Location endpoint
 

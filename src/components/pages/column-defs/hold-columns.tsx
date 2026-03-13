@@ -33,7 +33,7 @@ export const holdTableColumns: ColumnDef<Hold>[] = [
   },
   {
     accessorKey: "created_for",
-    header: "Created By"
+    header: "Created For"
   },
   {
     accessorKey: "customer",

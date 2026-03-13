@@ -4,6 +4,7 @@ import { formatThousandsK, formatUSD, getFormattedDate, getInitials, getPartName
 import { z } from 'zod'
 import type { Status, Warehouse } from './constants-api'
 import type { Model } from './model-api'
+import { getIdOrNullFromSelection } from '@/lib/utils'
 
 export const AssetSummarySchema = z.object({
   brand: z.string(),
@@ -389,13 +390,6 @@ export async function getAssetsForTransfers(transferNumber: string): Promise<Ass
 export async function getAssetsForHolds(holdNumber: string): Promise<AssetSummary[]> {
   const res = await api.get(`/holds/${holdNumber}`)
   return z.array(AssetSummarySchema).parse(res.data)
-}
-
-function getIdOrNullFromSelection(selection: SelectOption<any>) {
-  if (selection.state === 'SELECTED') {
-    return selection.selected.id
-  }
-  return null
 }
 
 export async function getAssetsForQuery(

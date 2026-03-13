@@ -4,8 +4,6 @@ import { SearchBar } from "../custom/search-bar"
 import { invoiceTableColumns } from "./column-defs/invoice-columns"
 import { DataTable } from "@/components/shadcn/data-table"
 import { useAutoSearch } from "@/hooks/use-auto-search"
-import type { SelectOption } from '@/types/select-option-types'
-import type { Warehouse } from "@/data/api/constants-api"
 
 export function InvoicesPage(): React.JSX.Element {
   const invoices = useInvoiceStore(state => state.invoices)
@@ -19,10 +17,9 @@ export function InvoicesPage(): React.JSX.Element {
   const hasSearched = useInvoiceStore(state => state.hasSearched)
   const setHasSearched = useInvoiceStore(state => state.setHasSearched)
 
-  async function onSearchSetData(from: Date, to: Date, warehouse: SelectOption<Warehouse>) {
+  async function onSearchSetData(from: Date, to: Date) {
     setFromDate(from)
     setToDate(to)
-    setWarehouse(warehouse)
     setHasSearched(true)
     setInvoices(await getInvoices(from, to))
   }

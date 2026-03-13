@@ -1,5 +1,8 @@
 import { api } from '@/data/api/axios-client'
+import type { SelectOption } from '@/types/select-option-types'
 import { z } from 'zod'
+import type { Warehouse } from './constants-api'
+import { getIdOrNullFromSelection } from '@/lib/utils'
 
 const DepartureSchema = z.object({
   departure_number: z.string(),
@@ -15,9 +18,16 @@ export type Departure = z.infer<typeof DepartureSchema>
 
 export async function getDepartures(
   fromDate: Date,
-  toDate: Date
+  toDate: Date,
+  warehouse: SelectOption<Warehouse>
 ): Promise<Departure[]> {
 
-  const res = await api.get(`/departures`, { params: { fromDate, toDate } })
+  const res = await api.get(`/departures`, {
+    params: {
+      fromDate: fromDate,
+      toDate: toDate,
+      warehouseId: getIdOrNullFromSelection(warehouse)
+    }
+  })
   return z.array(DepartureSchema).parse(res.data)
 }

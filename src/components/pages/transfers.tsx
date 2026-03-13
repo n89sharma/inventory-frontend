@@ -4,6 +4,8 @@ import { SearchBar } from "../custom/search-bar"
 import { transferTableColumns } from "./column-defs/transfer-columns"
 import { DataTable } from "@/components/shadcn/data-table"
 import { useAutoSearch } from "@/hooks/use-auto-search"
+import type { SelectOption } from "@/types/select-option-types"
+import type { Warehouse } from "@/data/api/constants-api"
 
 export function TransferPage(): React.JSX.Element {
   const transfers = useTransferStore(state => state.transfers)
@@ -17,11 +19,12 @@ export function TransferPage(): React.JSX.Element {
   const hasSearched = useTransferStore(state => state.hasSearched)
   const setHasSearched = useTransferStore(state => state.setHasSearched)
 
-  async function onSearchSetData(from: Date, to: Date) {
+  async function onSearchSetData(from: Date, to: Date, warehouse: SelectOption<Warehouse>) {
     setFromDate(from)
     setToDate(to)
     setHasSearched(true)
-    setTransfers(await getTransfers(from, to))
+    setWarehouse(warehouse)
+    setTransfers(await getTransfers(from, to, warehouse))
   }
 
   useAutoSearch(hasSearched, onSearchSetData)

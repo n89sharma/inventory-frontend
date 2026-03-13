@@ -25,7 +25,7 @@ export function DeparturePage(): React.JSX.Element {
     setToDate(to)
     setWarehouse(warehouse)
     setHasSearched(true)
-    setDepartures(await getDepartures(from, to))
+    setDepartures(await getDepartures(from, to, warehouse))
   }
 
   useAutoSearch(hasSearched, onSearchSetData)

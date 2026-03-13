@@ -27,7 +27,7 @@ export function ArrivalsPage(): React.JSX.Element {
     setToDate(to)
     setWarehouse(warehouse)
     setHasSearched(true)
-    setArrivals(await getArrivals(from, to))
+    setArrivals(await getArrivals(from, to, warehouse))
   }
 
   useAutoSearch(hasSearched, onSearchSetData)

@@ -46,7 +46,7 @@ export function getNewAssetTableColumns({ onDelete }: GetNewAssetTableColumnProp
       header: "Cassettes"
     },
     {
-      accessorKey: "technicalStatus.status",
+      accessorKey: "technicalStatus.selected.status",
       header: "Technical Status"
     },
     {

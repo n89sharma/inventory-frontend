@@ -8,7 +8,7 @@ import { InputWithClear } from '../custom/input-with-clear'
 import { PopoverSearch } from '../custom/popover-search'
 import type { Model } from '@/data/api/model-api'
 import { useModelStore } from '@/data/store/model-store'
-import { assetSummaryTableColumns } from './column-defs/asset-summary-columns'
+import { createAssetSummaryColumns } from './column-defs/asset-summary-columns'
 import type { Status, Warehouse } from '@/data/api/constants-api'
 import { type SelectOption, ANY_OPTION } from '@/types/select-option-types'
 import { SelectOptions } from '../custom/select-options'
@@ -112,7 +112,7 @@ export function QueryPage(): React.JSX.Element {
       <div hidden={!loading}>
         <span>Loading...</span>
       </div>
-      <DataTable columns={assetSummaryTableColumns} data={assets} />
+      <DataTable columns={createAssetSummaryColumns('', '')} data={assets} />
     </div>
   )
 }

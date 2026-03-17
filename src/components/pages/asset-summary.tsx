@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react'
 import { getAssetsForArrival, getAssetsForDeparture, getAssetsForHolds, getAssetsForInvoices, getAssetsForTransfers } from "@/data/api/asset-api"
 import { useAssetStore } from "@/data/store/asset-store"
 import { DataTable } from "../shadcn/data-table"
-import { assetSummaryTableColumns } from './column-defs/asset-summary-columns'
+import { createAssetSummaryColumns } from './column-defs/asset-summary-columns'
+import { PageBreadcrumb } from '@/components/custom/page-breadcrumb'
 
 export function AssetSummaryPage(): React.JSX.Element {
   const { id } = useParams()
@@ -14,11 +15,9 @@ export function AssetSummaryPage(): React.JSX.Element {
   const assets = useAssetStore((state) => state.assets)
   const setAssets = useAssetStore((state) => state.setAssets)
 
-  const isArrival = pathname.startsWith('/arrivals')
-  const isTransfer = pathname.startsWith('/transfers')
-  const isDeparture = pathname.startsWith('/departures')
-  const isHolds = pathname.startsWith('/holds')
-  const isInvoice = pathname.startsWith('/invoices')
+  const section = pathname.split('/')[1]
+  const sectionLabel = section.charAt(0).toUpperCase() + section.slice(1)
+  const columns = createAssetSummaryColumns(section, id ?? '')
 
   useEffect(() => {
     async function loadAssets() {
@@ -26,19 +25,19 @@ export function AssetSummaryPage(): React.JSX.Element {
 
       setLoading(true)
       try {
-        if (isArrival) {
+        if (section === 'arrivals') {
           setTitle(`Arrival ${id}`)
           setAssets(await getAssetsForArrival(id))
-        } else if (isTransfer) {
+        } else if (section === 'transfers') {
           setTitle(`Transfer ${id}`)
           setAssets(await getAssetsForTransfers(id))
-        } else if (isDeparture) {
+        } else if (section === 'departures') {
           setTitle(`Departure ${id}`)
           setAssets(await getAssetsForDeparture(id))
-        } else if (isHolds) {
+        } else if (section === 'holds') {
           setTitle(`Hold ${id}`)
           setAssets(await getAssetsForHolds(id))
-        } else if (isInvoice) {
+        } else if (section === 'invoices') {
           setTitle(`Invoice ${id}`)
           setAssets(await getAssetsForInvoices(id))
         }
@@ -55,10 +54,14 @@ export function AssetSummaryPage(): React.JSX.Element {
 
   return (
     <div className="flex flex-col gap-2">
+      <PageBreadcrumb segments={[
+        { label: sectionLabel, href: `/${section}` },
+        { label: id ?? '' }
+      ]} />
       <h1 className="text-3xl font-bold p-2">
         {title}
       </h1>
-      <DataTable columns={assetSummaryTableColumns} data={assets} />
+      <DataTable columns={columns} data={assets} />
     </div>
   )
 }

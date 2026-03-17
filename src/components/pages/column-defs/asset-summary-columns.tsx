@@ -5,7 +5,8 @@ import { formatThousandsK } from "@/lib/formatters"
 import { Button } from "@/components/shadcn/button"
 import type { AssetSummary } from "@/data/api/asset-api"
 
-export const assetSummaryTableColumns: ColumnDef<AssetSummary>[] = [
+export function createAssetSummaryColumns(section: string, collectionId: string): ColumnDef<AssetSummary>[] {
+  return [
   {
     accessorKey: "barcode",
     header: ({ column }) => {
@@ -22,6 +23,7 @@ export const assetSummaryTableColumns: ColumnDef<AssetSummary>[] = [
     cell: ({ row }) => (
       <Link
         to={`/assets/${row.original.barcode}`}
+        state={{ section, collectionId }}
         className="text-primary hover:underline font-medium"
       >
         {row.getValue('barcode')}
@@ -64,3 +66,4 @@ export const assetSummaryTableColumns: ColumnDef<AssetSummary>[] = [
     header: "Warehouse"
   }
 ]
+}

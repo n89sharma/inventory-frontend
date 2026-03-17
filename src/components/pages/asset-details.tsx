@@ -1,5 +1,6 @@
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { PageBreadcrumb } from '@/components/custom/page-breadcrumb'
 import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section, SectionRow, AssetTitle, AccessoryRow, ErrorRow, ErrorHeader, InvoiceClearedRow, PartsHeader } from '@/components/custom/asset-detail'
 import { useAssetStore } from "@/data/store/asset-store"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/shadcn/tabs"
@@ -12,6 +13,8 @@ import { getAllAssetDetails } from '@/data/api/asset-api'
 export const AssetDetailsPage = () => {
 
   const { id } = useParams()
+  const location = useLocation()
+  const breadcrumbState = location.state as { section: string; collectionId: string } | null
   const [loading, setLoading] = useState(false)
   const [currentIndex, setCurrentTransferIndex] = useState(0)
 
@@ -62,6 +65,13 @@ export const AssetDetailsPage = () => {
 
   return (
     <div className="flex flex-col gap-2">
+      {breadcrumbState?.section && (
+        <PageBreadcrumb segments={[
+          { label: breadcrumbState.section.charAt(0).toUpperCase() + breadcrumbState.section.slice(1), href: `/${breadcrumbState.section}` },
+          { label: breadcrumbState.collectionId, href: `/${breadcrumbState.section}/${breadcrumbState.collectionId}` },
+          { label: id ?? '' }
+        ]} />
+      )}
       <div className="flex flex-row gap-2 max-w-96 border rounded-md p-2">
         <SearchBar loading={loading} />
       </div>

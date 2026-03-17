@@ -33,9 +33,8 @@ export function InputWithClear({
   }
 
   function isValuePresent() {
-    if (value == null) return false
-    if (typeof value === 'string') return !!value.length
-    return true
+    if (typeof value === 'string') return value.length > 0
+    return !!value
   }
 
   return (
@@ -57,7 +56,7 @@ export function InputWithClear({
           <InputGroupButton
             size="icon-sm"
             onClick={() => onValueChange(null)}
-            hidden={isValuePresent()}
+            hidden={!isValuePresent()}
           >
             <XIcon />
           </InputGroupButton>

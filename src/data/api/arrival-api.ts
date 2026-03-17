@@ -2,11 +2,11 @@ import { api } from '@/data/api/axios-client'
 import type { NewArrival } from '@/lib/arrival-validator'
 import { apiErrorHandler } from '@/lib/error-handler'
 import type { ApiResponse } from '@/types/api-response-types'
-import type { SelectOption } from '@/types/select-option-types'
+import { getIdOrNullFromSelection, type SelectOption } from '@/types/select-option-types'
 import type { AxiosResponse } from 'axios'
 import { z } from 'zod'
 import type { Warehouse } from './constants-api'
-import { getIdOrNullFromSelection } from '@/lib/utils'
+
 
 const ArrivalSchema = z.object({
   arrival_number: z.string(),

@@ -1,10 +1,9 @@
-import type { SelectOption } from '@/types/select-option-types'
+import { getIdOrNullFromSelection, type SelectOption } from '@/types/select-option-types'
 import { api } from '@/data/api/axios-client'
 import { formatThousandsK, formatUSD, getFormattedDate, getInitials, getPartNames } from '@/lib/formatters'
 import { z } from 'zod'
 import type { Status, Warehouse } from './constants-api'
 import type { Model } from './model-api'
-import { getIdOrNullFromSelection } from '@/lib/utils'
 
 export const AssetSummarySchema = z.object({
   brand: z.string(),

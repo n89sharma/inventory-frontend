@@ -1,8 +1,7 @@
 import { api } from '@/data/api/axios-client'
-import type { SelectOption } from '@/types/select-option-types'
+import { getIdOrNullFromSelection, type SelectOption } from '@/types/select-option-types'
 import { z } from 'zod'
 import type { Warehouse } from './constants-api'
-import { getIdOrNullFromSelection } from '@/lib/utils'
 
 const DepartureSchema = z.object({
   departure_number: z.string(),

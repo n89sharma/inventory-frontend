@@ -35,9 +35,8 @@ interface SearchBarProps {
 export function SearchBar({ criteria, onSearchSetData, showWarehouse, showHeldByFor }: SearchBarProps): React.JSX.Element {
   const { fromDate, toDate, setFromDate, setToDate } = criteria
   const warehouses = useConstantsStore(state => state.warehouses)
-  const users = useUserStore(state => state.users)
+  const activeUsers = useUserStore(state => state.users)
   const activeWarehouses = warehouses.filter(w => w.is_active)
-  const activeUsers = users.filter(u => u.active)
 
   async function handleSearch() {
     if (!fromDate) return
@@ -104,7 +103,7 @@ export function SearchBar({ criteria, onSearchSetData, showWarehouse, showHeldBy
               selection={criteria.holdBy}
               onSelectionChange={v => criteria.setHoldBy?.(v)}
               options={activeUsers}
-              getLabel={u => `${u.firstname} ${u.lastname}`}
+              getLabel={u => u.name}
               getKey={u => u.username}
               fieldLabel="Hold By"
               anyAllowed={true}
@@ -114,7 +113,7 @@ export function SearchBar({ criteria, onSearchSetData, showWarehouse, showHeldBy
               selection={criteria.holdFor}
               onSelectionChange={v => criteria.setHoldFor?.(v)}
               options={activeUsers}
-              getLabel={u => `${u.firstname} ${u.lastname}`}
+              getLabel={u => u.name}
               getKey={u => u.username}
               fieldLabel="Hold For"
               anyAllowed={true}

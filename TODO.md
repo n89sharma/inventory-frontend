@@ -1,18 +1,32 @@
 # Tasks
 
-## Navigation
-- [ ] Match URL to the status of the page / Add dates as URL parameters
+## Backend
+- Add Claude
+- Add warehouse parameter when retrieving arrival/departure/transfer 
+- Add users endpoint
+- Add organizations endpoint
+- Add locations endpoint
+- On failure send standard error response
 
-## Error handling
-- [ ] Standard error response from the backend
-- [ ] Show toast on success
-- [ ] Show toast on failure with human friendly message
+## Misc
+- Dates should use abbreviated month. Feb instead of February
+- Holds should have Date in the second column to match Arrival/Transfer/Departure
+- All text should be Sentence Case by default
+- Invoice should have Date in the second column to match Arrival/Transfer/Departure
+- Show toast on general failure with human friendly message
+- Table headers are crowded. Perhaps headings need to be broken in two? Total\nMeter
+
+## Navigation
+- Match URL to the status of the page / Add dates as URL parameters
+- Move Barcode search box to the top of the app
+- Move the sidebar toggle inside the sidebar
 
 ## Arrival
-- [ ] Add new asset on existing arrival
-- [ ] Edit Arrival
-- [ ] Add warehouse in the main search or quick search
-- [ ] Create Location endpoint
+- Edit arrival
+  - Add a pen icon for each arrival row when user searches for arrivals
+  - Opens up create arrival page but populates the arrival information
+  - User can add a new asset
+- Print all barcodes
 
 ## Transfer
 - [ ] Create Transfer
@@ -46,6 +60,7 @@
 - [ ] Add error codes
 - [ ] Add parts
 - [ ] Provide quick filters for copiers/finishers/accessories within Asset list
+- Edit location
 
 ## History
 - [ ] add history based on asset movement

@@ -5,36 +5,50 @@ import { DatePickerField } from './date-picker'
 import { Field, FieldGroup, FieldLabel } from "@/components/shadcn/field"
 import { QuickSearchButtons } from './quick-search-buttons'
 import { useConstantsStore } from '@/data/store/constants-store'
+import { useUserStore } from '@/data/store/user-store'
 import type { Warehouse } from '@/data/api/constants-api'
+import type { User } from '@/data/api/user-api'
 import { ANY_OPTION, type SelectOption } from '@/types/select-option-types'
+import type { SearchOptions } from '@/types/search-types'
 import { SelectOptions } from './select-options'
 
 export interface SearchCriteria {
   fromDate: Date | undefined
   toDate: Date | undefined
-  warehouse: SelectOption<Warehouse>
   setFromDate: (date: Date | undefined) => void
   setToDate: (date: Date | undefined) => void
-  setWarehouse: (warehouse: SelectOption<Warehouse>) => void
+  warehouse?: SelectOption<Warehouse>
+  setWarehouse?: (v: SelectOption<Warehouse>) => void
+  holdBy?: SelectOption<User>
+  setHoldBy?: (v: SelectOption<User>) => void
+  holdFor?: SelectOption<User>
+  setHoldFor?: (v: SelectOption<User>) => void
 }
 
 interface SearchBarProps {
   criteria: SearchCriteria
-  onSearchSetData: (from: Date, to: Date, warehouse: SelectOption<Warehouse>) => Promise<void>
+  onSearchSetData: (from: Date, to: Date, options: SearchOptions) => Promise<void>
+  showWarehouse?: boolean
+  showHeldByFor?: boolean
 }
 
-export function SearchBar({ criteria, onSearchSetData }: SearchBarProps): React.JSX.Element {
-  const { fromDate, toDate, warehouse, setFromDate, setToDate, setWarehouse } = criteria
-  const warehouses = useConstantsStore((state) => state.warehouses)
+export function SearchBar({ criteria, onSearchSetData, showWarehouse, showHeldByFor }: SearchBarProps): React.JSX.Element {
+  const { fromDate, toDate, setFromDate, setToDate } = criteria
+  const warehouses = useConstantsStore(state => state.warehouses)
+  const users = useUserStore(state => state.users)
   const activeWarehouses = warehouses.filter(w => w.is_active)
+  const activeUsers = users.filter(u => u.active)
 
   async function handleSearch() {
     if (!fromDate) return
     const to = toDate ?? new Date()
-    const war = warehouse ?? ANY_OPTION
-    setToDate(to)
-    setWarehouse(war)
-    await onSearchSetData(fromDate, to, war)
+    criteria.setToDate(to)
+    const options: SearchOptions = {
+      warehouse: criteria.warehouse ?? ANY_OPTION,
+      holdBy: criteria.holdBy ?? ANY_OPTION,
+      holdFor: criteria.holdFor ?? ANY_OPTION
+    }
+    await onSearchSetData(fromDate, to, options)
   }
 
   async function handleQuickSearch(days: number) {
@@ -42,8 +56,10 @@ export function SearchBar({ criteria, onSearchSetData }: SearchBarProps): React.
     const to = new Date()
     setFromDate(from)
     setToDate(to)
-    setWarehouse(ANY_OPTION)
-    await onSearchSetData(from, to, ANY_OPTION)
+    criteria.setWarehouse?.(ANY_OPTION)
+    criteria.setHoldBy?.(ANY_OPTION)
+    criteria.setHoldFor?.(ANY_OPTION)
+    await onSearchSetData(from, to, { warehouse: ANY_OPTION, holdBy: ANY_OPTION, holdFor: ANY_OPTION })
   }
 
   return (
@@ -70,15 +86,42 @@ export function SearchBar({ criteria, onSearchSetData }: SearchBarProps): React.
           className="max-w-40"
         />
 
-        <SelectOptions
-          selection={warehouse}
-          onSelectionChange={setWarehouse}
-          options={activeWarehouses}
-          getLabel={w => w.city_code}
-          fieldLabel='Warehouse'
-          anyAllowed={true}
-          className="max-w-40"
-        />
+        {showWarehouse && criteria.warehouse !== undefined && (
+          <SelectOptions
+            selection={criteria.warehouse}
+            onSelectionChange={v => criteria.setWarehouse?.(v)}
+            options={activeWarehouses}
+            getLabel={w => w.city_code}
+            fieldLabel="Warehouse"
+            anyAllowed={true}
+            className="max-w-40"
+          />
+        )}
+
+        {showHeldByFor && criteria.holdBy !== undefined && criteria.holdFor !== undefined && (
+          <>
+            <SelectOptions
+              selection={criteria.holdBy}
+              onSelectionChange={v => criteria.setHoldBy?.(v)}
+              options={activeUsers}
+              getLabel={u => `${u.firstname} ${u.lastname}`}
+              getKey={u => u.username}
+              fieldLabel="Hold By"
+              anyAllowed={true}
+              className="max-w-40"
+            />
+            <SelectOptions
+              selection={criteria.holdFor}
+              onSelectionChange={v => criteria.setHoldFor?.(v)}
+              options={activeUsers}
+              getLabel={u => `${u.firstname} ${u.lastname}`}
+              getKey={u => u.username}
+              fieldLabel="Hold For"
+              anyAllowed={true}
+              className="max-w-40"
+            />
+          </>
+        )}
 
         <Button
           variant="secondary"

@@ -1,6 +1,6 @@
 import type { Hold } from '@/data/api/hold-api'
 import { create } from 'zustand'
-import type { Warehouse } from '../api/constants-api'
+import type { User } from '../api/user-api'
 import { ANY_OPTION, type SelectOption } from '@/types/select-option-types'
 
 interface HoldStore {
@@ -8,14 +8,16 @@ interface HoldStore {
   loading: boolean
   fromDate: Date | undefined
   toDate: Date | undefined
-  warehouse: SelectOption<Warehouse>
+  holdBy: SelectOption<User>
+  holdFor: SelectOption<User>
   hasSearched: boolean
 
   setHolds: (holds: Hold[]) => void
   setLoading: (loading: boolean) => void
   setFromDate: (date: Date | undefined) => void
   setToDate: (date: Date | undefined) => void
-  setWarehouse: (warehouse: SelectOption<Warehouse>) => void
+  setHoldBy: (v: SelectOption<User>) => void
+  setHoldFor: (v: SelectOption<User>) => void
   setHasSearched: (hasSearched: boolean) => void
 
   clearHolds: () => void
@@ -26,14 +28,16 @@ export const useHoldStore = create<HoldStore>((set) => ({
   loading: false,
   fromDate: undefined,
   toDate: undefined,
-  warehouse: ANY_OPTION,
+  holdBy: ANY_OPTION,
+  holdFor: ANY_OPTION,
   hasSearched: false,
 
   setHolds: (holds) => set({ holds }),
   setLoading: (loading) => set({ loading }),
   setFromDate: (fromDate) => set({ fromDate }),
   setToDate: (toDate) => set({ toDate }),
-  setWarehouse: (warehouse) => set({ warehouse }),
+  setHoldBy: (holdBy) => set({ holdBy }),
+  setHoldFor: (holdFor) => set({ holdFor }),
   setHasSearched: (hasSearched) => set({ hasSearched }),
   clearHolds: () => set({ holds: [] })
 }))

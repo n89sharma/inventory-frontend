@@ -12,11 +12,13 @@ import { useModelData } from './hooks/use-model-data'
 import { useConstantsData } from './hooks/use-constants'
 import { ArrivalCreatePage } from './components/pages/arrival-create'
 import { useOrgData } from './hooks/use-org-data'
+import { useUserData } from './hooks/use-user-data'
 
 function App() {
   useModelData()
   useOrgData()
   useConstantsData()
+  useUserData()
 
   return (
     <BrowserRouter>

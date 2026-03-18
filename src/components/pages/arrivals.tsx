@@ -7,8 +7,7 @@ import { Button } from "../shadcn/button"
 import { PlusIcon } from "@phosphor-icons/react"
 import { Link } from "react-router-dom"
 import { useAutoSearch } from "@/hooks/use-auto-search"
-import type { Warehouse } from "@/data/api/constants-api"
-import type { SelectOption } from "@/types/select-option-types"
+import type { SearchOptions } from "@/types/search-types"
 
 export function ArrivalsPage(): React.JSX.Element {
   const arrivals = useArrivalStore(state => state.arrivals)
@@ -22,7 +21,7 @@ export function ArrivalsPage(): React.JSX.Element {
   const hasSearched = useArrivalStore(state => state.hasSearched)
   const setHasSearched = useArrivalStore(state => state.setHasSearched)
 
-  async function onSearchSetData(from: Date, to: Date, warehouse: SelectOption<Warehouse>) {
+  async function onSearchSetData(from: Date, to: Date, { warehouse }: SearchOptions) {
     setFromDate(from)
     setToDate(to)
     setWarehouse(warehouse)
@@ -43,7 +42,11 @@ export function ArrivalsPage(): React.JSX.Element {
         </Button>
       </div>
 
-      <SearchBar criteria={{ fromDate, toDate, warehouse, setFromDate, setToDate, setWarehouse }} onSearchSetData={onSearchSetData} />
+      <SearchBar
+        criteria={{ fromDate, toDate, warehouse, setFromDate, setToDate, setWarehouse }}
+        onSearchSetData={onSearchSetData}
+        showWarehouse={true}
+      />
       <DataTable columns={arrivalTableColumns} data={arrivals} />
     </div>
   )

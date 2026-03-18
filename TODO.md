@@ -1,7 +1,6 @@
 # Tasks
 
 ## Navigation
-- [ ] Add bredcrumb trail 
 - [ ] Match URL to the status of the page / Add dates as URL parameters
 
 ## Error handling

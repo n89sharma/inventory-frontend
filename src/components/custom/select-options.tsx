@@ -13,15 +13,12 @@ import {
 } from "@/components/shadcn/select"
 import { type SelectOption, ANY_OPTION, UNSELECTED } from "@/types/select-option-types"
 
-interface EntityWithId {
-  id: number
-}
-
-type SelectOptionsProps<T extends EntityWithId> = {
+type SelectOptionsProps<T> = {
   selection: SelectOption<T>
   onSelectionChange: (selection: SelectOption<T>) => void
   options: T[]
   getLabel: (entity: T) => string
+  getKey?: (entity: T) => string
   fieldLabel: string
   anyAllowed?: boolean
   fieldRequired?: boolean
@@ -29,33 +26,37 @@ type SelectOptionsProps<T extends EntityWithId> = {
   className?: string
 }
 
-export function SelectOptions<T extends EntityWithId>({
+export function SelectOptions<T>({
   fieldLabel,
   selection,
   options,
   onSelectionChange,
   getLabel,
+  getKey,
   anyAllowed,
   fieldRequired,
   error,
   className }: SelectOptionsProps<T>): React.JSX.Element {
 
-
-  function getValueFromSelection(selection: SelectOption<T>) {
-    if (selection.state === 'SELECTED') {
-      return selection.selected.id.toString()
-    }
-    return selection.state
+  function getKeyFromEntity(entity: T): string {
+    return getKey ? getKey(entity) : String((entity as { id: number }).id)
   }
 
-  function getSelectionFromId(id: string): SelectOption<T> {
-    if (id === 'ANY')
+  function getValueFromSelection(sel: SelectOption<T>) {
+    if (sel.state === 'SELECTED') {
+      return getKeyFromEntity(sel.selected)
+    }
+    return sel.state
+  }
+
+  function getSelectionFromKey(key: string): SelectOption<T> {
+    if (key === 'ANY')
       return ANY_OPTION
-    const warehouse = options.find(o => o.id === parseInt(id))
-    if (warehouse) {
+    const found = options.find(o => getKeyFromEntity(o) === key)
+    if (found) {
       return {
         state: 'SELECTED',
-        selected: warehouse
+        selected: found
       }
     }
     return UNSELECTED
@@ -69,7 +70,7 @@ export function SelectOptions<T extends EntityWithId>({
       </FieldLabel>
       <Select
         value={getValueFromSelection(selection)}
-        onValueChange={id => onSelectionChange(getSelectionFromId(id))}
+        onValueChange={key => onSelectionChange(getSelectionFromKey(key))}
       >
         <SelectTrigger aria-invalid={error}>
           <SelectValue />
@@ -78,7 +79,7 @@ export function SelectOptions<T extends EntityWithId>({
           <SelectGroup>
             {anyAllowed && <SelectItem key="ANY" value="ANY">Any</SelectItem>}
             {options?.map(o => (
-              <SelectItem key={o.id} value={o.id.toString()}>{getLabel(o)}</SelectItem>
+              <SelectItem key={getKeyFromEntity(o)} value={getKeyFromEntity(o)}>{getLabel(o)}</SelectItem>
             ))}
           </SelectGroup>
         </SelectContent>

@@ -4,9 +4,7 @@ import { SearchBar } from "../custom/search-bar"
 import { departureTableColumns } from "./column-defs/departure-columns"
 import { DataTable } from "@/components/shadcn/data-table"
 import { useAutoSearch } from "@/hooks/use-auto-search"
-import type { Warehouse } from "@/data/api/constants-api"
-import type { SelectOption } from '@/types/select-option-types'
-
+import type { SearchOptions } from "@/types/search-types"
 
 export function DeparturePage(): React.JSX.Element {
   const departures = useDepartureStore(state => state.departures)
@@ -20,7 +18,7 @@ export function DeparturePage(): React.JSX.Element {
   const hasSearched = useDepartureStore(state => state.hasSearched)
   const setHasSearched = useDepartureStore(state => state.setHasSearched)
 
-  async function onSearchSetData(from: Date, to: Date, warehouse: SelectOption<Warehouse>) {
+  async function onSearchSetData(from: Date, to: Date, { warehouse }: SearchOptions) {
     setFromDate(from)
     setToDate(to)
     setWarehouse(warehouse)
@@ -35,7 +33,11 @@ export function DeparturePage(): React.JSX.Element {
       <h1 className="text-3xl font-bold p-2">
         Departures
       </h1>
-      <SearchBar criteria={{ fromDate, toDate, warehouse, setFromDate, setToDate, setWarehouse }} onSearchSetData={onSearchSetData} />
+      <SearchBar
+        criteria={{ fromDate, toDate, warehouse, setFromDate, setToDate, setWarehouse }}
+        onSearchSetData={onSearchSetData}
+        showWarehouse={true}
+      />
       <DataTable columns={departureTableColumns} data={departures} />
     </div>
   )

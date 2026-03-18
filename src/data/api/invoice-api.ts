@@ -1,4 +1,5 @@
 import { api } from '@/data/api/axios-client'
+import { getSelectedOrNull, type SelectOption } from '@/types/select-option-types'
 import { z } from 'zod'
 
 const InvoiceSchema = z.object({
@@ -13,10 +14,15 @@ const InvoiceSchema = z.object({
 export type Invoice = z.infer<typeof InvoiceSchema>
 
 export async function getInvoices(
-  fromDate: Date,
-  toDate: Date
+  fromDate: SelectOption<Date>,
+  toDate: SelectOption<Date>
 ): Promise<Invoice[]> {
 
-  const res = await api.get(`/invoices`, { params: { fromDate, toDate } })
+  const res = await api.get(`/invoices`, {
+    params: {
+      fromDate: getSelectedOrNull(fromDate),
+      toDate: getSelectedOrNull(toDate)
+    }
+  })
   return z.array(InvoiceSchema).parse(res.data)
 }

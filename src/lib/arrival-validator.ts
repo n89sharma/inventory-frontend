@@ -1,4 +1,4 @@
-import type { SelectOption } from '@/types/select-option-types'
+import { isSelected, type SelectOption } from '@/types/select-option-types'
 import { CoreFunctionsSchema, StatusSchema, WarehouseSchema, type CoreFunction, type Status, type Warehouse } from "@/data/api/constants-api"
 import { ModelSchema, type Model } from "@/data/api/model-api"
 import { OrgSchema, type Organization } from "@/data/api/org-api"
@@ -21,7 +21,7 @@ export const NewAssetSchema = z.object({
   meterBlack: z.string().min(1, "Meter must be positive"),
   meterColour: z.string().min(1, "Meter must be positive"),
   cassettes: z.string().min(1, "Cassettes are required"),
-  technicalStatus: StatusSelectOptionSchema.refine(val => val.state === 'SELECTED', "Technical status is required"),
+  technicalStatus: StatusSelectOptionSchema.refine(val => isSelected(val), "Technical status is required"),
   internalFinisher: z.string(),
   coreFunctions: z.array(CoreFunctionsSchema)
 })
@@ -41,7 +41,7 @@ export type NewAsset = {
 export const NewArrivalSchema = z.object({
   vendor: OrgSchema.nullable().refine(val => !!val, "Vendor required"),
   transporter: OrgSchema.nullable().refine(val => !!val, "Transporter required"),
-  warehouse: WarehouseSelectOptionSchema.refine(val => val.state === 'SELECTED', "Warehouse required"),
+  warehouse: WarehouseSelectOptionSchema.refine(val => isSelected(val), "Warehouse required"),
   comment: z.string(),
   assets: z.array(NewAssetSchema).nonempty("No assets in the arrival")
 })

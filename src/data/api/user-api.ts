@@ -14,7 +14,5 @@ export type User = z.infer<typeof UserSchema>
 
 export async function getUsers(): Promise<User[]> {
   const res = await api.get('/users', { params: { filterActive: true } })
-  const users = z.array(UserSchema).parse(res.data)
-  console.log(users)
-  return users
+  return z.array(UserSchema).parse(res.data)
 }

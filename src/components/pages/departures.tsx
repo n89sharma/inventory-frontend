@@ -4,7 +4,8 @@ import { SearchBar } from "../custom/search-bar"
 import { departureTableColumns } from "./column-defs/departure-columns"
 import { DataTable } from "@/components/shadcn/data-table"
 import { useAutoSearch } from "@/hooks/use-auto-search"
-import type { SearchOptions } from "@/types/search-types"
+import type { SearchOptions } from "@/types/search-option-types"
+import { ANY_OPTION } from "@/types/select-option-types"
 
 export function DeparturePage(): React.JSX.Element {
   const departures = useDepartureStore(state => state.departures)
@@ -13,20 +14,17 @@ export function DeparturePage(): React.JSX.Element {
   const setFromDate = useDepartureStore(state => state.setFromDate)
   const toDate = useDepartureStore(state => state.toDate)
   const setToDate = useDepartureStore(state => state.setToDate)
-  const warehouse = useDepartureStore(state => state.warehouse)
-  const setWarehouse = useDepartureStore(state => state.setWarehouse)
+  const origin = useDepartureStore(state => state.origin)
+  const setOrigin = useDepartureStore(state => state.setOrigin)
   const hasSearched = useDepartureStore(state => state.hasSearched)
   const setHasSearched = useDepartureStore(state => state.setHasSearched)
 
-  async function onSearchSetData(from: Date, to: Date, { warehouse }: SearchOptions) {
-    setFromDate(from)
-    setToDate(to)
-    setWarehouse(warehouse)
+  async function onSearchSetData({ fromDate, toDate, origin }: SearchOptions) {
     setHasSearched(true)
-    setDepartures(await getDepartures(from, to, warehouse))
+    setDepartures(await getDepartures(fromDate, toDate, origin ?? ANY_OPTION))
   }
 
-  useAutoSearch(hasSearched, onSearchSetData)
+  useAutoSearch(hasSearched, onSearchSetData, { setFromDate, setToDate, setOrigin })
 
   return (
     <div className="flex flex-col gap-2">
@@ -34,9 +32,10 @@ export function DeparturePage(): React.JSX.Element {
         Departures
       </h1>
       <SearchBar
-        criteria={{ fromDate, toDate, warehouse, setFromDate, setToDate, setWarehouse }}
-        onSearchSetData={onSearchSetData}
-        showWarehouse={true}
+        searchOptions={{ fromDate, toDate, origin }}
+        setSearchOptions={{ setFromDate, setToDate, setOrigin }}
+        onSearch={onSearchSetData}
+        showOrigin={true}
       />
       <DataTable columns={departureTableColumns} data={departures} />
     </div>

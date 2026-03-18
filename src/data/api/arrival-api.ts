@@ -2,7 +2,7 @@ import { api } from '@/data/api/axios-client'
 import type { NewArrival } from '@/lib/arrival-validator'
 import { apiErrorHandler } from '@/lib/error-handler'
 import type { ApiResponse } from '@/types/api-response-types'
-import { getIdOrNullFromSelection, type SelectOption } from '@/types/select-option-types'
+import { getIdOrNullFromSelection, getSelectedOrNull, type SelectOption } from '@/types/select-option-types'
 import type { AxiosResponse } from 'axios'
 import { z } from 'zod'
 import type { Warehouse } from './constants-api'
@@ -21,16 +21,16 @@ const ArrivalSchema = z.object({
 export type Arrival = z.infer<typeof ArrivalSchema>
 
 export async function getArrivals(
-  fromDate: Date,
-  toDate: Date,
-  warehouse: SelectOption<Warehouse>
+  fromDate: SelectOption<Date>,
+  toDate: SelectOption<Date>,
+  destination: SelectOption<Warehouse>
 ): Promise<Arrival[]> {
 
   const res = await api.get(`/arrivals`, {
     params: {
-      fromDate: fromDate,
-      toDate: toDate,
-      warehouseId: getIdOrNullFromSelection(warehouse)
+      fromDate: getSelectedOrNull(fromDate),
+      toDate: getSelectedOrNull(toDate),
+      warehouse: getIdOrNullFromSelection(destination)
     }
   })
   return z.array(ArrivalSchema).parse(res.data)

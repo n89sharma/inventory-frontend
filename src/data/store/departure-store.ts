@@ -1,21 +1,21 @@
 import type { Departure } from '@/data/api/departure-api'
 import { create } from 'zustand'
 import type { Warehouse } from '../api/constants-api'
-import { ANY_OPTION, type SelectOption } from '@/types/select-option-types'
+import { ANY_OPTION, UNSELECTED, type SelectOption } from '@/types/select-option-types'
 
 interface DepartureStore {
   departures: Departure[]
+  fromDate: SelectOption<Date>
+  toDate: SelectOption<Date>
+  origin: SelectOption<Warehouse>
   loading: boolean
-  fromDate: Date | undefined
-  toDate: Date | undefined
-  warehouse: SelectOption<Warehouse>
   hasSearched: boolean
 
   setDepartures: (departures: Departure[]) => void
+  setFromDate: (date: SelectOption<Date>) => void
+  setToDate: (date: SelectOption<Date>) => void
+  setOrigin: (warehouse: SelectOption<Warehouse>) => void
   setLoading: (loading: boolean) => void
-  setFromDate: (date: Date | undefined) => void
-  setToDate: (date: Date | undefined) => void
-  setWarehouse: (warehouse: SelectOption<Warehouse>) => void
   setHasSearched: (hasSearched: boolean) => void
 
   clearDepartures: () => void
@@ -23,17 +23,18 @@ interface DepartureStore {
 
 export const useDepartureStore = create<DepartureStore>((set) => ({
   departures: [],
+  fromDate: UNSELECTED,
+  toDate: ANY_OPTION,
+  origin: ANY_OPTION,
   loading: false,
-  fromDate: undefined,
-  toDate: undefined,
-  warehouse: ANY_OPTION,
   hasSearched: false,
 
   setDepartures: (departures) => set({ departures }),
-  setLoading: (loading) => set({ loading }),
   setFromDate: (fromDate) => set({ fromDate }),
   setToDate: (toDate) => set({ toDate }),
-  setWarehouse: (warehouse) => set({ warehouse }),
+  setOrigin: (origin) => set({ origin }),
+  setLoading: (loading) => set({ loading }),
   setHasSearched: (hasSearched) => set({ hasSearched }),
+  
   clearDepartures: () => set({ departures: [] })
 }))

@@ -1,17 +1,18 @@
 import type { Invoice } from '@/data/api/invoice-api'
+import { ANY_OPTION, UNSELECTED, type SelectOption } from '@/types/select-option-types'
 import { create } from 'zustand'
 
 interface InvoiceStore {
   invoices: Invoice[]
   loading: boolean
-  fromDate: Date | undefined
-  toDate: Date | undefined
+  fromDate: SelectOption<Date>
+  toDate: SelectOption<Date>
   hasSearched: boolean
 
   setInvoices: (invoices: Invoice[]) => void
   setLoading: (loading: boolean) => void
-  setFromDate: (date: Date | undefined) => void
-  setToDate: (date: Date | undefined) => void
+  setFromDate: (date: SelectOption<Date>) => void
+  setToDate: (date: SelectOption<Date>) => void
   setHasSearched: (hasSearched: boolean) => void
 
   clearInvoices: () => void
@@ -20,8 +21,8 @@ interface InvoiceStore {
 export const useInvoiceStore = create<InvoiceStore>((set) => ({
   invoices: [],
   loading: false,
-  fromDate: undefined,
-  toDate: undefined,
+  fromDate: UNSELECTED,
+  toDate: ANY_OPTION,
   hasSearched: false,
 
   setInvoices: (invoices) => set({ invoices }),

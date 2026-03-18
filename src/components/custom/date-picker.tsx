@@ -7,11 +7,12 @@ import {
 } from "@/components/shadcn/popover"
 import { Button } from "@/components/shadcn/button"
 import { format } from "date-fns"
+import { getSelectedOrNull, getSelectOption, isSelected, UNSELECTED, type SelectOption } from "@/types/select-option-types"
 
 interface DatePickerFieldProps {
   label: string
-  date: Date | undefined
-  setDate: (date: Date | undefined) => void
+  date: SelectOption<Date>
+  setDate: (date: SelectOption<Date>) => void
   id: string
   className?: string
 }
@@ -27,15 +28,15 @@ export function DatePickerField({ label, date, setDate, id, className }: DatePic
             id={id}
             className="justify-start text-muted-foreground text-xs rounded-md"
           >
-            {date ? format(date, "PPP") : <span>Select</span>}
+            {isSelected(date) ? format(date.selected, "PPP") : <span>Select</span>}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-1" align="start">
           <Calendar
             mode="single"
-            selected={date}
-            onSelect={setDate}
-            defaultMonth={date}
+            selected={getSelectedOrNull(date)}
+            onSelect={d => d ? setDate(getSelectOption(d)) : setDate(UNSELECTED)}
+            defaultMonth={getSelectedOrNull(date)}
           />
         </PopoverContent>
       </Popover>

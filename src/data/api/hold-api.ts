@@ -1,7 +1,7 @@
 import { api } from '@/data/api/axios-client'
 import { z } from 'zod'
 import type { User } from '@/data/api/user-api'
-import type { SelectOption } from '@/types/select-option-types'
+import { getIdOrNullFromSelection, getSelectedOrNull, type SelectOption } from '@/types/select-option-types'
 
 const HoldSchema = z.object({
   hold_number: z.string(),
@@ -17,11 +17,18 @@ const HoldSchema = z.object({
 export type Hold = z.infer<typeof HoldSchema>
 
 export async function getHolds(
-  fromDate: Date,
-  toDate: Date,
-  _holdBy: SelectOption<User>,   // future use
-  _holdFor: SelectOption<User>   // future use
+  fromDate: SelectOption<Date>,
+  toDate: SelectOption<Date>,
+  holdBy: SelectOption<User>,
+  holdFor: SelectOption<User>
 ): Promise<Hold[]> {
-  const res = await api.get(`/holds`, { params: { fromDate, toDate } })
+  const res = await api.get(`/holds`, {
+    params: {
+      fromDate: getSelectedOrNull(fromDate),
+      toDate: getSelectedOrNull(toDate),
+      holdBy: getIdOrNullFromSelection(holdBy),
+      holdFor: getIdOrNullFromSelection(holdFor)
+    }
+  })
   return z.array(HoldSchema).parse(res.data)
 }

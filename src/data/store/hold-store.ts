@@ -1,21 +1,21 @@
 import type { Hold } from '@/data/api/hold-api'
 import { create } from 'zustand'
 import type { User } from '../api/user-api'
-import { ANY_OPTION, type SelectOption } from '@/types/select-option-types'
+import { ANY_OPTION, UNSELECTED, type SelectOption } from '@/types/select-option-types'
 
 interface HoldStore {
   holds: Hold[]
   loading: boolean
-  fromDate: Date | undefined
-  toDate: Date | undefined
+  fromDate: SelectOption<Date>
+  toDate: SelectOption<Date>
   holdBy: SelectOption<User>
   holdFor: SelectOption<User>
   hasSearched: boolean
 
   setHolds: (holds: Hold[]) => void
   setLoading: (loading: boolean) => void
-  setFromDate: (date: Date | undefined) => void
-  setToDate: (date: Date | undefined) => void
+  setFromDate: (date: SelectOption<Date>) => void
+  setToDate: (date: SelectOption<Date>) => void
   setHoldBy: (v: SelectOption<User>) => void
   setHoldFor: (v: SelectOption<User>) => void
   setHasSearched: (hasSearched: boolean) => void
@@ -26,8 +26,8 @@ interface HoldStore {
 export const useHoldStore = create<HoldStore>((set) => ({
   holds: [],
   loading: false,
-  fromDate: undefined,
-  toDate: undefined,
+  fromDate: UNSELECTED,
+  toDate: ANY_OPTION,
   holdBy: ANY_OPTION,
   holdFor: ANY_OPTION,
   hasSearched: false,

@@ -14,7 +14,10 @@ export function useUserData() {
         setLoading(true)
         setUsers(await getUsers())
       } catch (err) {
-        if (err instanceof Error && err.name !== 'AbortError') setError(err)
+        if (err instanceof Error && err.name !== 'AbortError') {
+          console.error('useUserData error:', err)
+          setError(err)
+        }
       } finally {
         setLoading(false)
       }

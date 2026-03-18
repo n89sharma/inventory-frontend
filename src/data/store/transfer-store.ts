@@ -1,21 +1,23 @@
 import type { Transfer } from '@/data/api/transfer-api'
 import { create } from 'zustand'
 import type { Warehouse } from '../api/constants-api'
-import { ANY_OPTION, type SelectOption } from '@/types/select-option-types'
+import { ANY_OPTION, UNSELECTED, type SelectOption } from '@/types/select-option-types'
 
 interface TransferStore {
   transfers: Transfer[]
+  fromDate: SelectOption<Date>
+  toDate: SelectOption<Date>
+  origin: SelectOption<Warehouse>
+  destination: SelectOption<Warehouse>
   loading: boolean
-  fromDate: Date | undefined
-  toDate: Date | undefined
-  warehouse: SelectOption<Warehouse>
   hasSearched: boolean
 
-  setTransfers: (transfers: Transfer[]) => void
+  setTransfers: (t: Transfer[]) => void
+  setFromDate: (d: SelectOption<Date>) => void
+  setToDate: (d: SelectOption<Date>) => void
+  setOrigin: (o: SelectOption<Warehouse>) => void
+  setDestination: (d: SelectOption<Warehouse>) => void
   setLoading: (loading: boolean) => void
-  setFromDate: (date: Date | undefined) => void
-  setToDate: (date: Date | undefined) => void
-  setWarehouse: (warehouse: SelectOption<Warehouse>) => void
   setHasSearched: (hasSearched: boolean) => void
 
   clearTransfers: () => void
@@ -23,17 +25,20 @@ interface TransferStore {
 
 export const useTransferStore = create<TransferStore>((set) => ({
   transfers: [],
+  fromDate: UNSELECTED,
+  toDate: ANY_OPTION,
+  origin: ANY_OPTION,
+  destination: ANY_OPTION,
   loading: false,
-  fromDate: undefined,
-  toDate: undefined,
-  warehouse: ANY_OPTION,
   hasSearched: false,
 
   setTransfers: (transfers) => set({ transfers }),
-  setLoading: (loading) => set({ loading }),
   setFromDate: (fromDate) => set({ fromDate }),
   setToDate: (toDate) => set({ toDate }),
-  setWarehouse: (warehouse) => set({ warehouse }),
+  setOrigin: (origin) => set({ origin }),
+  setDestination: (destination) => set({ destination }),
+  setLoading: (loading) => set({ loading }),
   setHasSearched: (hasSearched) => set({ hasSearched }),
+
   clearTransfers: () => set({ transfers: [] })
 }))

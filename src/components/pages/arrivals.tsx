@@ -7,7 +7,8 @@ import { Button } from "../shadcn/button"
 import { PlusIcon } from "@phosphor-icons/react"
 import { Link } from "react-router-dom"
 import { useAutoSearch } from "@/hooks/use-auto-search"
-import type { SearchOptions } from "@/types/search-types"
+import type { SearchOptions } from "@/types/search-option-types"
+import { ANY_OPTION } from "@/types/select-option-types"
 
 export function ArrivalsPage(): React.JSX.Element {
   const arrivals = useArrivalStore(state => state.arrivals)
@@ -16,20 +17,17 @@ export function ArrivalsPage(): React.JSX.Element {
   const setFromDate = useArrivalStore(state => state.setFromDate)
   const toDate = useArrivalStore(state => state.toDate)
   const setToDate = useArrivalStore(state => state.setToDate)
-  const warehouse = useArrivalStore(state => state.warehouse)
-  const setWarehouse = useArrivalStore(state => state.setWarehouse)
+  const destination = useArrivalStore(state => state.destination)
+  const setDestination = useArrivalStore(state => state.setDestination)
   const hasSearched = useArrivalStore(state => state.hasSearched)
   const setHasSearched = useArrivalStore(state => state.setHasSearched)
 
-  async function onSearchSetData(from: Date, to: Date, { warehouse }: SearchOptions) {
-    setFromDate(from)
-    setToDate(to)
-    setWarehouse(warehouse)
+  async function onSearchSetData({ fromDate, toDate, destination }: SearchOptions) {
     setHasSearched(true)
-    setArrivals(await getArrivals(from, to, warehouse))
+    setArrivals(await getArrivals(fromDate, toDate, destination ?? ANY_OPTION))
   }
 
-  useAutoSearch(hasSearched, onSearchSetData)
+  useAutoSearch(hasSearched, onSearchSetData, { setFromDate, setToDate, setDestination })
 
   return (
     <div className="flex flex-col gap-2">
@@ -43,9 +41,10 @@ export function ArrivalsPage(): React.JSX.Element {
       </div>
 
       <SearchBar
-        criteria={{ fromDate, toDate, warehouse, setFromDate, setToDate, setWarehouse }}
-        onSearchSetData={onSearchSetData}
-        showWarehouse={true}
+        searchOptions={{ fromDate, toDate, destination }}
+        setSearchOptions={{ setFromDate, setToDate, setDestination }}
+        onSearch={onSearchSetData}
+        showDestination={true}
       />
       <DataTable columns={arrivalTableColumns} data={arrivals} />
     </div>

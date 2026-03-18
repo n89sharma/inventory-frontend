@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/shadcn/select"
-import { type SelectOption, ANY_OPTION, UNSELECTED } from "@/types/select-option-types"
+import { type SelectOption, ANY_OPTION, getSelectOption, isSelected, UNSELECTED } from "@/types/select-option-types"
 
 type SelectOptionsProps<T> = {
   selection: SelectOption<T>
@@ -42,23 +42,18 @@ export function SelectOptions<T>({
     return getKey ? getKey(entity) : String((entity as { id: number }).id)
   }
 
-  function getValueFromSelection(sel: SelectOption<T>) {
-    if (sel.state === 'SELECTED') {
-      return getKeyFromEntity(sel.selected)
-    }
-    return sel.state
+  function getValueFromSelection(selection: SelectOption<T>) {
+    if (isSelected(selection))
+      return getKeyFromEntity(selection.selected)
+    return selection.state
   }
 
   function getSelectionFromKey(key: string): SelectOption<T> {
     if (key === 'ANY')
       return ANY_OPTION
     const found = options.find(o => getKeyFromEntity(o) === key)
-    if (found) {
-      return {
-        state: 'SELECTED',
-        selected: found
-      }
-    }
+    if (found) 
+      return getSelectOption(found)
     return UNSELECTED
   }
 

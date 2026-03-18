@@ -4,7 +4,8 @@ import { SearchBar } from "../custom/search-bar"
 import { holdTableColumns } from "./column-defs/hold-columns"
 import { DataTable } from "@/components/shadcn/data-table"
 import { useAutoSearch } from "@/hooks/use-auto-search"
-import type { SearchOptions } from "@/types/search-types"
+import type { SearchOptions } from "@/types/search-option-types"
+import { ANY_OPTION } from "@/types/select-option-types"
 
 export function HoldPage(): React.JSX.Element {
   const holds = useHoldStore(state => state.holds)
@@ -20,16 +21,12 @@ export function HoldPage(): React.JSX.Element {
   const hasSearched = useHoldStore(state => state.hasSearched)
   const setHasSearched = useHoldStore(state => state.setHasSearched)
 
-  async function onSearchSetData(from: Date, to: Date, { holdBy, holdFor }: SearchOptions) {
-    setFromDate(from)
-    setToDate(to)
-    setHoldBy(holdBy)
-    setHoldFor(holdFor)
+  async function onSearchSetData({ fromDate, toDate, holdBy, holdFor }: SearchOptions) {
     setHasSearched(true)
-    setHolds(await getHolds(from, to, holdBy, holdFor))
+    setHolds(await getHolds(fromDate, toDate, holdBy ?? ANY_OPTION, holdFor ?? ANY_OPTION))
   }
 
-  useAutoSearch(hasSearched, onSearchSetData)
+  useAutoSearch(hasSearched, onSearchSetData, { setFromDate, setToDate, setHoldBy, setHoldFor })
 
   return (
     <div className="flex flex-col gap-2">
@@ -37,8 +34,9 @@ export function HoldPage(): React.JSX.Element {
         Holds
       </h1>
       <SearchBar
-        criteria={{ fromDate, toDate, setFromDate, setToDate, holdBy, setHoldBy, holdFor, setHoldFor }}
-        onSearchSetData={onSearchSetData}
+        searchOptions={{ fromDate, toDate, holdBy, holdFor }}
+        setSearchOptions={{ setFromDate, setToDate, setHoldBy, setHoldFor }}
+        onSearch={onSearchSetData}
         showHeldByFor={true}
       />
       <DataTable columns={holdTableColumns} data={holds} />

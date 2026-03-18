@@ -4,7 +4,7 @@ import { SearchBar } from "../custom/search-bar"
 import { invoiceTableColumns } from "./column-defs/invoice-columns"
 import { DataTable } from "@/components/shadcn/data-table"
 import { useAutoSearch } from "@/hooks/use-auto-search"
-import type { SearchOptions } from "@/types/search-types"
+import type { SearchOptions } from "@/types/search-option-types"
 
 export function InvoicesPage(): React.JSX.Element {
   const invoices = useInvoiceStore(state => state.invoices)
@@ -16,21 +16,23 @@ export function InvoicesPage(): React.JSX.Element {
   const hasSearched = useInvoiceStore(state => state.hasSearched)
   const setHasSearched = useInvoiceStore(state => state.setHasSearched)
 
-  async function onSearchSetData(from: Date, to: Date, _options: SearchOptions) {
-    setFromDate(from)
-    setToDate(to)
+  async function onSearchSetData({ fromDate, toDate }: SearchOptions) {
     setHasSearched(true)
-    setInvoices(await getInvoices(from, to))
+    setInvoices(await getInvoices(fromDate, toDate))
   }
 
-  useAutoSearch(hasSearched, onSearchSetData)
+  useAutoSearch(hasSearched, onSearchSetData, { setFromDate, setToDate })
 
   return (
     <div className="flex flex-col gap-2">
       <h1 className="text-3xl font-bold p-2">
         Invoices
       </h1>
-      <SearchBar criteria={{ fromDate, toDate, setFromDate, setToDate }} onSearchSetData={onSearchSetData} />
+      <SearchBar
+        searchOptions={{ fromDate, toDate }}
+        setSearchOptions={{ setFromDate, setToDate }}
+        onSearch={onSearchSetData}
+      />
       <DataTable columns={invoiceTableColumns} data={invoices} />
     </div>
   )

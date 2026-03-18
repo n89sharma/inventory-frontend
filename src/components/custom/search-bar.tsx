@@ -6,59 +6,59 @@ import { Field, FieldGroup, FieldLabel } from "@/components/shadcn/field"
 import { QuickSearchButtons } from './quick-search-buttons'
 import { useConstantsStore } from '@/data/store/constants-store'
 import { useUserStore } from '@/data/store/user-store'
-import type { Warehouse } from '@/data/api/constants-api'
-import type { User } from '@/data/api/user-api'
-import { ANY_OPTION, type SelectOption } from '@/types/select-option-types'
-import type { SearchOptions } from '@/types/search-types'
+import { ANY_OPTION, getSelectOption, isSelected, type SelectOption } from '@/types/select-option-types'
+import type { SearchOptions, SetSearchOptions } from '@/types/search-option-types'
 import { SelectOptions } from './select-options'
 
-export interface SearchCriteria {
-  fromDate: Date | undefined
-  toDate: Date | undefined
-  setFromDate: (date: Date | undefined) => void
-  setToDate: (date: Date | undefined) => void
-  warehouse?: SelectOption<Warehouse>
-  setWarehouse?: (v: SelectOption<Warehouse>) => void
-  holdBy?: SelectOption<User>
-  setHoldBy?: (v: SelectOption<User>) => void
-  holdFor?: SelectOption<User>
-  setHoldFor?: (v: SelectOption<User>) => void
-}
-
 interface SearchBarProps {
-  criteria: SearchCriteria
-  onSearchSetData: (from: Date, to: Date, options: SearchOptions) => Promise<void>
-  showWarehouse?: boolean
+  searchOptions: SearchOptions
+  setSearchOptions: SetSearchOptions
+  onSearch: (searchOptions: SearchOptions) => Promise<void>
+  showOrigin?: boolean
+  showDestination?: boolean
   showHeldByFor?: boolean
 }
 
-export function SearchBar({ criteria, onSearchSetData, showWarehouse, showHeldByFor }: SearchBarProps): React.JSX.Element {
-  const { fromDate, toDate, setFromDate, setToDate } = criteria
-  const warehouses = useConstantsStore(state => state.warehouses)
+export function SearchBar({
+  searchOptions,
+  setSearchOptions,
+  onSearch,
+  showOrigin,
+  showDestination,
+  showHeldByFor }: SearchBarProps): React.JSX.Element {
+
+  const { fromDate, toDate, origin, destination, holdFor, holdBy } = searchOptions
+  const { setFromDate, setToDate, setOrigin, setDestination, setHoldFor, setHoldBy } = setSearchOptions
   const activeUsers = useUserStore(state => state.users)
+  const warehouses = useConstantsStore(state => state.warehouses)
   const activeWarehouses = warehouses.filter(w => w.is_active)
 
   async function handleSearch() {
-    if (!fromDate) return
-    const to = toDate ?? new Date()
-    criteria.setToDate(to)
-    const options: SearchOptions = {
-      warehouse: criteria.warehouse ?? ANY_OPTION,
-      holdBy: criteria.holdBy ?? ANY_OPTION,
-      holdFor: criteria.holdFor ?? ANY_OPTION
-    }
-    await onSearchSetData(fromDate, to, options)
+    if (!isSelected(fromDate)) return
+    const toDateOrDefault: SelectOption<Date> = isSelected(toDate) ? toDate : getSelectOption(new Date())
+    setToDate(toDateOrDefault)
+    await onSearch({ fromDate, toDate: toDateOrDefault, origin, destination, holdBy, holdFor })
   }
 
   async function handleQuickSearch(days: number) {
-    const from = subDays(new Date(), days)
-    const to = new Date()
+    const from = getSelectOption(subDays(new Date(), days))
+    const to = getSelectOption(new Date())
     setFromDate(from)
     setToDate(to)
-    criteria.setWarehouse?.(ANY_OPTION)
-    criteria.setHoldBy?.(ANY_OPTION)
-    criteria.setHoldFor?.(ANY_OPTION)
-    await onSearchSetData(from, to, { warehouse: ANY_OPTION, holdBy: ANY_OPTION, holdFor: ANY_OPTION })
+
+    if (setOrigin) setOrigin(ANY_OPTION)
+    if (setDestination) setDestination(ANY_OPTION)
+    if (setHoldBy) setHoldBy(ANY_OPTION)
+    if (setHoldFor) setHoldFor(ANY_OPTION)
+
+    await onSearch({
+      fromDate: from,
+      toDate: to,
+      origin: ANY_OPTION,
+      destination: ANY_OPTION,
+      holdBy: ANY_OPTION,
+      holdFor: ANY_OPTION
+    })
   }
 
   return (
@@ -85,42 +85,55 @@ export function SearchBar({ criteria, onSearchSetData, showWarehouse, showHeldBy
           className="max-w-40"
         />
 
-        {showWarehouse && criteria.warehouse !== undefined && (
+        {showOrigin && !!origin && !!setOrigin &&
           <SelectOptions
-            selection={criteria.warehouse}
-            onSelectionChange={v => criteria.setWarehouse?.(v)}
+            selection={origin}
+            onSelectionChange={setOrigin}
             options={activeWarehouses}
             getLabel={w => w.city_code}
             fieldLabel="Warehouse"
             anyAllowed={true}
             className="max-w-40"
           />
-        )}
+        }
 
-        {showHeldByFor && criteria.holdBy !== undefined && criteria.holdFor !== undefined && (
-          <>
-            <SelectOptions
-              selection={criteria.holdBy}
-              onSelectionChange={v => criteria.setHoldBy?.(v)}
-              options={activeUsers}
-              getLabel={u => u.name}
-              getKey={u => u.username}
-              fieldLabel="Hold By"
-              anyAllowed={true}
-              className="max-w-40"
-            />
-            <SelectOptions
-              selection={criteria.holdFor}
-              onSelectionChange={v => criteria.setHoldFor?.(v)}
-              options={activeUsers}
-              getLabel={u => u.name}
-              getKey={u => u.username}
-              fieldLabel="Hold For"
-              anyAllowed={true}
-              className="max-w-40"
-            />
-          </>
-        )}
+        {showDestination && !!destination && !!setDestination &&
+          <SelectOptions
+            selection={destination}
+            onSelectionChange={setDestination}
+            options={activeWarehouses}
+            getLabel={w => w.city_code}
+            fieldLabel="Warehouse"
+            anyAllowed={true}
+            className="max-w-40"
+          />
+        }
+
+        {showHeldByFor && !!holdBy && !!setHoldBy &&
+          <SelectOptions
+            selection={holdBy}
+            onSelectionChange={setHoldBy}
+            options={activeUsers}
+            getLabel={u => u.name}
+            getKey={u => u.username}
+            fieldLabel="Hold By"
+            anyAllowed={true}
+            className="max-w-40"
+          />
+        }
+
+        {showHeldByFor && !!holdFor && !!setHoldFor &&
+          <SelectOptions
+            selection={holdFor}
+            onSelectionChange={setHoldFor}
+            options={activeUsers}
+            getLabel={u => u.name}
+            getKey={u => u.username}
+            fieldLabel="Hold For"
+            anyAllowed={true}
+            className="max-w-40"
+          />
+        }
 
         <Button
           variant="secondary"

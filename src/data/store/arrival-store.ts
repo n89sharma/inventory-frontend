@@ -1,21 +1,21 @@
 import type { Arrival } from '@/data/api/arrival-api'
 import { create } from 'zustand'
 import type { Warehouse } from '../api/constants-api'
-import { ANY_OPTION, type SelectOption } from '@/types/select-option-types'
+import { ANY_OPTION, UNSELECTED, type SelectOption } from '@/types/select-option-types'
 
 interface ArrivalStore {
   arrivals: Arrival[]
+  fromDate: SelectOption<Date>
+  toDate: SelectOption<Date>
+  destination: SelectOption<Warehouse>
   loading: boolean
-  fromDate: Date | undefined
-  toDate: Date | undefined
-  warehouse: SelectOption<Warehouse>
   hasSearched: boolean
 
   setArrivals: (arrivals: Arrival[]) => void
+  setFromDate: (date: SelectOption<Date>) => void
+  setToDate: (date: SelectOption<Date>) => void
+  setDestination: (warehouse: SelectOption<Warehouse>) => void
   setLoading: (loading: boolean) => void
-  setFromDate: (date: Date | undefined) => void
-  setToDate: (date: Date | undefined) => void
-  setWarehouse: (warehouse: SelectOption<Warehouse>) => void
   setHasSearched: (hasSearched: boolean) => void
 
   clearArrivals: () => void
@@ -24,16 +24,16 @@ interface ArrivalStore {
 export const useArrivalStore = create<ArrivalStore>((set) => ({
   arrivals: [],
   loading: false,
-  fromDate: undefined,
-  toDate: undefined,
-  warehouse: ANY_OPTION,
+  fromDate: UNSELECTED,
+  toDate: ANY_OPTION,
+  destination: ANY_OPTION,
   hasSearched: false,
 
   setArrivals: (arrivals) => set({ arrivals }),
   setLoading: (loading) => set({ loading }),
   setFromDate: (fromDate) => set({ fromDate }),
   setToDate: (toDate) => set({ toDate }),
-  setWarehouse: (warehouse) => set({ warehouse }),
+  setDestination: (warehouse) => set({ destination: warehouse }),
   setHasSearched: (hasSearched) => set({ hasSearched }),
   clearArrivals: () => set({ arrivals: [] })
 }))

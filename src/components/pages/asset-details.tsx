@@ -7,7 +7,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/shadcn/ta
 import { Button } from '@/components/shadcn/button'
 import { Comment } from '@/components/custom/comment'
 import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react'
-import { SearchBar } from '../custom/asset-search'
 import { getAllAssetDetails } from '@/data/api/asset-api'
 
 export const AssetDetailsPage = () => {
@@ -15,7 +14,6 @@ export const AssetDetailsPage = () => {
   const { id } = useParams()
   const location = useLocation()
   const breadcrumbState = location.state as { section: string; collectionId: string } | null
-  const [loading, setLoading] = useState(false)
   const [currentIndex, setCurrentTransferIndex] = useState(0)
 
   const ad = useAssetStore((state) => state.assetDetails)
@@ -31,12 +29,12 @@ export const AssetDetailsPage = () => {
   const setAssetComments = useAssetStore((state) => state.setAssetComments)
   const setAssetTransfers = useAssetStore((state) => state.setAssetTransfers)
   const setAssetParts = useAssetStore((state) => state.setAssetParts)
+  const clearAssetStore = useAssetStore((state) => state.clearAssetStore)
 
   useEffect(() => {
     async function loadAssetDetails() {
       if (!id) return
-
-      setLoading(true)
+      clearAssetStore()
       const r = await getAllAssetDetails(id)
       if (r.assetDetails.status === 'fulfilled') setAssetDetails(r.assetDetails.result)
       if (r.assetAccessories.status === 'fulfilled') setAssetAccessories(r.assetAccessories.result)
@@ -44,7 +42,6 @@ export const AssetDetailsPage = () => {
       if (r.assetComments.status === 'fulfilled') setAssetComments(r.assetComments.result)
       if (r.assetTransfers.status === 'fulfilled') setAssetTransfers(r.assetTransfers.result)
       if (r.assetParts.status == 'fulfilled') setAssetParts(r.assetParts.result)
-      setLoading(false)
     }
 
     setCurrentTransferIndex(0)
@@ -65,16 +62,18 @@ export const AssetDetailsPage = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      {breadcrumbState?.section && (
-        <PageBreadcrumb segments={[
-          { label: breadcrumbState.section.charAt(0).toUpperCase() + breadcrumbState.section.slice(1), href: `/${breadcrumbState.section}` },
-          { label: breadcrumbState.collectionId, href: `/${breadcrumbState.section}/${breadcrumbState.collectionId}` },
-          { label: id ?? '' }
-        ]} />
-      )}
-      <div className="flex flex-row gap-2 max-w-96 border rounded-md p-2">
-        <SearchBar loading={loading} />
-      </div>
+      <PageBreadcrumb segments={
+        breadcrumbState?.section
+          ? [
+              { label: breadcrumbState.section.charAt(0).toUpperCase() + breadcrumbState.section.slice(1), href: `/${breadcrumbState.section}` },
+              { label: breadcrumbState.collectionId, href: `/${breadcrumbState.section}/${breadcrumbState.collectionId}` },
+              { label: id ?? '' }
+            ]
+          : [
+              { label: 'Home', href: '/' },
+              { label: id ?? '' }
+            ]
+      } />
       <DetailsContainer isActive={!!ad}>
 
         <SectionRow className="flex-col">

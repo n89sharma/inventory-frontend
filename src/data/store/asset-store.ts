@@ -42,6 +42,7 @@ export const useAssetStore = create<AssetStore>((set) => ({
   setAssetParts: (parts) => set({ parts }),
 
   clearAssetStore: () => set({
+    assets: [],
     assetDetails: null,
     accessories: [],
     errors: [],

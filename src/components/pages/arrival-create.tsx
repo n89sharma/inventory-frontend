@@ -13,6 +13,7 @@ import { ControlledPopoverSearch } from '../custom/controlled-popover-search'
 import { ArrivalAssetCreateSection } from './arrival-asset-create'
 import { createArrival } from '@/data/api/arrival-api'
 import { toast } from "sonner"
+import { useEffect } from 'react'
 
 export function ArrivalCreatePage(): React.JSX.Element {
   const newArrivalForm = useForm<NewArrival>({
@@ -43,7 +44,6 @@ export function ArrivalCreatePage(): React.JSX.Element {
   async function onValidArrival(newArrival: NewArrival) {
     const apiResponse = await createArrival(newArrival)
     if (apiResponse.success) {
-      newArrivalForm.reset(getDefaultArrival())
       toast.success(`Arrival ${apiResponse.data.arrivalNumber} created!`, { position: "top-center" })
     }
   }
@@ -51,6 +51,12 @@ export function ArrivalCreatePage(): React.JSX.Element {
   function onInvalidArrival(errors: FieldErrors<NewArrival>) {
     console.log(errors)
   }
+
+  useEffect(() => {
+    if (newArrivalForm.formState.isSubmitSuccessful) {
+      newArrivalForm.reset(getDefaultArrival())
+    }
+  }, [newArrivalForm.formState.isSubmitSuccessful])
 
   return (
     <div className='flex flex-col gap-2 max-w-6xl'>

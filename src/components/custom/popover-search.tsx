@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from 'react'
+import { useState, useMemo, useRef, useEffect } from 'react'
 import Fuse from 'fuse.js'
 import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from '../shadcn/popover'
 import { ScrollArea } from '../shadcn/scroll-area'
@@ -38,6 +38,10 @@ export function PopoverSearch<T>({
   const inputRef = useRef<HTMLInputElement>(null)
   const [highlightedIndex, setHighlightedIndex] = useState(-1)
 
+
+  useEffect(() => {
+    if (!selection) setUserInput('')
+  }, [selection])
 
   let fuse = useMemo(() => {
     return new Fuse(

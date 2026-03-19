@@ -93,13 +93,12 @@ export function QueryPage(): React.JSX.Element {
         />
 
         <InputWithClear
-          valueType='number'
           value={meter}
           onValueChange={val => setMeter(typeof val === 'string' ? null : val)}
           fieldLabel='Meter'
+          inputType='number'
           className='max-w-36'
-        >
-        </InputWithClear>
+        />
 
         <Button
           className="rounded-md"

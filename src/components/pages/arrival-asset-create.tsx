@@ -58,9 +58,9 @@ export function ArrivalAssetCreateSection({
       serialNumber: '',
       model: null,
       technicalStatus: UNSELECTED,
-      meterBlack: '',
-      meterColour: '',
-      cassettes: '',
+      meterBlack: null,
+      meterColour: null,
+      cassettes: null,
       internalFinisher: '',
       coreFunctions: []
     }
@@ -92,7 +92,7 @@ export function ArrivalAssetCreateSection({
               name='serialNumber'
               fieldLabel='Serial Number'
               fieldRequired={true}
-              inputType='text'
+              inputType='string'
               className='max-w-60'
             />
 
@@ -118,6 +118,7 @@ export function ArrivalAssetCreateSection({
               name='meterBlack'
               fieldLabel='Meter Black'
               fieldRequired={true}
+              inputType='number'
               className='max-w-60'
             />
 
@@ -126,6 +127,7 @@ export function ArrivalAssetCreateSection({
               name='meterColour'
               fieldLabel='Meter Colour'
               fieldRequired={true}
+              inputType='number'
               className='max-w-60'
             />
 
@@ -134,6 +136,7 @@ export function ArrivalAssetCreateSection({
               name='cassettes'
               fieldLabel='Cassettes'
               fieldRequired={true}
+              inputType='number'
               className='max-w-60'
             />
 
@@ -141,7 +144,7 @@ export function ArrivalAssetCreateSection({
               control={newAssetForm.control}
               name='internalFinisher'
               fieldLabel='Internal Finisher'
-              inputType='text'
+              inputType='string'
               className='max-w-60'
             />
 

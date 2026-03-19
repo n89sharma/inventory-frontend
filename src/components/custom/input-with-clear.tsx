@@ -3,7 +3,7 @@ import { Field, FieldLabel } from "../shadcn/field"
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "../shadcn/input-group"
 
 export type InputWithClearProps = {
-  valueType?: 'string' | 'number'
+  inputType: 'string' | 'number'
   value: string | number | null
   onValueChange: (val: string | number | null) => void
   fieldLabel: string
@@ -13,7 +13,7 @@ export type InputWithClearProps = {
 }
 
 export function InputWithClear({
-  valueType,
+  inputType,
   value,
   onValueChange,
   fieldLabel,
@@ -21,11 +21,11 @@ export function InputWithClear({
   error,
   className }: InputWithClearProps): React.JSX.Element {
 
-  const resolvedType = valueType ?? (typeof value === 'number' ? 'number' : 'string')
+  const resolvedInputType = inputType ?? 'string'
 
   function coerce(raw: string): string | number | null {
     if (raw === '') return null
-    if (resolvedType === 'number') {
+    if (resolvedInputType === 'number') {
       const parsed = Number(raw)
       return isNaN(parsed) ? null : parsed
     }
@@ -45,7 +45,7 @@ export function InputWithClear({
       </FieldLabel>
       <InputGroup>
         <InputGroupInput
-          type={resolvedType}
+          type={resolvedInputType}
           value={value ?? ''}
           onChange={e => onValueChange(coerce(e.target.value))}
           aria-invalid={error}

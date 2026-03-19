@@ -40,10 +40,26 @@ interface CreateArrivalResponse {
   arrivalNumber: string
 }
 
-export async function createArrival(newArrival: NewArrival): Promise<ApiResponse<CreateArrivalResponse>> {
+export async function createArrival(a: NewArrival): Promise<ApiResponse<CreateArrivalResponse>> {
   return api.post(
     '/arrivals',
-    newArrival,
+    {
+      vendor: a.vendor,
+      transporter: a.transporter,
+      warehouse: getSelectedOrNull(a.warehouse),
+      comment: a.comment,
+      assets: a.assets.map(s => ({
+        tempId: s.tempId,
+        model: s.model,
+        serialNumber: s.serialNumber,
+        meterBlack: s.meterBlack,
+        meterColour: s.meterColour,
+        cassettes: s.cassettes,
+        technicalStatus: getSelectedOrNull(s.technicalStatus),
+        internalFinisher: s.internalFinisher,
+        coreFunctions: s.coreFunctions
+      }))
+    },
     { headers: { "Content-Type": "application/json" } }
   )
     .then((response: AxiosResponse<CreateArrivalResponse>) => ({

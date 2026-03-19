@@ -7,7 +7,7 @@ export type ControlledInputWithClearProps<TForm extends FieldValues> = {
   fieldLabel: string
   fieldRequired?: boolean
   className?: string
-  inputType?: string
+  inputType: 'string' | 'number'
 }
 
 export function ControlledInputWithClear<TForm extends FieldValues>({

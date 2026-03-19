@@ -17,10 +17,10 @@ const WarehouseSelectOptionSchema = SelectOptionSchema(WarehouseSchema)
 export const NewAssetSchema = z.object({
   tempId: z.uuid(),
   model: ModelSchema.nullable().refine(val => !!val, "Model is required"),
-  serialNumber: z.string().min(1, "Serial number is required"),
-  meterBlack: z.string().min(1, "Meter must be positive"),
-  meterColour: z.string().min(1, "Meter must be positive"),
-  cassettes: z.string().min(1, "Cassettes are required"),
+  serialNumber: z.string().refine(val => val.length > 0, "Serial number is required"),
+  meterBlack: z.number().min(0).nullable().refine(v => !!v, "Black meter is required"),
+  meterColour: z.number().min(0).nullable().refine(v => !!v, "Colour meter is required"),
+  cassettes: z.number().min(0).nullable().refine(v => !!v, "Cassettes is required"),
   technicalStatus: StatusSelectOptionSchema.refine(val => isSelected(val), "Technical status is required"),
   internalFinisher: z.string(),
   coreFunctions: z.array(CoreFunctionsSchema)
@@ -30,9 +30,9 @@ export type NewAsset = {
   tempId: string,
   model: Model | null,
   serialNumber: string,
-  meterBlack: string,
-  meterColour: string,
-  cassettes: string,
+  meterBlack: number | null,
+  meterColour: number | null,
+  cassettes: number | null,
   technicalStatus: SelectOption<Status>,
   internalFinisher: string,
   coreFunctions: CoreFunction[]

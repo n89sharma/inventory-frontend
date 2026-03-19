@@ -1,5 +1,4 @@
 import type { ColumnDef } from "@tanstack/react-table"
-import { formatThousandsK } from "@/lib/formatters"
 import type { CoreFunction } from "@/data/api/constants-api"
 import { TrashIcon } from "@phosphor-icons/react"
 import { Button } from "@/components/shadcn/button"
@@ -25,16 +24,10 @@ export function getNewAssetTableColumns({ onDelete }: GetNewAssetTableColumnProp
     },
     {
       accessorKey: "meterBlack",
-      cell: ({ row }) => {
-        return formatThousandsK(row.original.meterBlack)
-      },
       header: "Meter Black"
     },
     {
       accessorKey: "meterColour",
-      cell: ({ row }) => {
-        return formatThousandsK(row.original.meterColour)
-      },
       header: "Meter Colour"
     },
     {

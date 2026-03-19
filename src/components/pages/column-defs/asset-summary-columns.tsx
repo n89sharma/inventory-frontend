@@ -22,8 +22,7 @@ export function createAssetSummaryColumns(section: string, collectionId: string)
     },
     cell: ({ row }) => (
       <Link
-        to={`/assets/${row.original.barcode}`}
-        state={{ section, collectionId }}
+        to={`/${section}/${collectionId}/${row.original.barcode}`}
         className="text-primary hover:underline font-medium"
       >
         {row.getValue('barcode')}

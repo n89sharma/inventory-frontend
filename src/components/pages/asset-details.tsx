@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { PageBreadcrumb } from '@/components/custom/page-breadcrumb'
 import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section, SectionRow, AssetTitle, AccessoryRow, ErrorRow, ErrorHeader, InvoiceClearedRow, PartsHeader } from '@/components/custom/asset-detail'
 import { useAssetStore } from "@/data/store/asset-store"
+import { useNavigationStore, type NavSection } from '@/data/store/navigation-store'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/shadcn/tabs"
 import { Button } from '@/components/shadcn/button'
 import { Comment } from '@/components/custom/comment'
@@ -11,10 +12,11 @@ import { getAllAssetDetails } from '@/data/api/asset-api'
 
 export const AssetDetailsPage = () => {
 
-  const { id } = useParams()
-  const location = useLocation()
-  const breadcrumbState = location.state as { section: string; collectionId: string } | null
+  const { id, section, collectionId } = useParams()
+  const { pathname } = useLocation()
   const [currentIndex, setCurrentTransferIndex] = useState(0)
+
+  const setLastPath = useNavigationStore(state => state.setLastPath)
 
   const ad = useAssetStore((state) => state.assetDetails)
   const aa = useAssetStore((state) => state.accessories)
@@ -32,6 +34,8 @@ export const AssetDetailsPage = () => {
   const clearAssetStore = useAssetStore((state) => state.clearAssetStore)
 
   useEffect(() => {
+    if (section) setLastPath(section as NavSection, pathname)
+
     async function loadAssetDetails() {
       if (!id) return
       clearAssetStore()
@@ -63,10 +67,10 @@ export const AssetDetailsPage = () => {
   return (
     <div className="flex flex-col gap-2">
       <PageBreadcrumb segments={
-        breadcrumbState?.section
+        section && collectionId
           ? [
-              { label: breadcrumbState.section.charAt(0).toUpperCase() + breadcrumbState.section.slice(1), href: `/${breadcrumbState.section}` },
-              { label: breadcrumbState.collectionId, href: `/${breadcrumbState.section}/${breadcrumbState.collectionId}` },
+              { label: section.charAt(0).toUpperCase() + section.slice(1), href: `/${section}` },
+              { label: collectionId, href: `/${section}/${collectionId}` },
               { label: id ?? '' }
             ]
           : [

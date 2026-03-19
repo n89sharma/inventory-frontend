@@ -2,6 +2,7 @@ import { useLocation, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { getAssetsForArrival, getAssetsForDeparture, getAssetsForHolds, getAssetsForInvoices, getAssetsForTransfers } from "@/data/api/asset-api"
 import { useAssetStore } from "@/data/store/asset-store"
+import { useNavigationStore, type NavSection } from "@/data/store/navigation-store"
 import { DataTable } from "../shadcn/data-table"
 import { createAssetSummaryColumns } from './column-defs/asset-summary-columns'
 import { PageBreadcrumb } from '@/components/custom/page-breadcrumb'
@@ -14,12 +15,15 @@ export function AssetSummaryPage(): React.JSX.Element {
 
   const assets = useAssetStore((state) => state.assets)
   const setAssets = useAssetStore((state) => state.setAssets)
+  const setLastPath = useNavigationStore(state => state.setLastPath)
 
   const section = pathname.split('/')[1]
   const sectionLabel = section.charAt(0).toUpperCase() + section.slice(1)
   const columns = createAssetSummaryColumns(section, id ?? '')
 
   useEffect(() => {
+    setLastPath(section as NavSection, pathname)
+
     async function loadAssets() {
       if (!id) return
 

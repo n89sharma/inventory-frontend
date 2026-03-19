@@ -2,7 +2,6 @@
 
 ## Navigation
 - Match URL to the status of the page / Add dates as URL parameters
-- Move Barcode search box to the top of the app
 - Move the sidebar toggle inside the sidebar
 
 ## Arrival
@@ -11,6 +10,9 @@
   - Opens up create arrival page but populates the arrival information
   - User can add a new asset
 - Print all barcodes
+
+## Asset Summary pages
+- Add total number of assets within an arrival/transfer/departure/invoice/hold
 
 ## Backend
 - Add locations endpoint

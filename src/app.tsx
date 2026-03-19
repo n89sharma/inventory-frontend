@@ -42,6 +42,8 @@ function App() {
           <Route path="/invoices" element={<InvoicesPage />} />
           <Route path="/invoices/:id" element={<AssetSummaryPage />} />
 
+          <Route path="/:section/:collectionId/:id" element={<AssetDetailsPage />} />
+
           <Route path="/query" element={<QueryPage />} />
           <Route path="/reports" element={<ArrivalsPage />} />
           <Route path="/assets" element={<AssetDetailsPage />} />

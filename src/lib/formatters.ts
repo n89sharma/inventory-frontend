@@ -15,6 +15,10 @@ export function formatUSD(value: number) {
   return currencyValue
 }
 
+export function formatSentenceCase(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+}
+
 export function getFormattedDate(rawDate: string, withTime?: boolean) {
   if (withTime) {
     return format(new Date(rawDate), 'MMMM dd, yyyy, h:mm a')

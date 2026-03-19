@@ -11,7 +11,7 @@ export const AssetSearch = ({ className }: { className?: string }) => {
 
   function handleSearch() {
     if (!barcode) { setInvalid(true); return }
-    navigate(`/assets/${barcode}`)
+    navigate(`/search/${barcode}`)
   }
 
   return (

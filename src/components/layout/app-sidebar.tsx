@@ -13,7 +13,8 @@ import {
 import { ChartLineUpIcon, InvoiceIcon, LineSegmentsIcon, LockOpenIcon, MagnifyingGlassIcon, StackIcon, TruckTrailerIcon, UserIcon, WarehouseIcon } from "@phosphor-icons/react"
 import { useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { useNavigationStore, type NavSection } from '@/data/store/navigation-store'
+import { useNavigationStore } from '@/data/store/navigation-store'
+import { isNavigationSection, type NavigationSection } from "@/types/navigation-context"
 
 const sidebarItems = [
   {
@@ -42,8 +43,8 @@ const sidebarItems = [
     icon: <InvoiceIcon />
   },
   {
-    title: "Query",
-    url: "/query",
+    title: "Search",
+    url: "/search",
     icon: <MagnifyingGlassIcon />
   },
   {
@@ -54,17 +55,14 @@ const sidebarItems = [
 
 ]
 
-const NAV_SECTIONS = new Set(['arrivals', 'transfers', 'departures', 'holds', 'invoices'])
-
 export function AppSidebar(): React.JSX.Element {
   const location = useLocation()
   const lastPaths = useNavigationStore(state => state.lastPaths)
   const clearLastPath = useNavigationStore(state => state.clearLastPath)
 
   useEffect(() => {
-    const section = location.pathname.slice(1) as NavSection
-    if (NAV_SECTIONS.has(section)) {
-      clearLastPath(section)
+    if (isNavigationSection(location.pathname.slice(1))) {
+      clearLastPath(location.pathname.slice(1) as NavigationSection)
     }
   }, [location.pathname])
 
@@ -95,9 +93,8 @@ export function AppSidebar(): React.JSX.Element {
               {
                 sidebarItems.map((item) => {
                   const section = item.url.slice(1)
-                  const isNavSection = NAV_SECTIONS.has(section)
-                  const resolvedUrl = isNavSection
-                    ? (lastPaths[section as NavSection] ?? item.url)
+                  const resolvedUrl = isNavigationSection(section)
+                    ? (lastPaths[section as NavigationSection] ?? item.url)
                     : item.url
                   const isActive = location.pathname.startsWith(item.url)
                   return (

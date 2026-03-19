@@ -1,18 +1,21 @@
-import { useParams, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { PageBreadcrumb } from '@/components/custom/page-breadcrumb'
+import { getBreadcrumForAssetDetails, PageBreadcrumb } from '@/components/custom/page-breadcrumb'
 import { CMYKRow, DataRow, DataRowContainer, DetailsContainer, Header, Section, SectionRow, AssetTitle, AccessoryRow, ErrorRow, ErrorHeader, InvoiceClearedRow, PartsHeader } from '@/components/custom/asset-detail'
 import { useAssetStore } from "@/data/store/asset-store"
-import { useNavigationStore, type NavSection } from '@/data/store/navigation-store'
+import { useNavigationStore } from '@/data/store/navigation-store'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/shadcn/tabs"
 import { Button } from '@/components/shadcn/button'
 import { Comment } from '@/components/custom/comment'
 import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react'
 import { getAllAssetDetails } from '@/data/api/asset-api'
+import type { NavigationSection } from '@/types/navigation-context'
+import { useAssetDetailsParams } from '@/hooks/use-asset-detail-params'
 
 export const AssetDetailsPage = () => {
 
-  const { id, section, collectionId } = useParams()
+  const { section, collectionId, assetId } = useAssetDetailsParams()
+
   const { pathname } = useLocation()
   const [currentIndex, setCurrentTransferIndex] = useState(0)
 
@@ -34,12 +37,12 @@ export const AssetDetailsPage = () => {
   const clearAssetStore = useAssetStore((state) => state.clearAssetStore)
 
   useEffect(() => {
-    if (section) setLastPath(section as NavSection, pathname)
+    if (section) setLastPath(section as NavigationSection, pathname)
 
     async function loadAssetDetails() {
-      if (!id) return
+      if (!assetId) return
       clearAssetStore()
-      const r = await getAllAssetDetails(id)
+      const r = await getAllAssetDetails(assetId)
       if (r.assetDetails.status === 'fulfilled') setAssetDetails(r.assetDetails.result)
       if (r.assetAccessories.status === 'fulfilled') setAssetAccessories(r.assetAccessories.result)
       if (r.assetErrors.status === 'fulfilled') setAssetErrors(r.assetErrors.result)
@@ -50,7 +53,7 @@ export const AssetDetailsPage = () => {
 
     setCurrentTransferIndex(0)
     loadAssetDetails()
-  }, [id])
+  }, [assetId])
 
   function handleNextTransfer() {
     if (at.length === 0) return
@@ -66,18 +69,7 @@ export const AssetDetailsPage = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      <PageBreadcrumb segments={
-        section && collectionId
-          ? [
-              { label: section.charAt(0).toUpperCase() + section.slice(1), href: `/${section}` },
-              { label: collectionId, href: `/${section}/${collectionId}` },
-              { label: id ?? '' }
-            ]
-          : [
-              { label: 'Home', href: '/' },
-              { label: id ?? '' }
-            ]
-      } />
+      <PageBreadcrumb segments={getBreadcrumForAssetDetails(section, collectionId, assetId)} />
       <DetailsContainer isActive={!!ad}>
 
         <SectionRow className="flex-col">

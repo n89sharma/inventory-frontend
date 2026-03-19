@@ -1,15 +1,22 @@
+import type { NavigationSection } from '@/types/navigation-context'
 import { create } from 'zustand'
 
-export type NavSection = 'arrivals' | 'transfers' | 'departures' | 'holds' | 'invoices'
-
 interface NavigationStore {
-  lastPaths: Record<NavSection, string | null>
-  setLastPath: (section: NavSection, path: string) => void
-  clearLastPath: (section: NavSection) => void
+  lastPaths: Record<NavigationSection, string | null>
+  setLastPath: (section: NavigationSection, path: string) => void
+  clearLastPath: (section: NavigationSection) => void
 }
 
 export const useNavigationStore = create<NavigationStore>((set) => ({
-  lastPaths: { arrivals: null, transfers: null, departures: null, holds: null, invoices: null },
+  lastPaths: {
+    arrivals: null,
+    transfers: null,
+    departures: null,
+    holds: null,
+    invoices: null,
+    search: null,
+    home: null
+  },
   setLastPath: (section, path) =>
     set(state => ({ lastPaths: { ...state.lastPaths, [section]: path } })),
   clearLastPath: (section) =>

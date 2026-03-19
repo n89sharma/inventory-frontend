@@ -8,6 +8,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/shadcn/breadcrumb'
+import { isCollection, type NavigationSection } from '@/types/navigation-context'
+import { formatSentenceCase } from '@/lib/formatters'
 
 interface BreadcrumbSegment {
   label: string
@@ -39,4 +41,42 @@ export function PageBreadcrumb({ segments }: PageBreadcrumbProps): React.JSX.Ele
       </BreadcrumbList>
     </Breadcrumb>
   )
+}
+
+export function getBreadcrumForAssetDetails(
+  section: NavigationSection,
+  collectionId: string | null,
+  assetId: string): BreadcrumbSegment[] {
+
+
+  if (isCollection(section)) {
+    return [
+      { label: formatSentenceCase(section), href: `/${section}` },
+      { label: collectionId ?? '', href: `/${section}/${collectionId}` },
+      { label: assetId }
+    ]
+  }
+
+  switch (section) {
+    case 'search':
+      return [
+        { label: 'Search', href: '/search' },
+        { label: assetId }
+      ]
+    default:
+      return [
+        { label: 'Home', href: '/' },
+        { label: assetId }
+      ]
+  }
+}
+
+export function getBreadcrumbForAssetSummary(
+  section: NavigationSection,
+  collectionId: string | null): BreadcrumbSegment[] {
+
+  return [
+    { label: formatSentenceCase(section), href: `/${section}` },
+    { label: collectionId ?? '' }
+  ]
 }

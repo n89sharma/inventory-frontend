@@ -1,9 +1,8 @@
-import type { AssetDetails, AssetSummary, Comment, Error, Part, Transfer } from '@/data/api/asset-api'
+import type { AssetDetails, Comment, Error, Part, Transfer } from '@/data/api/asset-api'
 import { create } from 'zustand'
 
 interface AssetStore {
   //entities
-  assets: AssetSummary[]
   assetDetails: AssetDetails | null
   accessories: string[]
   errors: Error[]
@@ -12,7 +11,6 @@ interface AssetStore {
   parts: Part[]
 
   //actions
-  setAssets: (assets: AssetSummary[]) => void
   setAssetDetails: (assetDetails: AssetDetails) => void
   setAssetAccessories: (accessories: string[]) => void
   setAssetErrors: (errors: Error[]) => void
@@ -25,7 +23,6 @@ interface AssetStore {
 }
 
 export const useAssetStore = create<AssetStore>((set) => ({
-  assets: [],
   assetDetails: null,
   accessories: [],
   errors: [],
@@ -33,7 +30,6 @@ export const useAssetStore = create<AssetStore>((set) => ({
   transfers: [],
   parts: [],
 
-  setAssets: (assets) => set({ assets }),
   setAssetDetails: (assetDetails) => set({ assetDetails }),
   setAssetAccessories: (accessories) => set({ accessories }),
   setAssetErrors: (errors) => set({ errors }),
@@ -42,7 +38,6 @@ export const useAssetStore = create<AssetStore>((set) => ({
   setAssetParts: (parts) => set({ parts }),
 
   clearAssetStore: () => set({
-    assets: [],
     assetDetails: null,
     accessories: [],
     errors: [],

@@ -4,6 +4,14 @@
 - Match URL to the status of the page / Add dates as URL parameters
 - Move the sidebar toggle inside the sidebar
 
+## Quality of life
+- Share asset link
+- Copy Asset barcode or Serial number
+
+## Query
+- Save a query for a user
+- View a list of historical queries
+
 ## Arrival
 - Edit arrival
   - Add a pen icon for each arrival row when user searches for arrivals
@@ -27,37 +35,37 @@
 - Table headers are crowded. Perhaps headings need to be broken in two? Total\nMeter
 
 ## Transfer
-- [ ] Create Transfer
-- [ ] Edit Transfer
-- [ ] Accept Transfer
+- Create Transfer
+- Edit Transfer
+- Accept Transfer
 
 ## Departure
-- [ ] Create Departure
-  - [ ] Add assets from a hold/ saved collection
-  - [ ] Add by barcode
-- [ ] Edit departure
+- Create Departure
+  - Add assets from a hold/ saved collection
+  - Add by barcode
+- Edit departure
 
 ## Invoice 
-- [ ] Create new invoice
-- [ ] Attach existing assets to invoice
-- [ ] Add new assets to invoice
+- Create new invoice
+- Attach existing assets to invoice
+- Add new assets to invoice
 
 ## Holds
-- [ ] Search Holds by Created By Created For and Customer
-- [ ] Create holds
+- Search Holds by Created By Created For and Customer
+- Create holds
 
 ## Asset
-- [ ] Allow user to copy paste model and search in query
-- [ ] Print barcode react-barcode
-- [ ] Search asset by serial number
-- [ ] Add Comment
-- [ ] edit error status, errors, meter reading, invoice
-- [ ] add parts
-- [ ] edit price
-- [ ] attach images
-- [ ] Add error codes
-- [ ] Add parts
-- [ ] Provide quick filters for copiers/finishers/accessories within Asset list
+- Allow user to copy paste model and search in query
+- Print barcode react-barcode
+- Search asset by serial number
+- Add Comment
+- edit error status, errors, meter reading, invoice
+- add parts
+- edit price
+- attach images
+- Add error codes
+- Add parts
+- Provide quick filters for copiers/finishers/accessories within Asset list
 - Edit location
 
 ## History

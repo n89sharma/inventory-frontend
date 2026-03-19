@@ -1,49 +1,52 @@
-import { useLocation, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { getAssetsForArrival, getAssetsForDeparture, getAssetsForHolds, getAssetsForInvoices, getAssetsForTransfers } from "@/data/api/asset-api"
-import { useAssetStore } from "@/data/store/asset-store"
-import { useNavigationStore, type NavSection } from "@/data/store/navigation-store"
+import type { AssetSummary } from "@/data/api/asset-api"
+import { useNavigationStore } from "@/data/store/navigation-store"
 import { DataTable } from "../shadcn/data-table"
 import { createAssetSummaryColumns } from './column-defs/asset-summary-columns'
-import { PageBreadcrumb } from '@/components/custom/page-breadcrumb'
+import { getBreadcrumbForAssetSummary, PageBreadcrumb } from '@/components/custom/page-breadcrumb'
+import type { NavigationSection } from '@/types/navigation-context'
+import { useLocation, useParams } from 'react-router-dom'
 
 export function AssetSummaryPage(): React.JSX.Element {
-  const { id } = useParams()
-  const { pathname } = useLocation()
-  const [loading, setLoading] = useState(true)
   const [title, setTitle] = useState('')
-
-  const assets = useAssetStore((state) => state.assets)
-  const setAssets = useAssetStore((state) => state.setAssets)
+  const [assets, setAssets] = useState<AssetSummary[]>([])
+  const [loading, setLoading] = useState(true)
   const setLastPath = useNavigationStore(state => state.setLastPath)
+  const { section, collectionId } = useParams<{
+    section: NavigationSection,
+    collectionId: string
+  }>();
+  const { pathname } = useLocation()
 
-  const section = pathname.split('/')[1]
-  const sectionLabel = section.charAt(0).toUpperCase() + section.slice(1)
-  const columns = createAssetSummaryColumns(section, id ?? '')
+  if (section === undefined || collectionId === undefined)
+    throw new Error('Missing parameters')
+
+  const columns = createAssetSummaryColumns(section, collectionId)
 
   useEffect(() => {
-    setLastPath(section as NavSection, pathname)
+    setLastPath(section, pathname)
 
     async function loadAssets() {
-      if (!id) return
+      if (!collectionId) return
 
       setLoading(true)
       try {
         if (section === 'arrivals') {
-          setTitle(`Arrival ${id}`)
-          setAssets(await getAssetsForArrival(id))
+          setTitle(`Arrival ${collectionId}`)
+          setAssets(await getAssetsForArrival(collectionId))
         } else if (section === 'transfers') {
-          setTitle(`Transfer ${id}`)
-          setAssets(await getAssetsForTransfers(id))
+          setTitle(`Transfer ${collectionId}`)
+          setAssets(await getAssetsForTransfers(collectionId))
         } else if (section === 'departures') {
-          setTitle(`Departure ${id}`)
-          setAssets(await getAssetsForDeparture(id))
+          setTitle(`Departure ${collectionId}`)
+          setAssets(await getAssetsForDeparture(collectionId))
         } else if (section === 'holds') {
-          setTitle(`Hold ${id}`)
-          setAssets(await getAssetsForHolds(id))
+          setTitle(`Hold ${collectionId}`)
+          setAssets(await getAssetsForHolds(collectionId))
         } else if (section === 'invoices') {
-          setTitle(`Invoice ${id}`)
-          setAssets(await getAssetsForInvoices(id))
+          setTitle(`Invoice ${collectionId}`)
+          setAssets(await getAssetsForInvoices(collectionId))
         }
       } finally {
         setLoading(false)
@@ -51,17 +54,14 @@ export function AssetSummaryPage(): React.JSX.Element {
     }
 
     loadAssets()
-  }, [id])
+  }, [collectionId])
 
   if (loading) return <div>Loading...</div>
   if (!assets) return <div>No assets!</div>
 
   return (
     <div className="flex flex-col gap-2">
-      <PageBreadcrumb segments={[
-        { label: sectionLabel, href: `/${section}` },
-        { label: id ?? '' }
-      ]} />
+      <PageBreadcrumb segments={getBreadcrumbForAssetSummary(section, collectionId)} />
       <h1 className="text-3xl font-bold p-2">
         {title}
       </h1>

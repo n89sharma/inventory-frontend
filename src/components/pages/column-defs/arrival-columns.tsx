@@ -2,7 +2,7 @@ import { Button } from "@/components/shadcn/button"
 import { format } from "date-fns"
 import type { Arrival } from "@/data/api/arrival-api"
 import type { ColumnDef } from "@tanstack/react-table"
-import { ArrowsDownUpIcon } from "@phosphor-icons/react"
+import { ArrowsDownUpIcon, PencilSimpleIcon } from "@phosphor-icons/react"
 import { Link } from "react-router-dom"
 
 export const arrivalTableColumns: ColumnDef<Arrival>[] = [
@@ -60,5 +60,24 @@ export const arrivalTableColumns: ColumnDef<Arrival>[] = [
   {
     accessorKey: "vendor",
     header: "Vendor"
+  },
+  {
+    header: "Edit",
+    cell: ({ row }) => {
+      return (
+
+        <Link to={`/arrivals/${row.original.arrival_number}/edit`}>
+          <Button
+            variant="outline"
+            size="icon"
+            asChild={false}
+            className="cursor-pointer"
+          >
+            <PencilSimpleIcon />
+          </Button >
+        </Link >
+
+      )
+    }
   }
 ]

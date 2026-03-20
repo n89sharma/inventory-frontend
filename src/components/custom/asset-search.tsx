@@ -23,7 +23,13 @@ export const AssetSearch = ({ className }: { className?: string }) => {
         aria-invalid={invalid}
         onChange={e => { setBarcode(e.target.value.trim()); setInvalid(false) }}
       />
-      <Button type="submit">Search</Button>
+      <Button
+        type="submit"
+        variant="secondary"
+        className="rounded-md"
+      >
+        Search
+      </Button>
     </form>
   )
 }

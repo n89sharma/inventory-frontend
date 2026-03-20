@@ -1,8 +1,14 @@
 # Tasks
 
-## Navigation
-- Match URL to the status of the page / Add dates as URL parameters
-- Move the sidebar toggle inside the sidebar
+## Arrival
+- Edit arrival
+  - Add a pen icon for each arrival row when user searches for arrivals
+  - Add an edit icon for when the user opens a specific arrival
+  - Should we allow the user to edit the vendor/ transporter/ warehouse?
+  - For now we can just allow new assets?
+  - Opens up create arrival page but populates the arrival information
+  - User can add a new asset
+- Print all barcodes
 
 ## Quality of life
 - Share asset link
@@ -11,13 +17,6 @@
 ## Query
 - Save a query for a user
 - View a list of historical queries
-
-## Arrival
-- Edit arrival
-  - Add a pen icon for each arrival row when user searches for arrivals
-  - Opens up create arrival page but populates the arrival information
-  - User can add a new asset
-- Print all barcodes
 
 ## Asset Summary pages
 - Add total number of assets within an arrival/transfer/departure/invoice/hold

@@ -7,6 +7,7 @@ import { createAssetSummaryColumns } from './column-defs/asset-summary-columns'
 import { getBreadcrumbForAssetSummary, PageBreadcrumb } from '@/components/custom/page-breadcrumb'
 import type { NavigationSection } from '@/types/navigation-context'
 import { useLocation, useParams } from 'react-router-dom'
+import { CollectionEditBar } from '../custom/collection-edit-bar'
 
 export function AssetSummaryPage(): React.JSX.Element {
   const [title, setTitle] = useState('')
@@ -62,9 +63,12 @@ export function AssetSummaryPage(): React.JSX.Element {
   return (
     <div className="flex flex-col gap-2">
       <PageBreadcrumb segments={getBreadcrumbForAssetSummary(section, collectionId)} />
-      <h1 className="text-3xl font-bold p-2">
-        {title}
-      </h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold p-2">
+          {title}
+        </h1>
+        <CollectionEditBar section={section} collectionId={collectionId} />
+      </div>
       <DataTable columns={columns} data={assets} />
     </div>
   )

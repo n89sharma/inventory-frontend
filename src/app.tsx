@@ -13,6 +13,7 @@ import { useConstantsData } from './hooks/use-constants'
 import { ArrivalCreatePage } from './components/pages/arrival-create'
 import { useOrgData } from './hooks/use-org-data'
 import { useUserData } from './hooks/use-user-data'
+import { ArrivalEditPage } from './components/pages/arrival-edit'
 
 function App() {
   useModelData()
@@ -28,6 +29,7 @@ function App() {
 
           <Route path="/arrivals" element={<ArrivalsPage />} />
           <Route path="/arrivals/new" element={<ArrivalCreatePage />} />
+          <Route path="/arrivals/:collectionId/edit" element={<ArrivalEditPage />} />
           <Route path="/:section/:collectionId" element={<AssetSummaryPage />} />
 
           <Route path="/transfers" element={<TransferPage />} />

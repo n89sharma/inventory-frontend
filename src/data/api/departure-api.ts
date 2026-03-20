@@ -1,19 +1,8 @@
 import { api } from '@/data/api/axios-client'
 import { getIdOrNullFromSelection, getSelectedOrNull, type SelectOption } from '@/types/select-option-types'
 import { z } from 'zod'
-import type { Warehouse } from './constants-api'
-
-const DepartureSchema = z.object({
-  departure_number: z.string(),
-  origin_code: z.string(),
-  origin_street: z.string(),
-  destination: z.string(),
-  transporter: z.string(),
-  created_at: z.iso.datetime(),
-  created_by: z.string()
-})
-
-export type Departure = z.infer<typeof DepartureSchema>
+import { type Departure, DepartureSchema } from '../../types/departure-types'
+import type { Warehouse } from '../../types/reference-data-types'
 
 export async function getDepartures(
   fromDate: SelectOption<Date>,

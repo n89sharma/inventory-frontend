@@ -1,7 +1,7 @@
-import type { Departure } from '@/data/api/departure-api'
-import { create } from 'zustand'
-import type { Warehouse } from '../api/constants-api'
 import { ANY_OPTION, UNSELECTED, type SelectOption } from '@/types/select-option-types'
+import { create } from 'zustand'
+import type { Departure } from '../../types/departure-types'
+import type { Warehouse } from '../../types/reference-data-types'
 
 interface DepartureStore {
   departures: Departure[]
@@ -35,6 +35,6 @@ export const useDepartureStore = create<DepartureStore>((set) => ({
   setOrigin: (origin) => set({ origin }),
   setLoading: (loading) => set({ loading }),
   setHasSearched: (hasSearched) => set({ hasSearched }),
-  
+
   clearDepartures: () => set({ departures: [] })
 }))

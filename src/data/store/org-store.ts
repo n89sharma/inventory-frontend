@@ -1,5 +1,5 @@
-import type { Organization } from '@/data/api/org-api'
 import { create } from 'zustand'
+import type { Organization } from '../../types/organization-types'
 
 interface OrgStore {
   organizations: Organization[]

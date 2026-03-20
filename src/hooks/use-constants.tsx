@@ -1,6 +1,6 @@
+import { getReferenceData as getConstantsApi } from '@/data/api/reference-data-api'
 import { useConstantsStore } from '@/data/store/constants-store'
-import { useState, useEffect } from 'react'
-import { getConstants as getConstantsApi } from '@/data/api/constants-api'
+import { useEffect, useState } from 'react'
 
 export function useConstantsData() {
   const [loading, setLoading] = useState<boolean>(false)

@@ -5,20 +5,12 @@ import type { ApiResponse } from '@/types/api-response-types'
 import { getIdOrNullFromSelection, getSelectedOrNull, type SelectOption } from '@/types/select-option-types'
 import type { AxiosResponse } from 'axios'
 import { z } from 'zod'
-import type { Warehouse } from './constants-api'
+import { type Arrival, ArrivalSchema } from '../../types/arrival-types'
+import type { Warehouse } from '../../types/reference-data-types'
 
-
-const ArrivalSchema = z.object({
-  arrival_number: z.string(),
-  vendor: z.string(),
-  destination_code: z.string(),
-  destination_street: z.string(),
-  transporter: z.string(),
-  created_at: z.iso.datetime(),
-  created_by: z.string().nullable()
-})
-
-export type Arrival = z.infer<typeof ArrivalSchema>
+interface CreateArrivalResponse {
+  arrivalNumber: string
+}
 
 export async function getArrivals(
   fromDate: SelectOption<Date>,
@@ -34,10 +26,6 @@ export async function getArrivals(
     }
   })
   return z.array(ArrivalSchema).parse(res.data)
-}
-
-interface CreateArrivalResponse {
-  arrivalNumber: string
 }
 
 export async function createArrival(a: NewArrival): Promise<ApiResponse<CreateArrivalResponse>> {

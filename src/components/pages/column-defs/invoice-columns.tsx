@@ -1,8 +1,8 @@
 import { Button } from "@/components/shadcn/button"
-import { format } from "date-fns"
-import type { Invoice } from "@/data/api/invoice-api"
-import type { ColumnDef } from "@tanstack/react-table"
+import type { Invoice } from '@/types/invoice-types'
 import { ArrowsDownUpIcon } from "@phosphor-icons/react"
+import type { ColumnDef } from "@tanstack/react-table"
+import { format } from "date-fns"
 import { Link } from "react-router-dom"
 
 export const invoiceTableColumns: ColumnDef<Invoice>[] = [

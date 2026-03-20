@@ -1,4 +1,4 @@
-import type { AssetDetails, Comment, Error, Part, Transfer } from '@/data/api/asset-api'
+import type { AssetDetails, Comment, Error, Part, Transfer } from '@/types/asset-types'
 import { create } from 'zustand'
 
 interface AssetStore {

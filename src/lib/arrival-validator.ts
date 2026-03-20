@@ -1,7 +1,7 @@
+import { ModelSchema, type Model } from '@/types/model-types'
+import { OrgSchema, type Organization } from '@/types/organization-types'
+import { CoreFunctionsSchema, StatusSchema, WarehouseSchema, type CoreFunction, type Status, type Warehouse } from '@/types/reference-data-types'
 import { isSelected, type SelectOption } from '@/types/select-option-types'
-import { CoreFunctionsSchema, StatusSchema, WarehouseSchema, type CoreFunction, type Status, type Warehouse } from "@/data/api/constants-api"
-import { ModelSchema, type Model } from "@/data/api/model-api"
-import { OrgSchema, type Organization } from "@/data/api/org-api"
 import { z } from "zod"
 
 const SelectOptionSchema = <T extends z.ZodTypeAny>(selectedSchema: T) =>

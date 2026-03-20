@@ -1,7 +1,7 @@
-import type { Arrival } from '@/data/api/arrival-api'
-import { create } from 'zustand'
-import type { Warehouse } from '../api/constants-api'
 import { ANY_OPTION, UNSELECTED, type SelectOption } from '@/types/select-option-types'
+import { create } from 'zustand'
+import type { Arrival } from '../../types/arrival-types'
+import type { Warehouse } from '../../types/reference-data-types'
 
 interface ArrivalStore {
   arrivals: Arrival[]

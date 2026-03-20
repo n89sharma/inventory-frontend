@@ -1,8 +1,8 @@
-import type { AssetSummary } from '@/data/api/asset-api'
-import type { Model } from '@/data/api/model-api'
-import type { Status, Warehouse } from '@/data/api/constants-api'
-import { create } from 'zustand'
 import { ANY_OPTION, type SelectOption } from '@/types/select-option-types'
+import { create } from 'zustand'
+import type { AssetSummary } from '../../types/asset-types'
+import type { Model } from '../../types/model-types'
+import type { Status, Warehouse } from '../../types/reference-data-types'
 
 interface QueryStore {
   assets: AssetSummary[]

@@ -1,8 +1,8 @@
 import { Button } from "@/components/shadcn/button"
-import { format } from "date-fns"
-import type { Hold } from "@/data/api/hold-api"
-import type { ColumnDef } from "@tanstack/react-table"
+import type { Hold } from '@/types/hold-types'
 import { ArrowsDownUpIcon } from "@phosphor-icons/react"
+import type { ColumnDef } from "@tanstack/react-table"
+import { format } from "date-fns"
 import { Link } from "react-router-dom"
 
 export const holdTableColumns: ColumnDef<Hold>[] = [

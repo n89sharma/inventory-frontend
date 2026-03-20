@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react'
-import { getAssetsForArrival, getAssetsForDeparture, getAssetsForHolds, getAssetsForInvoices, getAssetsForTransfers } from "@/data/api/asset-api"
-import type { AssetSummary } from "@/data/api/asset-api"
-import { useNavigationStore } from "@/data/store/navigation-store"
-import { DataTable } from "../shadcn/data-table"
-import { createAssetSummaryColumns } from './column-defs/asset-summary-columns'
 import { getBreadcrumbForAssetSummary, PageBreadcrumb } from '@/components/custom/page-breadcrumb'
+import { getAssetsForArrival, getAssetsForDeparture, getAssetsForHolds, getAssetsForInvoices, getAssetsForTransfers } from "@/data/api/asset-api"
+import { useNavigationStore } from "@/data/store/navigation-store"
+import type { AssetSummary } from '@/types/asset-types'
 import type { NavigationSection } from '@/types/navigation-context'
+import { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import { CollectionEditBar } from '../custom/collection-edit-bar'
+import { DataTable } from "../shadcn/data-table"
+import { createAssetSummaryColumns } from './column-defs/asset-summary-columns'
 
 export function AssetSummaryPage(): React.JSX.Element {
   const [title, setTitle] = useState('')

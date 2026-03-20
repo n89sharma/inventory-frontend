@@ -149,7 +149,6 @@ export function ArrivalCreatePage(): React.JSX.Element {
           >
             Create Arrival
           </Button>
-          <Button variant='outline'>Save</Button>
         </div>
 
       </form>

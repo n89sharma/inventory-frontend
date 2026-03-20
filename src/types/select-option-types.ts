@@ -1,5 +1,5 @@
-import type { Status, Warehouse } from "@/data/api/constants-api";
-import type { User } from "@/data/api/user-api";
+import type { Status, Warehouse } from '@/types/reference-data-types';
+import type { User } from '@/types/user-types';
 
 export type SelectOption<T> =
   | { state: 'SELECTED'; selected: T }

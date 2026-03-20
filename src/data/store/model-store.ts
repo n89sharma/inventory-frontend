@@ -1,5 +1,5 @@
-import type { Model } from '@/data/api/model-api'
 import { create } from 'zustand'
+import type { Model } from '../../types/model-types'
 
 interface ModelStore {
   models: Model[]

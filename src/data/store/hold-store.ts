@@ -1,7 +1,7 @@
-import type { Hold } from '@/data/api/hold-api'
-import { create } from 'zustand'
-import type { User } from '../api/user-api'
 import { ANY_OPTION, UNSELECTED, type SelectOption } from '@/types/select-option-types'
+import { create } from 'zustand'
+import type { Hold } from '../../types/hold-types'
+import type { User } from '../../types/user-types'
 
 interface HoldStore {
   holds: Hold[]

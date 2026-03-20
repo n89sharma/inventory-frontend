@@ -1,6 +1,6 @@
-import type { Invoice } from '@/data/api/invoice-api'
 import { ANY_OPTION, UNSELECTED, type SelectOption } from '@/types/select-option-types'
 import { create } from 'zustand'
+import type { Invoice } from '../../types/invoice-types'
 
 interface InvoiceStore {
   invoices: Invoice[]

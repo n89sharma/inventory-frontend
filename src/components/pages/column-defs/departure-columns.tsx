@@ -1,8 +1,8 @@
 import { Button } from "@/components/shadcn/button"
-import { format } from "date-fns"
-import type { Departure } from "@/data/api/departure-api"
-import type { ColumnDef } from "@tanstack/react-table"
+import type { Departure } from '@/types/departure-types'
 import { ArrowsDownUpIcon } from "@phosphor-icons/react"
+import type { ColumnDef } from "@tanstack/react-table"
+import { format } from "date-fns"
 import { Link } from "react-router-dom"
 
 export const departureTableColumns: ColumnDef<Departure>[] = [

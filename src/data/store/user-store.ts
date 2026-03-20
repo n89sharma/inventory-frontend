@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { User } from '@/data/api/user-api'
+import type { User } from '../../types/user-types'
 
 interface UserStore {
   users: User[]

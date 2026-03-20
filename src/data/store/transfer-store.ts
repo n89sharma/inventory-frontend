@@ -1,7 +1,7 @@
-import type { Transfer } from '@/data/api/transfer-api'
-import { create } from 'zustand'
-import type { Warehouse } from '../api/constants-api'
 import { ANY_OPTION, UNSELECTED, type SelectOption } from '@/types/select-option-types'
+import { create } from 'zustand'
+import type { Warehouse } from '../../types/reference-data-types'
+import type { Transfer } from '../../types/transfer-types'
 
 interface TransferStore {
   transfers: Transfer[]

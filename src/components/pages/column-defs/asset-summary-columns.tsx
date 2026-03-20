@@ -1,10 +1,10 @@
-import type { ColumnDef } from "@tanstack/react-table"
-import { ArrowsDownUpIcon } from "@phosphor-icons/react"
-import { Link } from "react-router-dom"
-import { formatThousandsK } from "@/lib/formatters"
 import { Button } from "@/components/shadcn/button"
-import type { AssetSummary } from "@/data/api/asset-api"
+import { formatThousandsK } from "@/lib/formatters"
+import type { AssetSummary } from '@/types/asset-types'
 import { isCollection, type NavigationSection } from "@/types/navigation-context"
+import { ArrowsDownUpIcon } from "@phosphor-icons/react"
+import type { ColumnDef } from "@tanstack/react-table"
+import { Link } from "react-router-dom"
 
 export function createAssetSummaryColumns(
   navigationSection: NavigationSection,

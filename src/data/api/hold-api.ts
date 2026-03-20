@@ -1,20 +1,8 @@
 import { api } from '@/data/api/axios-client'
-import { z } from 'zod'
-import type { User } from '@/data/api/user-api'
 import { getIdOrNullFromSelection, getSelectedOrNull, type SelectOption } from '@/types/select-option-types'
-
-const HoldSchema = z.object({
-  hold_number: z.string(),
-  created_by: z.string(),
-  created_for: z.string(),
-  customer: z.string(),
-  notes: z.string(),
-  created_at: z.iso.datetime(),
-  from_dt: z.iso.datetime().nullable(),
-  to_dt: z.iso.datetime().nullable()
-})
-
-export type Hold = z.infer<typeof HoldSchema>
+import { z } from 'zod'
+import { type Hold, HoldSchema } from '../../types/hold-types'
+import type { User } from '../../types/user-types'
 
 export async function getHolds(
   fromDate: SelectOption<Date>,

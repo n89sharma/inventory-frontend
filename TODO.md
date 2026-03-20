@@ -2,12 +2,10 @@
 
 ## Arrival
 - Edit arrival
-  - Add a pen icon for each arrival row when user searches for arrivals
-  - Add an edit icon for when the user opens a specific arrival
-  - Should we allow the user to edit the vendor/ transporter/ warehouse?
-  - For now we can just allow new assets?
   - Opens up create arrival page but populates the arrival information
+    - Get the arrival from 
   - User can add a new asset
+
 - Print all barcodes
 
 ## Quality of life
@@ -98,75 +96,122 @@
 - [ ] What is stores machine codes?
 - [ ] Arrival number doesnt have warehouse reference but barcode does.
 
+# Inpiration
+- Github
+- Railway
+- Vercel
+- Claude
+- VS Code
+- Discord
+- Chrome
+- Gmail
+- Outlook
+- Air BnB
+- Amazon
 
-Feedback
-  Immediate Fixes (Bugs / Inconsistencies)
+## Data-Dense Dashboards & Tables
 
-  6. Loading state exists in stores but isn't used on list pages
-  All 5 list stores have a loading field and setLoading setter, but arrivals.tsx,       
-  transfers.tsx, etc. never call setLoading. Only query.tsx manages loading locally with
-   useState. Users get no feedback while data is fetching.
+- Linear – Incredibly clean issue/task management. Excellent use of keyboard shortcuts, command palette, and dense data tables without feeling cluttered.
+Retool – Great reference for internal tools and data grids. Shows how to handle complex filtering and inline editing.
+Airtable – Master class in flexible data views (grid, kanban, calendar, gallery) from the same dataset.
 
-  ---
-  Fix Soon (Architecture)
+## Navigation & Information Architecture
 
-  7. Massive store boilerplate
-  All 5 list stores (arrival, transfer, departure, hold, invoice) duplicate the exact   
-  same pattern: fromDate, toDate, warehouse, hasSearched, and 4 setters. If you add a   
-  new search filter, you touch 5 files. Consider a factory or a shared
-  createSearchStore() Zustand slice.
+Notion – Sidebar navigation, nested hierarchy, and breadcrumb patterns done exceptionally well.
+Vercel Dashboard – Clean top-level navigation with contextual sub-navigation. Great empty states and status indicators.
+Raycast – Command palette and search-first UX that's influencing many modern apps.
 
-  8. No error states shown to users on list page failures
-  If getArrivals() throws, the error is unhandled — there's no catch, no toast, no empty
-   state message. The table just stays empty. For an ERP system, silent failures are    
-  dangerous.
+## Forms & Data Entry
 
-  9. useAutoSearch captures a stale closure
-  useEffect(() => {
-    if (!hasSearched) onSearchSetData(...)
-  }, []) // empty deps — stale closure
-  ESLint exhaustive-deps will flag this, and it captures the initial render's
-  onSearchSetData. In practice it works, but it's fragile.
+Stripe Dashboard – Industry benchmark for financial/transactional UI. Excellent detail pages, status badges, and timeline components.
+Clerk – Clean settings and configuration forms. Good multi-step flows.
+Supabase – Database management UI with great table editors, filters, and query builders.
 
-  10. getPartNames() parses structured data from a string
-  In formatters.ts, getPartNames() extracts part information from a freetext notes      
-  field. This suggests either the backend stores structured data as a string or the     
-  backend API is not providing a properly shaped response. This will break silently if  
-  the format changes.
+## Status, Alerts & Real-Time Updates
 
-  ---
-  Plan For (Scalability)
+PagerDuty / Incident.io – Status tracking, incident timelines, and severity indicators relevant to inventory alerts and stock-level warnings.
+Grafana – If you need charts and monitoring dashboards, their panel and layout system is worth studying.
 
-  11. No pagination on any list page
-  Every list page fetches all records for a date range in one request. For an ERP       
-  handling years of data, this will eventually cause slow loads and large memory usage. 
-  You need cursor/offset pagination with lazy loading or infinite scroll. This needs to 
-  be designed before the data grows too large to refactor around.
+## Search, Filtering & Bulk Actions
 
-  12. Client-side fuzzy search (Fuse.js) won't scale
-  PopoverSearch loads all models and orgs into memory and searches with Fuse.js on the  
-  client. This is fine now (~hundreds of records), but ERP systems accumulate thousands 
-  of vendors, models, and assets. Server-side search with debounced API calls will      
-  eventually be needed.
+GitHub – One of the best filter/label/search systems. Their bulk action patterns on issue lists are directly applicable to inventory item lists.
+Shopify Admin – Extremely relevant — it manages products, variants, and stock. Great bulk editing, filter chips, and action menus.
 
-  13. No URL-based filter state
-  All filter state lives in Zustand. You can't share a URL pointing to a specific date  
-  range or warehouse filter. In enterprise workflows, sharing a link to a filtered view 
-  is a common expectation.
+## Mobile-Responsive Admin UIs
 
-  14. No React Error Boundaries
-  An unhandled runtime error in any component will crash the entire UI. Error Boundaries
-   provide a fallback and prevent cascading failures.
+Fly.io Dashboard – Minimal but very thoughtful resource management UI.
+Railway – Clean deployment/resource dashboard with good use of cards and status.
 
-  ---
-  Major Gaps
 
-  15. No authentication or authorisation
-  The app has roles in the constants API but no session management, no login flow, and  
-  no route-level access control. For a system competing with Odoo, this is the most     
-  critical gap. It also affects what data each user should see and what actions they can
-   take.
 
-  16. Reports page is a placeholder
-  /reports currently routes to ArrivalsPage. Not an immediate problem, but tracking this
-   as intentional technical debt is important.
+# Feedback
+## Immediate Fixes (Bugs / Inconsistencies)
+
+6. Loading state exists in stores but isn't used on list pages
+All 5 list stores have a loading field and setLoading setter, but arrivals.tsx,       
+transfers.tsx, etc. never call setLoading. Only query.tsx manages loading locally with
+  useState. Users get no feedback while data is fetching.
+
+---
+## Fix Soon (Architecture)
+
+7. Massive store boilerplate
+All 5 list stores (arrival, transfer, departure, hold, invoice) duplicate the exact   
+same pattern: fromDate, toDate, warehouse, hasSearched, and 4 setters. If you add a   
+new search filter, you touch 5 files. Consider a factory or a shared
+createSearchStore() Zustand slice.
+
+8. No error states shown to users on list page failures
+If getArrivals() throws, the error is unhandled — there's no catch, no toast, no empty
+  state message. The table just stays empty. For an ERP system, silent failures are    
+dangerous.
+
+9. useAutoSearch captures a stale closure
+useEffect(() => {
+  if (!hasSearched) onSearchSetData(...)
+}, []) // empty deps — stale closure
+ESLint exhaustive-deps will flag this, and it captures the initial render's
+onSearchSetData. In practice it works, but it's fragile.
+
+10. getPartNames() parses structured data from a string
+In formatters.ts, getPartNames() extracts part information from a freetext notes      
+field. This suggests either the backend stores structured data as a string or the     
+backend API is not providing a properly shaped response. This will break silently if  
+the format changes.
+
+---
+## Plan For (Scalability)
+
+11. No pagination on any list page
+Every list page fetches all records for a date range in one request. For an ERP       
+handling years of data, this will eventually cause slow loads and large memory usage. 
+You need cursor/offset pagination with lazy loading or infinite scroll. This needs to 
+be designed before the data grows too large to refactor around.
+
+12. Client-side fuzzy search (Fuse.js) won't scale
+PopoverSearch loads all models and orgs into memory and searches with Fuse.js on the  
+client. This is fine now (~hundreds of records), but ERP systems accumulate thousands 
+of vendors, models, and assets. Server-side search with debounced API calls will      
+eventually be needed.
+
+13. No URL-based filter state
+All filter state lives in Zustand. You can't share a URL pointing to a specific date  
+range or warehouse filter. In enterprise workflows, sharing a link to a filtered view 
+is a common expectation.
+
+14. No React Error Boundaries
+An unhandled runtime error in any component will crash the entire UI. Error Boundaries
+  provide a fallback and prevent cascading failures.
+
+---
+## Major Gaps
+
+15. No authentication or authorisation
+The app has roles in the constants API but no session management, no login flow, and  
+no route-level access control. For a system competing with Odoo, this is the most     
+critical gap. It also affects what data each user should see and what actions they can
+  take.
+
+16. Reports page is a placeholder
+/reports currently routes to ArrivalsPage. Not an immediate problem, but tracking this
+  as intentional technical debt is important.

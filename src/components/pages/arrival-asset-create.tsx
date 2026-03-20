@@ -1,20 +1,20 @@
-import type { Model } from "@/data/api/model-api";
+import { useConstantsStore } from "@/data/store/constants-store";
+import { useModelStore } from '@/data/store/model-store';
+import type { NewArrival, NewAsset } from '@/lib/arrival-validator';
+import { NewAssetSchema } from '@/lib/arrival-validator';
+import type { Model } from '@/types/model-types';
+import type { CoreFunction } from '@/types/reference-data-types';
+import { UNSELECTED } from '@/types/select-option-types';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PlusIcon } from "@phosphor-icons/react";
+import { Controller, useForm, type FieldArrayWithId, type UseFieldArrayAppend, type UseFieldArrayRemove } from 'react-hook-form';
 import { ControlledInputWithClear } from "../custom/controlled-input-with-clear";
 import { ControlledPopoverSearch } from "../custom/controlled-popover-search";
 import { SelectOptions } from "../custom/select-options";
-import { UNSELECTED } from '@/types/select-option-types'
-import { FieldSet, FieldLegend, FieldGroup, Field, FieldLabel } from "../shadcn/field";
-import MultipleSelector from "../shadcn/multiple-selector";
-import { useModelStore } from '@/data/store/model-store'
-import type { CoreFunction } from '@/data/api/constants-api'
-import { NewAssetSchema } from '@/lib/arrival-validator'
-import { Controller, useForm, type FieldArrayWithId, type UseFieldArrayAppend, type UseFieldArrayRemove } from 'react-hook-form'
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { NewArrival, NewAsset } from '@/lib/arrival-validator'
-import { useConstantsStore } from "@/data/store/constants-store";
 import { Button } from "../shadcn/button";
-import { PlusIcon } from "@phosphor-icons/react";
 import { DataTable } from "../shadcn/data-table";
+import { Field, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "../shadcn/field";
+import MultipleSelector from "../shadcn/multiple-selector";
 import { getNewAssetTableColumns } from "./column-defs/new-assets-columns";
 
 interface ArrivalAssetCreateSectionProps {

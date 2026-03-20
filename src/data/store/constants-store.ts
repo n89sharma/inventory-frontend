@@ -1,5 +1,5 @@
-import type { Constants, CoreFunction, AssetType, Status, Role, InvoiceType, Warehouse } from '@/data/api/constants-api'
 import { create } from 'zustand'
+import type { AssetType, CoreFunction, InvoiceType, ReferenceData, Role, Status, Warehouse } from '../../types/reference-data-types'
 
 interface ConstantsStore {
   coreFunctions: CoreFunction[]
@@ -12,7 +12,7 @@ interface ConstantsStore {
   warehouses: Warehouse[]
   loading: boolean
 
-  setConstants: (constants: Constants) => void
+  setConstants: (constants: ReferenceData) => void
   setLoading: (loading: boolean) => void
 
   clearConstants: () => void

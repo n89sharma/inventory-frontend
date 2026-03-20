@@ -1,9 +1,9 @@
-import type { ColumnDef } from "@tanstack/react-table"
-import type { CoreFunction } from "@/data/api/constants-api"
-import { TrashIcon } from "@phosphor-icons/react"
-import { Button } from "@/components/shadcn/button"
 import { Badge } from "@/components/shadcn/badge"
+import { Button } from "@/components/shadcn/button"
 import type { NewAsset } from "@/lib/arrival-validator"
+import type { CoreFunction } from '@/types/reference-data-types'
+import { TrashIcon } from "@phosphor-icons/react"
+import type { ColumnDef } from "@tanstack/react-table"
 
 interface GetNewAssetTableColumnProps {
   onDelete: (id: number) => void

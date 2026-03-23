@@ -1,9 +1,9 @@
 import { z } from 'zod';
+import { AssetSummarySchema } from './asset-types';
 import { ModelSchema, type Model } from './model-types';
-import { OrgDetailSchema, OrgSummarySchema, type OrgDetail, type OrgSummary } from './organization-types';
+import { OrgDetailSchema, OrgSummarySchema, type OrgSummary } from './organization-types';
 import { CoreFunctionsSchema, StatusSchema, WarehouseSchema, type CoreFunction, type Status, type Warehouse } from './reference-data-types';
 import { SelectOptionSchema, isSelected, type SelectOption } from './select-option-types';
-import { AssetSummarySchema } from './asset-types';
 
 export const ArrivalSummarySchema = z.object({
   arrival_number: z.string(),

@@ -1,5 +1,13 @@
 # Tasks
 
+## Process improvements
+- Claude Skills
+  - PRD to plan
+  - UI/ Interface design
+  - React best practices
+  - Testing
+- Claude MCP Server for reading documentation
+
 ## Arrival
 - Edit arrival
   - Opens up create arrival page but populates the arrival information

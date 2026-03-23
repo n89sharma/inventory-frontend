@@ -1,24 +1,30 @@
-import { SelectOptions } from '../custom/select-options'
-import { UNSELECTED } from '@/types/select-option-types'
-import { Button } from '../shadcn/button'
-import { FieldGroup, Field, FieldLabel, FieldLegend, FieldSet, FieldError } from '../shadcn/field'
-import { Textarea } from '../shadcn/textarea'
+import { createArrival, updateArrival } from '@/data/api/arrival-api'
 import { useConstantsStore } from '@/data/store/constants-store'
 import { useOrgStore } from '@/data/store/org-store'
-import { Controller, useFieldArray, useForm, type FieldErrors } from 'react-hook-form'
+import { ArrivalFormSchema, type ArrivalForm } from '@/types/arrival-types'
+import { UNSELECTED } from '@/types/select-option-types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { NewArrivalSchema } from '@/lib/arrival-validator'
-import type { NewArrival } from '@/lib/arrival-validator'
-import { ControlledPopoverSearch } from '../custom/controlled-popover-search'
-import { ArrivalAssetCreateSection } from './arrival-asset-create'
-import { createArrival } from '@/data/api/arrival-api'
-import { toast } from "sonner"
 import { useEffect } from 'react'
+import { Controller, useFieldArray, useForm, type FieldErrors } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { toast } from "sonner"
+import { ControlledPopoverSearch } from '../custom/controlled-popover-search'
+import { SelectOptions } from '../custom/select-options'
+import { Button } from '../shadcn/button'
+import { Field, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from '../shadcn/field'
+import { Textarea } from '../shadcn/textarea'
+import { ArrivalAssetCreateSection } from './arrival-asset-create'
 
-export function ArrivalCreatePage(): React.JSX.Element {
-  const newArrivalForm = useForm<NewArrival>({
-    resolver: zodResolver(NewArrivalSchema),
-    defaultValues: getDefaultArrival()
+interface ArrivalCreatePageProps {
+  defaultValues?: ArrivalForm
+  arrivalId?: string
+}
+
+export function ArrivalCreatePage({ defaultValues, arrivalId }: ArrivalCreatePageProps = {}): React.JSX.Element {
+  const navigate = useNavigate()
+  const newArrivalForm = useForm<ArrivalForm>({
+    resolver: zodResolver(ArrivalFormSchema),
+    defaultValues: defaultValues ?? getDefaultArrival()
   })
   const warehouses = useConstantsStore((state) => state.warehouses)
   const activeWarehouses = warehouses.filter(w => w.is_active)
@@ -41,19 +47,28 @@ export function ArrivalCreatePage(): React.JSX.Element {
       onInvalidArrival)()
   }
 
-  async function onValidArrival(newArrival: NewArrival) {
-    const apiResponse = await createArrival(newArrival)
-    if (apiResponse.success) {
-      toast.success(`Arrival ${apiResponse.data.arrivalNumber} created!`, { position: "top-center" })
+  async function onValidArrival(newArrival: ArrivalForm) {
+    if (arrivalId) {
+      const apiResponse = await updateArrival(arrivalId, newArrival)
+      if (apiResponse.success) {
+        toast.success(`Arrival ${arrivalId} updated!`, { position: "top-center" })
+        navigate(`/arrivals/${arrivalId}`)
+      }
+    } else {
+      const apiResponse = await createArrival(newArrival)
+      console.log(newArrival)
+      if (apiResponse.success) {
+        toast.success(`Arrival ${apiResponse.data.arrivalNumber} created!`, { position: "top-center" })
+      }
     }
   }
 
-  function onInvalidArrival(errors: FieldErrors<NewArrival>) {
+  function onInvalidArrival(errors: FieldErrors<ArrivalForm>) {
     console.log(errors)
   }
 
   useEffect(() => {
-    if (newArrivalForm.formState.isSubmitSuccessful) {
+    if (!arrivalId && newArrivalForm.formState.isSubmitSuccessful) {
       newArrivalForm.reset(getDefaultArrival())
     }
   }, [newArrivalForm.formState.isSubmitSuccessful])
@@ -61,7 +76,7 @@ export function ArrivalCreatePage(): React.JSX.Element {
   return (
     <div className='flex flex-col gap-2 max-w-6xl'>
       <h1 className='text-3xl font-bold p-2'>
-        Create Arrival
+        {arrivalId ? `Edit Arrival ${arrivalId}` : 'Create Arrival'}
       </h1>
       <form onSubmit={e => e.preventDefault()} className='border rounded-md p-2 flex flex-col gap-2'>
         <FieldSet>
@@ -147,7 +162,7 @@ export function ArrivalCreatePage(): React.JSX.Element {
             onClick={submitNewArrival}
             type='submit'
           >
-            Create Arrival
+            {arrivalId ? 'Save Changes' : 'Create Arrival'}
           </Button>
         </div>
 

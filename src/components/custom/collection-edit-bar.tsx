@@ -17,9 +17,11 @@ export function CollectionEditBar({
 
   return (
     <div className="flex gap-2">
-      <Button asChild>
-        <Link to={`/${section}/${collectionId}/edit`}><PencilSimpleIcon />Edit</Link>
-      </Button>
+      {section === 'arrivals' && (
+        <Button asChild>
+          <Link to={`/${section}/${collectionId}/edit`}><PencilSimpleIcon />Edit</Link>
+        </Button>
+      )}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline">

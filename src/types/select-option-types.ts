@@ -1,10 +1,18 @@
 import type { Status, Warehouse } from '@/types/reference-data-types';
 import type { User } from '@/types/user-types';
+import { z } from 'zod';
 
 export type SelectOption<T> =
   | { state: 'SELECTED'; selected: T }
   | { state: 'UNSELECTED' }
   | { state: 'ANY' }
+
+export const SelectOptionSchema = <T extends z.ZodTypeAny>(selectedSchema: T) =>
+  z.discriminatedUnion('state', [
+    z.object({ state: z.literal('SELECTED'), selected: selectedSchema }),
+    z.object({ state: z.literal('UNSELECTED') }),
+    z.object({ state: z.literal('ANY') }),
+  ])
 
 export const ANY_OPTION: SelectOption<never> = { state: 'ANY' }
 export const UNSELECTED: SelectOption<never> = { state: 'UNSELECTED' }

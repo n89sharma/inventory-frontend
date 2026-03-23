@@ -1,7 +1,6 @@
 import { useConstantsStore } from "@/data/store/constants-store";
 import { useModelStore } from '@/data/store/model-store';
-import type { NewArrival, NewAsset } from '@/lib/arrival-validator';
-import { NewAssetSchema } from '@/lib/arrival-validator';
+import { AssetFormSchema, type ArrivalForm, type AssetForm } from "@/types/arrival-types";
 import type { Model } from '@/types/model-types';
 import type { CoreFunction } from '@/types/reference-data-types';
 import { UNSELECTED } from '@/types/select-option-types';
@@ -18,8 +17,8 @@ import MultipleSelector from "../shadcn/multiple-selector";
 import { getNewAssetTableColumns } from "./column-defs/new-assets-columns";
 
 interface ArrivalAssetCreateSectionProps {
-  newAssets: FieldArrayWithId<NewArrival, "assets", "id">[],
-  addNewAsset: UseFieldArrayAppend<NewArrival, "assets">
+  newAssets: FieldArrayWithId<ArrivalForm, "assets", "id">[],
+  addNewAsset: UseFieldArrayAppend<ArrivalForm, "assets">
   deleteNewAsset: UseFieldArrayRemove
 }
 
@@ -29,8 +28,8 @@ export function ArrivalAssetCreateSection({
   deleteNewAsset
 }: ArrivalAssetCreateSectionProps): React.JSX.Element {
 
-  const newAssetForm = useForm<NewAsset>({
-    resolver: zodResolver(NewAssetSchema),
+  const newAssetForm = useForm<AssetForm>({
+    resolver: zodResolver(AssetFormSchema),
     defaultValues: getDefaultNewAsset()
   })
   const tempId = newAssetForm.watch('tempId')
@@ -47,7 +46,7 @@ export function ArrivalAssetCreateSection({
     newAssetForm.handleSubmit(onValidNewAsset)()
   }
 
-  function onValidNewAsset(newAsset: NewAsset) {
+  function onValidNewAsset(newAsset: AssetForm) {
     addNewAsset(newAsset)
     clearNewAsset()
   }

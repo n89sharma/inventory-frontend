@@ -1,6 +1,6 @@
 import { Badge } from "@/components/shadcn/badge"
 import { Button } from "@/components/shadcn/button"
-import type { NewAsset } from "@/lib/arrival-validator"
+import type { AssetForm } from "@/types/arrival-types"
 import type { CoreFunction } from '@/types/reference-data-types'
 import { TrashIcon } from "@phosphor-icons/react"
 import type { ColumnDef } from "@tanstack/react-table"
@@ -8,7 +8,7 @@ import type { ColumnDef } from "@tanstack/react-table"
 interface GetNewAssetTableColumnProps {
   onDelete: (id: number) => void
 }
-export function getNewAssetTableColumns({ onDelete }: GetNewAssetTableColumnProps): ColumnDef<NewAsset>[] {
+export function getNewAssetTableColumns({ onDelete }: GetNewAssetTableColumnProps): ColumnDef<AssetForm>[] {
   return [
     {
       accessorKey: "model.brand_name",

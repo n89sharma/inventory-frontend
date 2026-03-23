@@ -2,9 +2,9 @@ import { MainLayout } from '@/components/layout/layout'
 import { ArrivalsSummaryPage } from '@/components/pages/arrival/arrivals-summary-page'
 import { AssetDetailsPage } from '@/components/pages/asset-details-page'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import { ArrivalCreatePage } from './components/pages/arrival/arrival-create-page'
 import { ArrivalDetailsPage } from './components/pages/arrival/arrival-details-page'
-import { ArrivalEditPage } from './components/pages/arrival/arrival-edit-page'
+import { CreateArrivalPage } from './components/pages/arrival/create-arrival-page'
+import { ArrivalEditPage } from './components/pages/arrival/edit-arrival-page'
 import { DepartureDetailsPage } from './components/pages/departure-details-page'
 import { DepartureSummaryPage } from './components/pages/departures-summary-page'
 import { HoldDetailsPage } from './components/pages/hold-details-page'
@@ -32,7 +32,7 @@ function App() {
           <Route path="/" element={<Navigate to="/arrivals" replace />} />
 
           <Route path="/arrivals" element={<ArrivalsSummaryPage />} />
-          <Route path="/arrivals/new" element={<ArrivalCreatePage />} />
+          <Route path="/arrivals/new" element={<CreateArrivalPage />} />
           <Route path="/arrivals/:collectionId/edit" element={<ArrivalEditPage />} />
           <Route path="/arrivals/:collectionId" element={<ArrivalDetailsPage />} />
 

@@ -6,7 +6,7 @@ import type { ArrivalForm } from '@/types/arrival-types'
 import { getSelectOption } from '@/types/select-option-types'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { ArrivalCreatePage } from './arrival-create-page'
+import { CreateArrivalPage } from './create-arrival-page'
 
 export function ArrivalEditPage(): React.JSX.Element {
   const { collectionId } = useParams<{ collectionId: string }>()
@@ -48,5 +48,5 @@ export function ArrivalEditPage(): React.JSX.Element {
   }, [collectionId])
 
   if (!resolved) return <div>Loading...</div>
-  return <ArrivalCreatePage defaultValues={resolved} arrivalId={collectionId} />
+  return <CreateArrivalPage defaultValues={resolved} arrivalId={collectionId} />
 }

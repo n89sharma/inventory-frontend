@@ -5,6 +5,7 @@ import type { ArrivalDetail } from '@/types/arrival-types'
 import type { OrgDetail } from '@/types/organization-types'
 import { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
+import { toast } from 'sonner'
 import { CollectionEditBar } from '../../custom/collection-edit-bar'
 import { Card, CardContent, CardHeader, CardTitle } from '../../shadcn/card'
 import { DataTable } from '../../shadcn/data-table'
@@ -39,11 +40,15 @@ export function ArrivalDetailsPage(): React.JSX.Element {
   const [loading, setLoading] = useState(true)
   const setLastPath = useNavigationStore(state => state.setLastPath)
   const { collectionId } = useParams<{ collectionId: string }>()
-  const { pathname } = useLocation()
+  const { pathname, state } = useLocation()
 
   if (collectionId === undefined) throw new Error('Missing collectionId parameter')
 
   const columns = createAssetSummaryColumns('arrivals', collectionId)
+
+  useEffect(() => {
+    if (state?.successMessage) toast.success(state.successMessage, { position: 'top-center' })
+  }, [])
 
   useEffect(() => {
     setLastPath('arrivals', pathname)

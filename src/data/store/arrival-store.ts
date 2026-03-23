@@ -1,17 +1,17 @@
 import { ANY_OPTION, UNSELECTED, type SelectOption } from '@/types/select-option-types'
 import { create } from 'zustand'
-import type { Arrival } from '../../types/arrival-types'
+import type { ArrivalSummary } from '../../types/arrival-types'
 import type { Warehouse } from '../../types/reference-data-types'
 
 interface ArrivalStore {
-  arrivals: Arrival[]
+  arrivals: ArrivalSummary[]
   fromDate: SelectOption<Date>
   toDate: SelectOption<Date>
   destination: SelectOption<Warehouse>
   loading: boolean
   hasSearched: boolean
 
-  setArrivals: (arrivals: Arrival[]) => void
+  setArrivals: (arrivals: ArrivalSummary[]) => void
   setFromDate: (date: SelectOption<Date>) => void
   setToDate: (date: SelectOption<Date>) => void
   setDestination: (warehouse: SelectOption<Warehouse>) => void

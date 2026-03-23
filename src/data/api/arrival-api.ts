@@ -4,7 +4,7 @@ import type { ApiResponse } from '@/types/api-response-types'
 import { getIdOrNullFromSelection, getSelectedOrNull, type SelectOption } from '@/types/select-option-types'
 import type { AxiosResponse } from 'axios'
 import { z } from 'zod'
-import { ArrivalSchema, EditArrivalSchema, type Arrival, type ArrivalForm, type EditArrival } from '../../types/arrival-types'
+import { ArrivalDetailSchema, ArrivalSummarySchema, EditArrivalSchema, type ArrivalDetail, type ArrivalForm, type ArrivalSummary, type EditArrival } from '../../types/arrival-types'
 import type { Warehouse } from '../../types/reference-data-types'
 
 interface CreateArrivalResponse {
@@ -15,7 +15,7 @@ export async function getArrivals(
   fromDate: SelectOption<Date>,
   toDate: SelectOption<Date>,
   destination: SelectOption<Warehouse>
-): Promise<Arrival[]> {
+): Promise<ArrivalSummary[]> {
 
   const res = await api.get(`/arrivals`, {
     params: {
@@ -24,7 +24,12 @@ export async function getArrivals(
       warehouse: getIdOrNullFromSelection(destination)
     }
   })
-  return z.array(ArrivalSchema).parse(res.data)
+  return z.array(ArrivalSummarySchema).parse(res.data)
+}
+
+export async function getArrivalDetail(arrivalNumber: string): Promise<ArrivalDetail> {
+  const res = await api.get(`/arrivals/${arrivalNumber}`)
+  return ArrivalDetailSchema.parse(res.data)
 }
 
 export async function getArrivalForEdit(arrivalNumber: string): Promise<EditArrival> {

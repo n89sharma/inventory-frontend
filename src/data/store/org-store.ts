@@ -1,11 +1,11 @@
 import { create } from 'zustand'
-import type { Organization } from '../../types/organization-types'
+import type { OrgSummary } from '../../types/organization-types'
 
 interface OrgStore {
-  organizations: Organization[]
+  organizations: OrgSummary[]
   loading: boolean
 
-  setOrganizations: (organizations: Organization[]) => void
+  setOrganizations: (organizations: OrgSummary[]) => void
   setLoading: (loading: boolean) => void
 
   clearOrganizations: () => void

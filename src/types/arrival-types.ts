@@ -1,10 +1,11 @@
 import { z } from 'zod';
 import { ModelSchema, type Model } from './model-types';
-import { OrgSchema, type Organization } from './organization-types';
+import { OrgDetailSchema, OrgSummarySchema, type OrgDetail, type OrgSummary } from './organization-types';
 import { CoreFunctionsSchema, StatusSchema, WarehouseSchema, type CoreFunction, type Status, type Warehouse } from './reference-data-types';
 import { SelectOptionSchema, isSelected, type SelectOption } from './select-option-types';
+import { AssetSummarySchema } from './asset-types';
 
-export const ArrivalSchema = z.object({
+export const ArrivalSummarySchema = z.object({
   arrival_number: z.string(),
   vendor: z.string(),
   destination_code: z.string(),
@@ -14,7 +15,20 @@ export const ArrivalSchema = z.object({
   created_by: z.string().nullable()
 })
 
-export type Arrival = z.infer<typeof ArrivalSchema>
+export type ArrivalSummary = z.infer<typeof ArrivalSummarySchema>
+
+export const ArrivalDetailSchema = z.object({
+  arrival_number: z.string(),
+  vendor: OrgDetailSchema,
+  transporter: OrgDetailSchema,
+  warehouse: WarehouseSchema,
+  comment: z.string().nullable(),
+  created_at: z.iso.datetime(),
+  created_by: z.string().nullable(),
+  assets: z.array(AssetSummarySchema)
+})
+
+export type ArrivalDetail = z.infer<typeof ArrivalDetailSchema>
 
 const StatusSelectOptionSchema = SelectOptionSchema(StatusSchema)
 const WarehouseSelectOptionSchema = SelectOptionSchema(WarehouseSchema)
@@ -34,8 +48,8 @@ export const AssetFormSchema = z.object({
 
 export const ArrivalFormSchema = z.object({
   id: z.number().optional(),
-  vendor: OrgSchema.nullable().refine(val => !!val, "Vendor required"),
-  transporter: OrgSchema.nullable().refine(val => !!val, "Transporter required"),
+  vendor: OrgSummarySchema.nullable().refine(val => !!val, "Vendor required"),
+  transporter: OrgSummarySchema.nullable().refine(val => !!val, "Transporter required"),
   warehouse: WarehouseSelectOptionSchema.refine(val => isSelected(val), "Warehouse required"),
   comment: z.string(),
   assets: z.array(AssetFormSchema).nonempty("No assets in the arrival")
@@ -56,8 +70,8 @@ export type AssetForm = {
 
 export type ArrivalForm = {
   id?: number | undefined,
-  vendor: Organization | null,
-  transporter: Organization | null,
+  vendor: OrgSummary | null,
+  transporter: OrgSummary | null,
   warehouse: SelectOption<Warehouse>,
   comment: string
   assets: AssetForm[]

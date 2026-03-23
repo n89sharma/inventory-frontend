@@ -1,11 +1,11 @@
 import { Button } from "@/components/shadcn/button"
-import type { Arrival } from '@/types/arrival-types'
+import type { ArrivalSummary } from '@/types/arrival-types'
 import { ArrowsDownUpIcon, PencilSimpleIcon } from "@phosphor-icons/react"
 import type { ColumnDef } from "@tanstack/react-table"
 import { format } from "date-fns"
 import { Link } from "react-router-dom"
 
-export const arrivalTableColumns: ColumnDef<Arrival>[] = [
+export const arrivalTableColumns: ColumnDef<ArrivalSummary>[] = [
   {
     accessorKey: "arrival_number",
     header: ({ column }) => {

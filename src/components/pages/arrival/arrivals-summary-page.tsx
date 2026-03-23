@@ -1,16 +1,16 @@
-import { useArrivalStore } from "@/data/store/arrival-store"
-import { getArrivals } from "@/data/api/arrival-api"
-import { SearchBar } from "../custom/search-bar"
-import { arrivalTableColumns } from "./column-defs/arrival-columns"
 import { DataTable } from "@/components/shadcn/data-table"
-import { Button } from "../shadcn/button"
-import { PlusIcon } from "@phosphor-icons/react"
-import { Link } from "react-router-dom"
+import { getArrivals } from "@/data/api/arrival-api"
+import { useArrivalStore } from "@/data/store/arrival-store"
 import { useAutoSearch } from "@/hooks/use-auto-search"
 import type { SearchOptions } from "@/types/search-option-types"
 import { ANY_OPTION } from "@/types/select-option-types"
+import { PlusIcon } from "@phosphor-icons/react"
+import { Link } from "react-router-dom"
+import { SearchBar } from "../../custom/search-bar"
+import { Button } from "../../shadcn/button"
+import { arrivalTableColumns } from "../column-defs/arrival-columns"
 
-export function ArrivalsPage(): React.JSX.Element {
+export function ArrivalsSummaryPage(): React.JSX.Element {
   const arrivals = useArrivalStore(state => state.arrivals)
   const setArrivals = useArrivalStore(state => state.setArrivals)
   const fromDate = useArrivalStore(state => state.fromDate)

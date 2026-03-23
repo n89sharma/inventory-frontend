@@ -6,7 +6,7 @@ import type { ArrivalForm } from '@/types/arrival-types'
 import { getSelectOption } from '@/types/select-option-types'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { ArrivalCreatePage } from './arrival-create'
+import { ArrivalCreatePage } from './arrival-create-page'
 
 export function ArrivalEditPage(): React.JSX.Element {
   const { collectionId } = useParams<{ collectionId: string }>()

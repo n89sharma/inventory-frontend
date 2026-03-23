@@ -8,12 +8,12 @@ import { useEffect } from 'react'
 import { Controller, useFieldArray, useForm, type FieldErrors } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from "sonner"
-import { ControlledPopoverSearch } from '../custom/controlled-popover-search'
-import { SelectOptions } from '../custom/select-options'
-import { Button } from '../shadcn/button'
-import { Field, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from '../shadcn/field'
-import { Textarea } from '../shadcn/textarea'
-import { ArrivalAssetCreateSection } from './arrival-asset-create'
+import { ControlledPopoverSearch } from '../../custom/controlled-popover-search'
+import { SelectOptions } from '../../custom/select-options'
+import { Button } from '../../shadcn/button'
+import { Field, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from '../../shadcn/field'
+import { Textarea } from '../../shadcn/textarea'
+import { ArrivalAssetCreateSection } from './arrival-asset-create-section'
 
 interface ArrivalCreatePageProps {
   defaultValues?: ArrivalForm

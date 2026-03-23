@@ -5,10 +5,10 @@ import type { ArrivalDetail } from '@/types/arrival-types'
 import type { OrgDetail } from '@/types/organization-types'
 import { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
-import { CollectionEditBar } from '../custom/collection-edit-bar'
-import { Card, CardContent, CardHeader, CardTitle } from '../shadcn/card'
-import { DataTable } from '../shadcn/data-table'
-import { createAssetSummaryColumns } from './column-defs/asset-summary-columns'
+import { CollectionEditBar } from '../../custom/collection-edit-bar'
+import { Card, CardContent, CardHeader, CardTitle } from '../../shadcn/card'
+import { DataTable } from '../../shadcn/data-table'
+import { createAssetSummaryColumns } from '../column-defs/asset-summary-columns'
 
 function OrgCard({ title, org }: { title: string, org: OrgDetail }) {
   const addressLines = [
@@ -34,7 +34,7 @@ function OrgCard({ title, org }: { title: string, org: OrgDetail }) {
   )
 }
 
-export function ArrivalSummaryPage(): React.JSX.Element {
+export function ArrivalDetailsPage(): React.JSX.Element {
   const [detail, setDetail] = useState<ArrivalDetail | null>(null)
   const [loading, setLoading] = useState(true)
   const setLastPath = useNavigationStore(state => state.setLastPath)

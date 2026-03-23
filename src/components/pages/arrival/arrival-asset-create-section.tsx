@@ -7,14 +7,14 @@ import { UNSELECTED } from '@/types/select-option-types';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon } from "@phosphor-icons/react";
 import { Controller, useForm, type FieldArrayWithId, type UseFieldArrayAppend, type UseFieldArrayRemove } from 'react-hook-form';
-import { ControlledInputWithClear } from "../custom/controlled-input-with-clear";
-import { ControlledPopoverSearch } from "../custom/controlled-popover-search";
-import { SelectOptions } from "../custom/select-options";
-import { Button } from "../shadcn/button";
-import { DataTable } from "../shadcn/data-table";
-import { Field, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "../shadcn/field";
-import MultipleSelector from "../shadcn/multiple-selector";
-import { getNewAssetTableColumns } from "./column-defs/new-assets-columns";
+import { ControlledInputWithClear } from "../../custom/controlled-input-with-clear";
+import { ControlledPopoverSearch } from "../../custom/controlled-popover-search";
+import { SelectOptions } from "../../custom/select-options";
+import { Button } from "../../shadcn/button";
+import { DataTable } from "../../shadcn/data-table";
+import { Field, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "../../shadcn/field";
+import MultipleSelector from "../../shadcn/multiple-selector";
+import { getNewAssetTableColumns } from "../column-defs/new-assets-columns";
 
 interface ArrivalAssetCreateSectionProps {
   newAssets: FieldArrayWithId<ArrivalForm, "assets", "id">[],

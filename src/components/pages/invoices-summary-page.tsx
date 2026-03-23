@@ -1,12 +1,12 @@
-import { useInvoiceStore } from "@/data/store/invoice-store"
-import { getInvoices } from "@/data/api/invoice-api"
-import { SearchBar } from "../custom/search-bar"
-import { invoiceTableColumns } from "./column-defs/invoice-columns"
 import { DataTable } from "@/components/shadcn/data-table"
+import { getInvoices } from "@/data/api/invoice-api"
+import { useInvoiceStore } from "@/data/store/invoice-store"
 import { useAutoSearch } from "@/hooks/use-auto-search"
 import type { SearchOptions } from "@/types/search-option-types"
+import { SearchBar } from "../custom/search-bar"
+import { invoiceTableColumns } from "./column-defs/invoice-columns"
 
-export function InvoicesPage(): React.JSX.Element {
+export function InvoicesSummaryPage(): React.JSX.Element {
   const invoices = useInvoiceStore(state => state.invoices)
   const setInvoices = useInvoiceStore(state => state.setInvoices)
   const fromDate = useInvoiceStore(state => state.fromDate)

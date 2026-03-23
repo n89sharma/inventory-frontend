@@ -1,13 +1,13 @@
-import { useDepartureStore } from "@/data/store/departure-store"
-import { getDepartures } from "@/data/api/departure-api"
-import { SearchBar } from "../custom/search-bar"
-import { departureTableColumns } from "./column-defs/departure-columns"
 import { DataTable } from "@/components/shadcn/data-table"
+import { getDepartures } from "@/data/api/departure-api"
+import { useDepartureStore } from "@/data/store/departure-store"
 import { useAutoSearch } from "@/hooks/use-auto-search"
 import type { SearchOptions } from "@/types/search-option-types"
 import { ANY_OPTION } from "@/types/select-option-types"
+import { SearchBar } from "../custom/search-bar"
+import { departureTableColumns } from "./column-defs/departure-columns"
 
-export function DeparturePage(): React.JSX.Element {
+export function DepartureSummaryPage(): React.JSX.Element {
   const departures = useDepartureStore(state => state.departures)
   const setDepartures = useDepartureStore(state => state.setDepartures)
   const fromDate = useDepartureStore(state => state.fromDate)

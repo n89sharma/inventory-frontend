@@ -1,13 +1,13 @@
-import { useHoldStore } from "@/data/store/hold-store"
-import { getHolds } from "@/data/api/hold-api"
-import { SearchBar } from "../custom/search-bar"
-import { holdTableColumns } from "./column-defs/hold-columns"
 import { DataTable } from "@/components/shadcn/data-table"
+import { getHolds } from "@/data/api/hold-api"
+import { useHoldStore } from "@/data/store/hold-store"
 import { useAutoSearch } from "@/hooks/use-auto-search"
 import type { SearchOptions } from "@/types/search-option-types"
 import { ANY_OPTION } from "@/types/select-option-types"
+import { SearchBar } from "../custom/search-bar"
+import { holdTableColumns } from "./column-defs/hold-columns"
 
-export function HoldPage(): React.JSX.Element {
+export function HoldSummaryPage(): React.JSX.Element {
   const holds = useHoldStore(state => state.holds)
   const setHolds = useHoldStore(state => state.setHolds)
   const fromDate = useHoldStore(state => state.fromDate)

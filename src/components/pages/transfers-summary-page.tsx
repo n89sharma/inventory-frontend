@@ -1,13 +1,13 @@
-import { useTransferStore } from "@/data/store/transfer-store"
-import { getTransfers } from "@/data/api/transfer-api"
-import { SearchBar } from "../custom/search-bar"
-import { transferTableColumns } from "./column-defs/transfer-columns"
 import { DataTable } from "@/components/shadcn/data-table"
+import { getTransfers } from "@/data/api/transfer-api"
+import { useTransferStore } from "@/data/store/transfer-store"
 import { useAutoSearch } from "@/hooks/use-auto-search"
 import type { SearchOptions } from "@/types/search-option-types"
 import { ANY_OPTION } from "@/types/select-option-types"
+import { SearchBar } from "../custom/search-bar"
+import { transferTableColumns } from "./column-defs/transfer-columns"
 
-export function TransferPage(): React.JSX.Element {
+export function TransferSummaryPage(): React.JSX.Element {
   const transfers = useTransferStore(state => state.transfers)
   const setTransfers = useTransferStore(state => state.setTransfers)
   const fromDate = useTransferStore(state => state.fromDate)

@@ -1,5 +1,5 @@
 import { getBreadcrumbForAssetSummary, PageBreadcrumb } from '@/components/custom/page-breadcrumb'
-import { getAssetsForDeparture } from '@/data/api/asset-api'
+import { getAssetsForHolds } from '@/data/api/asset-api'
 import { useNavigationStore } from '@/data/store/navigation-store'
 import type { AssetSummary } from '@/types/asset-types'
 import { useEffect, useState } from 'react'
@@ -8,7 +8,7 @@ import { CollectionEditBar } from '../custom/collection-edit-bar'
 import { DataTable } from '../shadcn/data-table'
 import { createAssetSummaryColumns } from './column-defs/asset-summary-columns'
 
-export function DepartureSummaryPage(): React.JSX.Element {
+export function HoldDetailsPage(): React.JSX.Element {
   const [assets, setAssets] = useState<AssetSummary[]>([])
   const [loading, setLoading] = useState(true)
   const setLastPath = useNavigationStore(state => state.setLastPath)
@@ -17,15 +17,15 @@ export function DepartureSummaryPage(): React.JSX.Element {
 
   if (collectionId === undefined) throw new Error('Missing collectionId parameter')
 
-  const columns = createAssetSummaryColumns('departures', collectionId)
+  const columns = createAssetSummaryColumns('holds', collectionId)
 
   useEffect(() => {
-    setLastPath('departures', pathname)
+    setLastPath('holds', pathname)
 
     async function load() {
       setLoading(true)
       try {
-        setAssets(await getAssetsForDeparture(collectionId!))
+        setAssets(await getAssetsForHolds(collectionId!))
       } finally {
         setLoading(false)
       }
@@ -38,10 +38,10 @@ export function DepartureSummaryPage(): React.JSX.Element {
 
   return (
     <div className="flex flex-col gap-2">
-      <PageBreadcrumb segments={getBreadcrumbForAssetSummary('departures', collectionId)} />
+      <PageBreadcrumb segments={getBreadcrumbForAssetSummary('holds', collectionId)} />
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold p-2">Departure {collectionId}</h1>
-        <CollectionEditBar section="departures" collectionId={collectionId} />
+        <h1 className="text-3xl font-bold p-2">Hold {collectionId}</h1>
+        <CollectionEditBar section="holds" collectionId={collectionId} />
       </div>
       <DataTable columns={columns} data={assets} />
     </div>

@@ -8,7 +8,7 @@ import { CollectionEditBar } from '../custom/collection-edit-bar'
 import { DataTable } from '../shadcn/data-table'
 import { createAssetSummaryColumns } from './column-defs/asset-summary-columns'
 
-export function InvoiceSummaryPage(): React.JSX.Element {
+export function InvoiceDetailsPage(): React.JSX.Element {
   const [assets, setAssets] = useState<AssetSummary[]>([])
   const [loading, setLoading] = useState(true)
   const setLastPath = useNavigationStore(state => state.setLastPath)

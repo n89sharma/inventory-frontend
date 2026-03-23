@@ -38,9 +38,9 @@ export const AssetFormSchema = z.object({
   tempId: z.uuid(),
   model: ModelSchema.nullable().refine(val => !!val, "Model is required"),
   serialNumber: z.string().refine(val => val.length > 0, "Serial number is required"),
-  meterBlack: z.number().min(0).nullable().refine(v => !!v, "Black meter is required"),
-  meterColour: z.number().min(0).nullable().refine(v => !!v, "Colour meter is required"),
-  cassettes: z.number().min(0).nullable().refine(v => !!v, "Cassettes is required"),
+  meterBlack: z.number().min(0).nullable().refine(v => v != null && v != undefined, "Black meter is required"),
+  meterColour: z.number().min(0).nullable().refine(v => v != null && v != undefined, "Colour meter is required"),
+  cassettes: z.number().min(0).nullable().refine(v => v != null && v != undefined, "Cassettes is required"),
   technicalStatus: StatusSelectOptionSchema.refine(val => isSelected(val), "Technical status is required"),
   internalFinisher: z.string(),
   coreFunctions: z.array(CoreFunctionsSchema)

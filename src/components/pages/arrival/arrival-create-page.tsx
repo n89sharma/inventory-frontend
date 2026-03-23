@@ -8,6 +8,7 @@ import { useEffect } from 'react'
 import { Controller, useFieldArray, useForm, type FieldErrors } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from "sonner"
+import { PageBreadcrumb } from '../../custom/page-breadcrumb'
 import { ControlledPopoverSearch } from '../../custom/controlled-popover-search'
 import { SelectOptions } from '../../custom/select-options'
 import { Button } from '../../shadcn/button'
@@ -22,6 +23,7 @@ interface ArrivalCreatePageProps {
 
 export function ArrivalCreatePage({ defaultValues, arrivalId }: ArrivalCreatePageProps = {}): React.JSX.Element {
   const navigate = useNavigate()
+  const isEditMode = !!arrivalId
   const newArrivalForm = useForm<ArrivalForm>({
     resolver: zodResolver(ArrivalFormSchema),
     defaultValues: defaultValues ?? getDefaultArrival()
@@ -48,7 +50,7 @@ export function ArrivalCreatePage({ defaultValues, arrivalId }: ArrivalCreatePag
   }
 
   async function onValidArrival(newArrival: ArrivalForm) {
-    if (arrivalId) {
+    if (isEditMode) {
       const apiResponse = await updateArrival(arrivalId, newArrival)
       if (apiResponse.success) {
         toast.success(`Arrival ${arrivalId} updated!`, { position: "top-center" })
@@ -67,16 +69,31 @@ export function ArrivalCreatePage({ defaultValues, arrivalId }: ArrivalCreatePag
     console.log(errors)
   }
 
+  function getBreadcrumbSegments() {
+    if (isEditMode) {
+      return [
+        { label: 'Arrivals', href: '/arrivals' },
+        { label: arrivalId!, href: `/arrivals/${arrivalId}` },
+        { label: 'Edit' },
+      ]
+    }
+    return [
+      { label: 'Arrivals', href: '/arrivals' },
+      { label: 'Create' },
+    ]
+  }
+
   useEffect(() => {
-    if (!arrivalId && newArrivalForm.formState.isSubmitSuccessful) {
+    if (!isEditMode && newArrivalForm.formState.isSubmitSuccessful) {
       newArrivalForm.reset(getDefaultArrival())
     }
   }, [newArrivalForm.formState.isSubmitSuccessful])
 
   return (
     <div className='flex flex-col gap-2 max-w-6xl'>
+      <PageBreadcrumb segments={getBreadcrumbSegments()} />
       <h1 className='text-3xl font-bold p-2'>
-        {arrivalId ? `Edit Arrival ${arrivalId}` : 'Create Arrival'}
+        {isEditMode ? `Edit Arrival ${arrivalId}` : 'Create Arrival'}
       </h1>
       <form onSubmit={e => e.preventDefault()} className='border rounded-md p-2 flex flex-col gap-2'>
         <FieldSet>
@@ -162,7 +179,14 @@ export function ArrivalCreatePage({ defaultValues, arrivalId }: ArrivalCreatePag
             onClick={submitNewArrival}
             type='submit'
           >
-            {arrivalId ? 'Save Changes' : 'Create Arrival'}
+            {isEditMode ? 'Save Changes' : 'Create Arrival'}
+          </Button>
+          <Button
+            variant='outline'
+            type='button'
+            onClick={() => navigate(isEditMode ? `/arrivals/${arrivalId}` : '/arrivals')}
+          >
+            Cancel
           </Button>
         </div>
 

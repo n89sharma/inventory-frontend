@@ -6,6 +6,7 @@ import { ArrivalCreatePage } from './components/pages/arrival/arrival-create-pag
 import { ArrivalDetailsPage } from './components/pages/arrival/arrival-details-page'
 import { ArrivalEditPage } from './components/pages/arrival/arrival-edit-page'
 import { DepartureDetailsPage } from './components/pages/departure-details-page'
+import { DepartureSummaryPage } from './components/pages/departures-summary-page'
 import { HoldDetailsPage } from './components/pages/hold-details-page'
 import { HoldSummaryPage } from './components/pages/holds-summary-page'
 import { InvoiceDetailsPage } from './components/pages/invoice-details-page'
@@ -38,7 +39,7 @@ function App() {
           <Route path="/transfers" element={<TransferSummaryPage />} />
           <Route path="/transfers/:collectionId" element={<TransferDetailsPage />} />
 
-          <Route path="/departures" element={<DepartureDetailsPage />} />
+          <Route path="/departures" element={<DepartureSummaryPage />} />
           <Route path="/departures/:collectionId" element={<DepartureDetailsPage />} />
 
           <Route path="/holds" element={<HoldSummaryPage />} />

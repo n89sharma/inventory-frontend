@@ -1,12 +1,15 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import type { FieldErrors } from "react-hook-form"
+import type { FieldErrors, FieldValues } from "react-hook-form"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function flattenFieldErrors<T>(errors: FieldErrors<T>, excludeKeys: string[] = []): string {
+export function flattenFieldErrors<T extends FieldValues>(
+  errors: FieldErrors<T>,
+  excludeKeys: string[] = []): string {
+
   const messages: string[] = []
 
   for (const [key, value] of Object.entries(errors)) {

@@ -9,11 +9,8 @@
 - Claude MCP Server for reading documentation
 
 ## Arrival
-- Edit arrival
-  - Add a new asset
-  - Edit an existing asset
-  - Remove an existing asset
 - Print all barcodes
+- Delete Arrival
 
 ## Quality of life
 - Share asset link

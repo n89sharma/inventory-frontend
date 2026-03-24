@@ -2,13 +2,14 @@ import { Badge } from "@/components/shadcn/badge"
 import { Button } from "@/components/shadcn/button"
 import type { AssetForm } from "@/types/arrival-types"
 import type { CoreFunction } from '@/types/reference-data-types'
-import { TrashIcon } from "@phosphor-icons/react"
+import { PencilSimpleIcon, TrashIcon } from "@phosphor-icons/react"
 import type { ColumnDef } from "@tanstack/react-table"
 
 interface GetNewAssetTableColumnProps {
-  onDelete: (id: number) => void
+  onDelete: (index: number) => void
+  onEdit: (index: number) => void
 }
-export function getNewAssetTableColumns({ onDelete }: GetNewAssetTableColumnProps): ColumnDef<AssetForm>[] {
+export function getNewAssetTableColumns({ onDelete, onEdit }: GetNewAssetTableColumnProps): ColumnDef<AssetForm>[] {
   return [
     {
       accessorKey: "model.brand_name",
@@ -53,6 +54,19 @@ export function getNewAssetTableColumns({ onDelete }: GetNewAssetTableColumnProp
           </div>
         )
       }
+    },
+    {
+      header: "Edit",
+      cell: ({ row }) => (
+        <Button
+          variant="outline"
+          size="icon"
+          type="button"
+          onClick={() => onEdit(row.index)}
+        >
+          <PencilSimpleIcon />
+        </Button>
+      )
     },
     {
       header: "Remove",

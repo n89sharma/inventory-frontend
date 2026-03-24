@@ -5,7 +5,8 @@ import type { Model } from '@/types/model-types'
 import type { CoreFunction } from '@/types/reference-data-types'
 import { UNSELECTED } from '@/types/select-option-types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Controller, useForm, type UseFieldArrayAppend } from 'react-hook-form'
+import { useEffect } from 'react'
+import { Controller, useForm, type UseFieldArrayAppend, type UseFieldArrayUpdate } from 'react-hook-form'
 import { ControlledInputWithClear } from '../custom/controlled-input-with-clear'
 import { ControlledPopoverSearch } from '../custom/controlled-popover-search'
 import { SelectOptions } from '../custom/select-options'
@@ -14,13 +15,24 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { Field, FieldGroup, FieldLabel } from '../shadcn/field'
 import MultipleSelector from '../shadcn/multiple-selector'
 
-interface CreateAssetModalProps {
+interface AssetModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   addNewAsset: UseFieldArrayAppend<ArrivalForm, 'assets'>
+  updateAsset: UseFieldArrayUpdate<ArrivalForm, 'assets'>
+  editingAsset: AssetForm | null
+  editingIndex: number | null
 }
 
-export function CreateAssetModal({ open, onOpenChange, addNewAsset }: CreateAssetModalProps): React.JSX.Element {
+export function AssetModal({ open, onOpenChange, addNewAsset, updateAsset, editingAsset, editingIndex }: AssetModalProps): React.JSX.Element {
+  const isEditMode = editingAsset !== null
+
+  const modalConfig = {
+    title: isEditMode ? 'Edit Asset' : 'Create Asset',
+    submitLabel: isEditMode ? 'Update Asset' : 'Save Asset',
+    clearLabel: isEditMode ? 'Reset' : 'Clear',
+  }
+
   const newAssetForm = useForm<AssetForm>({
     resolver: zodResolver(AssetFormSchema),
     defaultValues: getDefaultNewAsset()
@@ -29,6 +41,14 @@ export function CreateAssetModal({ open, onOpenChange, addNewAsset }: CreateAsse
   const technicalStatuses = useConstantsStore(state => state.technicalStatuses)
   const coreFunctions = useConstantsStore(state => state.coreFunctions)
   const models = useModelStore(state => state.models)
+
+  useEffect(() => {
+    if (open && editingAsset) {
+      newAssetForm.reset(editingAsset)
+    } else if (open && !editingAsset) {
+      newAssetForm.reset(getDefaultNewAsset())
+    }
+  }, [open, editingAsset])
 
   function getCoreFunctionOptions(cfs: CoreFunction[]) {
     return cfs.map(f => ({ id: f.id, label: f.accessory, value: f.accessory }))
@@ -48,25 +68,33 @@ export function CreateAssetModal({ open, onOpenChange, addNewAsset }: CreateAsse
     }
   }
 
-  function clearNewAsset() {
-    newAssetForm.reset(getDefaultNewAsset())
+  function clearOrReset() {
+    if (isEditMode) {
+      newAssetForm.reset(editingAsset!)
+    } else {
+      newAssetForm.reset(getDefaultNewAsset())
+    }
   }
 
-  function onValidNewAsset(newAsset: AssetForm) {
-    addNewAsset(newAsset)
-    newAssetForm.reset(getDefaultNewAsset())
+  function onValidAsset(asset: AssetForm) {
+    if (isEditMode) {
+      updateAsset(editingIndex!, asset)
+    } else {
+      addNewAsset(asset)
+      newAssetForm.reset(getDefaultNewAsset())
+    }
     onOpenChange(false)
   }
 
-  function submitNewAsset() {
-    newAssetForm.handleSubmit(onValidNewAsset)()
+  function submitAsset() {
+    newAssetForm.handleSubmit(onValidAsset)()
   }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className='sm:max-w-2xl overflow-y-auto max-h-[90vh]'>
         <DialogHeader>
-          <DialogTitle>Create Asset</DialogTitle>
+          <DialogTitle>{modalConfig.title}</DialogTitle>
         </DialogHeader>
         <form onSubmit={e => e.preventDefault()}>
           <FieldGroup className='grid grid-cols-2 gap-x-6 gap-y-3' key={tempId}>
@@ -156,11 +184,11 @@ export function CreateAssetModal({ open, onOpenChange, addNewAsset }: CreateAsse
           </FieldGroup>
         </form>
         <DialogFooter>
-          <Button variant='secondary' onClick={submitNewAsset} type='button'>
-            Save Asset
+          <Button variant='secondary' onClick={submitAsset} type='button'>
+            {modalConfig.submitLabel}
           </Button>
-          <Button variant='outline' onClick={clearNewAsset} type='button'>
-            Clear
+          <Button variant='outline' onClick={clearOrReset} type='button'>
+            {modalConfig.clearLabel}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -13,7 +13,7 @@ import { toast } from 'sonner'
 import { ControlledPopoverSearch } from '../../custom/controlled-popover-search'
 import { PageBreadcrumb } from '../../custom/page-breadcrumb'
 import { SelectOptions } from '../../custom/select-options'
-import { CreateAssetModal } from '../../modals/create-asset-modal'
+import { AssetModal } from '../../modals/create-asset-modal'
 import { Button } from '../../shadcn/button'
 import { DataTable } from '../../shadcn/data-table'
 import { Field, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from '../../shadcn/field'
@@ -35,9 +35,11 @@ export function CreateArrivalPage({ defaultValues, arrivalId }: CreateArrivalPag
   const warehouses = useConstantsStore((state) => state.warehouses)
   const activeWarehouses = warehouses.filter(w => w.is_active)
   const orgs = useOrgStore((state) => state.organizations)
-  const { fields: newAssets, append: addNewAsset, remove: deleteNewAsset } = useFieldArray({ control: newArrivalForm.control, name: 'assets' })
+  const { fields: newAssets, append: addNewAsset, remove: deleteNewAsset, update: updateAsset } = useFieldArray({ control: newArrivalForm.control, name: 'assets' })
   const { isSubmitting } = newArrivalForm.formState
   const [isAssetModalOpen, setIsAssetModalOpen] = useState(false)
+  const [editingAssetIndex, setEditingAssetIndex] = useState<number | null>(null)
+  const editingAsset = editingAssetIndex !== null ? newArrivalForm.getValues('assets')[editingAssetIndex] : null
 
   const pageConfig = {
     pageHeading: isEditMode ? `Edit Arrival ${arrivalId}` : 'Create Arrival',
@@ -195,7 +197,7 @@ export function CreateArrivalPage({ defaultValues, arrivalId }: CreateArrivalPag
           <Button
             variant='secondary'
             type='button'
-            onClick={() => setIsAssetModalOpen(true)}
+            onClick={() => { setEditingAssetIndex(null); setIsAssetModalOpen(true) }}
             className='w-fit'
           >
             <PlusIcon /> Add Asset
@@ -220,14 +222,20 @@ export function CreateArrivalPage({ defaultValues, arrivalId }: CreateArrivalPag
           </div>
         </fieldset>
       </form>
-      <CreateAssetModal
+      <AssetModal
         open={isAssetModalOpen}
         onOpenChange={setIsAssetModalOpen}
         addNewAsset={addNewAsset}
+        updateAsset={updateAsset}
+        editingAsset={editingAsset}
+        editingIndex={editingAssetIndex}
       />
 
       <DataTable
-        columns={getNewAssetTableColumns({ onDelete: id => deleteNewAsset(id) })}
+        columns={getNewAssetTableColumns({
+          onDelete: id => deleteNewAsset(id),
+          onEdit: index => { setEditingAssetIndex(index); setIsAssetModalOpen(true) }
+        })}
         data={newAssets}
       />
 

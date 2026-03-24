@@ -1,21 +1,24 @@
-import { flattenFieldErrors } from '@/lib/utils'
 import { createArrival, updateArrival } from '@/data/api/arrival-api'
 import { useConstantsStore } from '@/data/store/constants-store'
 import { useOrgStore } from '@/data/store/org-store'
+import { flattenFieldErrors } from '@/lib/utils'
 import { ArrivalFormSchema, type ArrivalForm } from '@/types/arrival-types'
 import { UNSELECTED } from '@/types/select-option-types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { CircleNotchIcon } from '@phosphor-icons/react'
+import { CircleNotchIcon, PlusIcon } from '@phosphor-icons/react'
+import { useState } from 'react'
 import { Controller, useFieldArray, useForm, type FieldErrors } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { ControlledPopoverSearch } from '../../custom/controlled-popover-search'
 import { PageBreadcrumb } from '../../custom/page-breadcrumb'
 import { SelectOptions } from '../../custom/select-options'
+import { CreateAssetModal } from '../../modals/create-asset-modal'
 import { Button } from '../../shadcn/button'
+import { DataTable } from '../../shadcn/data-table'
 import { Field, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from '../../shadcn/field'
 import { Textarea } from '../../shadcn/textarea'
-import { ArrivalAssetCreateSection } from './arrival-asset-create-section'
+import { getNewAssetTableColumns } from '../column-defs/new-assets-columns'
 
 interface CreateArrivalPageProps {
   defaultValues?: ArrivalForm
@@ -34,6 +37,7 @@ export function CreateArrivalPage({ defaultValues, arrivalId }: CreateArrivalPag
   const orgs = useOrgStore((state) => state.organizations)
   const { fields: newAssets, append: addNewAsset, remove: deleteNewAsset } = useFieldArray({ control: newArrivalForm.control, name: 'assets' })
   const { isSubmitting } = newArrivalForm.formState
+  const [isAssetModalOpen, setIsAssetModalOpen] = useState(false)
 
   const pageConfig = {
     pageHeading: isEditMode ? `Edit Arrival ${arrivalId}` : 'Create Arrival',
@@ -188,6 +192,15 @@ export function CreateArrivalPage({ defaultValues, arrivalId }: CreateArrivalPag
             />
           </FieldSet>
 
+          <Button
+            variant='secondary'
+            type='button'
+            onClick={() => setIsAssetModalOpen(true)}
+            className='w-fit'
+          >
+            <PlusIcon /> Add Asset
+          </Button>
+
           <div className='flex gap-4'>
             <Button
               className='rounded-md'
@@ -207,10 +220,15 @@ export function CreateArrivalPage({ defaultValues, arrivalId }: CreateArrivalPag
           </div>
         </fieldset>
       </form>
-      <ArrivalAssetCreateSection
-        newAssets={newAssets}
+      <CreateAssetModal
+        open={isAssetModalOpen}
+        onOpenChange={setIsAssetModalOpen}
         addNewAsset={addNewAsset}
-        deleteNewAsset={deleteNewAsset}
+      />
+
+      <DataTable
+        columns={getNewAssetTableColumns({ onDelete: id => deleteNewAsset(id) })}
+        data={newAssets}
       />
 
     </div>

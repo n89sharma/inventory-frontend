@@ -10,10 +10,9 @@
 
 ## Arrival
 - Edit arrival
-  - Opens up create arrival page but populates the arrival information
-    - Get the arrival from 
-  - User can add a new asset
-
+  - Add a new asset
+  - Edit an existing asset
+  - Remove an existing asset
 - Print all barcodes
 
 ## Quality of life
@@ -29,7 +28,10 @@
 
 ## Backend
 - Add locations endpoint
-- On failure send standard error response
+
+## Error management
+- backend - on failure send standard error response
+- front-end - on general server error show a toast
 
 ## Misc
 - Dates should use abbreviated month. Feb instead of February

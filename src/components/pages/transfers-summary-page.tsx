@@ -1,10 +1,10 @@
-import { DataTable } from "@/components/shadcn/data-table"
 import { getTransfers } from "@/data/api/transfer-api"
 import { useTransferStore } from "@/data/store/transfer-store"
 import { useAutoSearch } from "@/hooks/use-auto-search"
 import type { SearchOptions } from "@/types/search-option-types"
 import { ANY_OPTION } from "@/types/select-option-types"
 import { SearchBar } from "../custom/search-bar"
+import { CollectionPage } from "./collection-page"
 import { transferTableColumns } from "./column-defs/transfer-columns"
 
 export function TransferSummaryPage(): React.JSX.Element {
@@ -29,18 +29,19 @@ export function TransferSummaryPage(): React.JSX.Element {
   useAutoSearch(hasSearched, onSearchSetData, { setFromDate, setToDate, setOrigin, setDestination })
 
   return (
-    <div className="flex flex-col gap-2">
-      <h1 className="text-3xl font-bold p-2">
-        Transfers
-      </h1>
-      <SearchBar
-        searchOptions={{ fromDate, toDate, origin, destination }}
-        setSearchOptions={{ setFromDate, setToDate, setOrigin, setDestination }}
-        onSearch={onSearchSetData}
-        showOrigin={true}
-        showDestination={true}
-      />
-      <DataTable columns={transferTableColumns} data={transfers} />
-    </div>
+    <CollectionPage
+      title="Transfers"
+      columns={transferTableColumns}
+      data={transfers}
+      searchBar={
+        <SearchBar
+          searchOptions={{ fromDate, toDate, origin, destination }}
+          setSearchOptions={{ setFromDate, setToDate, setOrigin, setDestination }}
+          onSearch={onSearchSetData}
+          showOrigin={true}
+          showDestination={true}
+        />
+      }
+    />
   )
 }

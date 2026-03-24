@@ -1,10 +1,10 @@
-import { DataTable } from "@/components/shadcn/data-table"
 import { getHolds } from "@/data/api/hold-api"
 import { useHoldStore } from "@/data/store/hold-store"
 import { useAutoSearch } from "@/hooks/use-auto-search"
 import type { SearchOptions } from "@/types/search-option-types"
 import { ANY_OPTION } from "@/types/select-option-types"
 import { SearchBar } from "../custom/search-bar"
+import { CollectionPage } from "./collection-page"
 import { holdTableColumns } from "./column-defs/hold-columns"
 
 export function HoldSummaryPage(): React.JSX.Element {
@@ -29,17 +29,18 @@ export function HoldSummaryPage(): React.JSX.Element {
   useAutoSearch(hasSearched, onSearchSetData, { setFromDate, setToDate, setHoldBy, setHoldFor })
 
   return (
-    <div className="flex flex-col gap-2">
-      <h1 className="text-3xl font-bold p-2">
-        Holds
-      </h1>
-      <SearchBar
-        searchOptions={{ fromDate, toDate, holdBy, holdFor }}
-        setSearchOptions={{ setFromDate, setToDate, setHoldBy, setHoldFor }}
-        onSearch={onSearchSetData}
-        showHeldByFor={true}
-      />
-      <DataTable columns={holdTableColumns} data={holds} />
-    </div>
+    <CollectionPage
+      title="Holds"
+      columns={holdTableColumns}
+      data={holds}
+      searchBar={
+        <SearchBar
+          searchOptions={{ fromDate, toDate, holdBy, holdFor }}
+          setSearchOptions={{ setFromDate, setToDate, setHoldBy, setHoldFor }}
+          onSearch={onSearchSetData}
+          showHeldByFor={true}
+        />
+      }
+    />
   )
 }

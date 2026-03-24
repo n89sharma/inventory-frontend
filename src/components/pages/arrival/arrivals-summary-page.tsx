@@ -1,4 +1,3 @@
-import { DataTable } from "@/components/shadcn/data-table"
 import { getArrivals } from "@/data/api/arrival-api"
 import { useArrivalStore } from "@/data/store/arrival-store"
 import { useAutoSearch } from "@/hooks/use-auto-search"
@@ -8,6 +7,7 @@ import { PlusIcon } from "@phosphor-icons/react"
 import { Link } from "react-router-dom"
 import { SearchBar } from "../../custom/search-bar"
 import { Button } from "../../shadcn/button"
+import { CollectionPage } from "../collection-page"
 import { arrivalTableColumns } from "../column-defs/arrival-columns"
 
 export function ArrivalsSummaryPage(): React.JSX.Element {
@@ -30,23 +30,23 @@ export function ArrivalsSummaryPage(): React.JSX.Element {
   useAutoSearch(hasSearched, onSearchSetData, { setFromDate, setToDate, setDestination })
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold p-2">
-          Arrivals
-        </h1>
+    <CollectionPage
+      title="Arrivals"
+      columns={arrivalTableColumns}
+      data={arrivals}
+      searchBar={
+        <SearchBar
+          searchOptions={{ fromDate, toDate, destination }}
+          setSearchOptions={{ setFromDate, setToDate, setDestination }}
+          onSearch={onSearchSetData}
+          showDestination={true}
+        />
+      }
+      actions={
         <Button asChild>
           <Link to="/arrivals/new"><PlusIcon />Create Arrival</Link>
         </Button>
-      </div>
-
-      <SearchBar
-        searchOptions={{ fromDate, toDate, destination }}
-        setSearchOptions={{ setFromDate, setToDate, setDestination }}
-        onSearch={onSearchSetData}
-        showDestination={true}
-      />
-      <DataTable columns={arrivalTableColumns} data={arrivals} />
-    </div>
+      }
+    />
   )
 }

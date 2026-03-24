@@ -1,16 +1,18 @@
-import { getArrivalForEdit } from '@/data/api/arrival-api'
+import { getArrivalForEdit, updateArrival } from '@/data/api/arrival-api'
 import { useConstantsStore } from '@/data/store/constants-store'
 import { useModelStore } from '@/data/store/model-store'
 import { useOrgStore } from '@/data/store/org-store'
 import type { ArrivalForm } from '@/types/arrival-types'
 import { getSelectOption } from '@/types/select-option-types'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { CreateArrivalPage } from './create-arrival-page'
+import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'sonner'
+import { ArrivalFormPage } from './arrival-form-page'
 
 export function ArrivalEditPage(): React.JSX.Element {
   const { collectionId } = useParams<{ collectionId: string }>()
   const [resolved, setResolved] = useState<ArrivalForm | null>(null)
+  const navigate = useNavigate()
 
   const orgs = useOrgStore(state => state.organizations)
   const warehouses = useConstantsStore(state => state.warehouses)
@@ -49,6 +51,32 @@ export function ArrivalEditPage(): React.JSX.Element {
     load()
   }, [collectionId, orgs.length, warehouses.length, models.length, technicalStatuses.length, coreFunctions.length])
 
+  const pageConfig = {
+    pageHeading: `Edit Arrival ${collectionId}`,
+    saveButtonText: 'Save Changes',
+    submittingText: 'Saving...',
+    cancelNavUrl: `/arrivals/${collectionId}`,
+  }
+
+  const breadcrumbs = [
+    { label: 'Arrivals', href: '/arrivals' },
+    { label: collectionId!, href: `/arrivals/${collectionId}` },
+    { label: 'Edit' },
+  ]
+
+  async function onValidSubmit(data: ArrivalForm) {
+    try {
+      const res = await updateArrival(collectionId!, data)
+      if (res.success) {
+        navigate(`/arrivals/${collectionId}`, {
+          state: { successMessage: `Arrival ${collectionId} updated!` }
+        })
+      }
+    } catch {
+      toast.error('Something went wrong on the server.', { position: 'top-center' })
+    }
+  }
+
   if (!resolved) return <div>Loading...</div>
-  return <CreateArrivalPage defaultValues={resolved} arrivalId={collectionId} />
+  return <ArrivalFormPage defaultValues={resolved} pageConfig={pageConfig} breadcrumbs={breadcrumbs} onValidSubmit={onValidSubmit} />
 }

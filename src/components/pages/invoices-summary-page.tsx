@@ -1,9 +1,9 @@
-import { DataTable } from "@/components/shadcn/data-table"
 import { getInvoices } from "@/data/api/invoice-api"
 import { useInvoiceStore } from "@/data/store/invoice-store"
 import { useAutoSearch } from "@/hooks/use-auto-search"
 import type { SearchOptions } from "@/types/search-option-types"
 import { SearchBar } from "../custom/search-bar"
+import { CollectionPage } from "./collection-page"
 import { invoiceTableColumns } from "./column-defs/invoice-columns"
 
 export function InvoicesSummaryPage(): React.JSX.Element {
@@ -24,16 +24,17 @@ export function InvoicesSummaryPage(): React.JSX.Element {
   useAutoSearch(hasSearched, onSearchSetData, { setFromDate, setToDate })
 
   return (
-    <div className="flex flex-col gap-2">
-      <h1 className="text-3xl font-bold p-2">
-        Invoices
-      </h1>
-      <SearchBar
-        searchOptions={{ fromDate, toDate }}
-        setSearchOptions={{ setFromDate, setToDate }}
-        onSearch={onSearchSetData}
-      />
-      <DataTable columns={invoiceTableColumns} data={invoices} />
-    </div>
+    <CollectionPage
+      title="Invoices"
+      columns={invoiceTableColumns}
+      data={invoices}
+      searchBar={
+        <SearchBar
+          searchOptions={{ fromDate, toDate }}
+          setSearchOptions={{ setFromDate, setToDate }}
+          onSearch={onSearchSetData}
+        />
+      }
+    />
   )
 }

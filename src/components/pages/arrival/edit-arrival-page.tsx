@@ -77,6 +77,6 @@ export function ArrivalEditPage(): React.JSX.Element {
     }
   }
 
-  if (!resolved) return <div>Loading...</div>
+  if (!resolved) return <div>Loading…</div>
   return <ArrivalFormPage defaultValues={resolved} pageConfig={pageConfig} breadcrumbs={breadcrumbs} onValidSubmit={onValidSubmit} />
 }

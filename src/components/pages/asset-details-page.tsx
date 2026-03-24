@@ -72,7 +72,7 @@ export const AssetDetailsPage = () => {
   return (
     <div className="flex flex-col gap-2">
       <PageBreadcrumb segments={getBreadcrumForAssetDetails(section, collectionId, assetId)} />
-      <DetailsContainer isActive={!!ad}>
+      {!!ad && <DetailsContainer>
 
         <SectionRow className="flex-col">
           <Section>
@@ -174,11 +174,11 @@ export const AssetDetailsPage = () => {
               <div className={`flex items-center justify-between w-full ml-10 ${!at.length && "hidden"}`}>
                 <span className="text-sm font-medium text-muted-foreground">{`${currentIndex + 1}/${at.length}`}</span>
                 <div>
-                  <Button variant="outline" size="xs" onClick={handlePreviousTransfer}>
-                    <CaretLeftIcon weight="fill" />
+                  <Button variant="outline" size="xs" onClick={handlePreviousTransfer} aria-label="Previous transfer">
+                    <CaretLeftIcon weight="fill" aria-hidden="true" />
                   </Button>
-                  <Button variant="outline" size="xs" onClick={handleNextTransfer}>
-                    <CaretRightIcon weight="fill" />
+                  <Button variant="outline" size="xs" onClick={handleNextTransfer} aria-label="Next transfer">
+                    <CaretRightIcon weight="fill" aria-hidden="true" />
                   </Button>
                 </div>
               </div>
@@ -222,7 +222,7 @@ export const AssetDetailsPage = () => {
           </TabsContent>
         </Tabs>
 
-      </DetailsContainer>
+      </DetailsContainer>}
     </div>
   )
 }

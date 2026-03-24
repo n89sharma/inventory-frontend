@@ -145,8 +145,9 @@ export function PopoverSearch<T>({
                   onClick={handleClear}
                   hidden={!userInput || !userInput.length}
                   type="button"
+                  aria-label="Clear"
                 >
-                  <XIcon />
+                  <XIcon aria-hidden="true" />
                 </InputGroupButton>
               </InputGroupAddon>
             </InputGroup>
@@ -160,19 +161,23 @@ export function PopoverSearch<T>({
         >
           <ScrollArea>
             {matches.map((m, i) => (
-              <div
+              <button
                 key={`${getLabel(m)}-${i}`}
+                type="button"
+                role="option"
+                aria-selected={highlightedIndex === i}
                 onClick={() => handleSelect(m)}
                 onMouseDown={e => { e.preventDefault() }}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleSelect(m) } }}
                 className={cn(
-                  "p-2 cursor-pointer rounded-sm",
+                  "w-full text-left p-2 cursor-pointer rounded-sm",
                   highlightedIndex === i
                     ? "bg-accent text-accent-foreground"
                     : "hover:bg-accent/50"
                 )}
               >
                 {getLabel(m)}
-              </div>))}
+              </button>))}
           </ScrollArea>
         </PopoverContent>
       </Popover>

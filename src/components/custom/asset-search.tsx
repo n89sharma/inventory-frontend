@@ -18,7 +18,9 @@ export const AssetSearch = ({ className }: { className?: string }) => {
     <form onSubmit={e => { e.preventDefault(); handleSearch() }} className={cn("flex flex-row gap-2", className)}>
       <Input
         type="text"
-        placeholder="Search by barcode"
+        name="barcode"
+        autoComplete="off"
+        placeholder="Search by barcode…"
         value={barcode}
         aria-invalid={invalid}
         onChange={e => { setBarcode(e.target.value.trim()); setInvalid(false) }}

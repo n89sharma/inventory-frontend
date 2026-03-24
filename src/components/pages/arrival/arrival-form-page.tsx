@@ -147,7 +147,7 @@ export function ArrivalFormPage({ defaultValues, pageConfig, breadcrumbs, onVali
               control={form.control}
               name='assets'
               render={({ fieldState }) => (
-                <div>
+                <div aria-live="polite">
                   {
                     fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />

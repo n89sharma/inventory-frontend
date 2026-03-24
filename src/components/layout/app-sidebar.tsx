@@ -20,37 +20,37 @@ const sidebarItems = [
   {
     title: "Arrivals",
     url: "/arrivals",
-    icon: <WarehouseIcon />
+    icon: <WarehouseIcon aria-hidden="true" />
   },
   {
     title: "Transfers",
     url: "/transfers",
-    icon: <LineSegmentsIcon />
+    icon: <LineSegmentsIcon aria-hidden="true" />
   },
   {
     title: "Departures",
     url: "/departures",
-    icon: <TruckTrailerIcon />
+    icon: <TruckTrailerIcon aria-hidden="true" />
   },
   {
     title: "Holds",
     url: "/holds",
-    icon: <LockOpenIcon />
+    icon: <LockOpenIcon aria-hidden="true" />
   },
   {
     title: "Invoices",
     url: "/invoices",
-    icon: <InvoiceIcon />
+    icon: <InvoiceIcon aria-hidden="true" />
   },
   {
     title: "Search",
     url: "/search",
-    icon: <MagnifyingGlassIcon />
+    icon: <MagnifyingGlassIcon aria-hidden="true" />
   },
   {
     title: "Reports",
     url: "/reports",
-    icon: <ChartLineUpIcon />
+    icon: <ChartLineUpIcon aria-hidden="true" />
   }
 
 ]
@@ -74,7 +74,7 @@ export function AppSidebar(): React.JSX.Element {
           <SidebarMenuItem>
             <div className="flex flex-row gap-2">
               <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                <StackIcon></StackIcon>
+                <StackIcon aria-hidden="true" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">Shiva Exports Ltd</span>
@@ -118,7 +118,7 @@ export function AppSidebar(): React.JSX.Element {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton>
-              <UserIcon /> Username
+              <UserIcon aria-hidden="true" /> Username
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

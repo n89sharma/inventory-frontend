@@ -1,8 +1,10 @@
 import { getHolds } from "@/data/api/hold-api"
 import { useHoldStore } from "@/data/store/hold-store"
+import { useUserStore } from "@/data/store/user-store"
 import { useAutoSearch } from "@/hooks/use-auto-search"
 import type { SearchOptions } from "@/types/search-option-types"
 import { ANY_OPTION } from "@/types/select-option-types"
+import { SelectOptions } from "../custom/select-options"
 import { SearchBar } from "../custom/search-bar"
 import { CollectionPage } from "./collection-page"
 import { holdTableColumns } from "./column-defs/hold-columns"
@@ -20,6 +22,7 @@ export function HoldSummaryPage(): React.JSX.Element {
   const setHoldFor = useHoldStore(state => state.setHoldFor)
   const hasSearched = useHoldStore(state => state.hasSearched)
   const setHasSearched = useHoldStore(state => state.setHasSearched)
+  const activeUsers = useUserStore(state => state.users)
 
   async function onSearchSetData({ fromDate, toDate, holdBy, holdFor }: SearchOptions) {
     setHasSearched(true)
@@ -38,8 +41,28 @@ export function HoldSummaryPage(): React.JSX.Element {
           searchOptions={{ fromDate, toDate, holdBy, holdFor }}
           setSearchOptions={{ setFromDate, setToDate, setHoldBy, setHoldFor }}
           onSearch={onSearchSetData}
-          showHeldByFor={true}
-        />
+        >
+          <SelectOptions
+            selection={holdBy!}
+            onSelectionChange={setHoldBy!}
+            options={activeUsers}
+            getLabel={u => u.name}
+            getKey={u => u.username}
+            fieldLabel="Hold By"
+            anyAllowed={true}
+            className="max-w-40"
+          />
+          <SelectOptions
+            selection={holdFor!}
+            onSelectionChange={setHoldFor!}
+            options={activeUsers}
+            getLabel={u => u.name}
+            getKey={u => u.username}
+            fieldLabel="Hold For"
+            anyAllowed={true}
+            className="max-w-40"
+          />
+        </SearchBar>
       }
     />
   )

@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils"
 import type { Error } from '@/types/asset-types'
 
 type ChildrenProps = {
-  isActive?: boolean,
   children: React.ReactNode
   className?: string
 }
@@ -65,9 +64,7 @@ type ValueProps = {
 
 }
 
-export function DetailsContainer({ isActive, children, className }: ChildrenProps): React.JSX.Element {
-  if (!isActive) return <></>
-
+export function DetailsContainer({ children, className }: ChildrenProps): React.JSX.Element {
   return (
     <div className={cn("flex flex-col rounded-sm border bg-card p-6 gap-8", className)}>
       {children}

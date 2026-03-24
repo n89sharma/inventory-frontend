@@ -3,7 +3,8 @@
     "allow": [
       "WebFetch(domain:ui.shadcn.com)",
       "Bash(ls -lSh /e/00-home/development/inventory-frontend/src/components/pages/*.tsx)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ]
   }
 }

@@ -8,36 +8,6 @@
   - Testing
 - Claude MCP Server for reading documentation
 
-## Arrival
-- Print all barcodes
-- Delete Arrival
-
-## Quality of life
-- Share asset link
-- Copy Asset barcode or Serial number
-
-## Query
-- Save a query for a user
-- View a list of historical queries
-
-## Asset Summary pages
-- Add total number of assets within an arrival/transfer/departure/invoice/hold
-
-## Backend
-- Add locations endpoint
-
-## Error management
-- backend - on failure send standard error response
-- front-end - on general server error show a toast
-
-## Misc
-- Dates should use abbreviated month. Feb instead of February
-- Holds should have Date in the second column to match Arrival/Transfer/Departure
-- All text should be Sentence Case by default
-- Invoice should have Date in the second column to match Arrival/Transfer/Departure
-- Show toast on general failure with human friendly message
-- Table headers are crowded. Perhaps headings need to be broken in two? Total\nMeter
-
 ## Transfer
 - Create Transfer
 - Edit Transfer
@@ -73,16 +43,51 @@
 - Edit location
 
 ## History
-- [ ] add history based on asset movement
+- add history based on asset movement
 
 ## Reports
-- [] Move old reports to the new system
+- Move old reports to the new system
+
+## Arrival
+- Print all barcodes
+- Delete Arrival
+
+## Quality of life
+- Share asset link
+- Copy Asset barcode or Serial number
+
+## Query
+- Save a query for a user
+- View a list of historical queries
+
+## Asset Summary pages
+- Add total number of assets within an arrival/transfer/departure/invoice/hold
+
+## Backend
+- Add locations endpoint
+
+## Error management
+- backend - on failure send standard error response
+- front-end - on general server error show a toast
+
+## Misc
+- Dates should use abbreviated month. Feb instead of February
+- Holds should have Date in the second column to match Arrival/Transfer/Departure
+- All text should be Sentence Case by default
+- Invoice should have Date in the second column to match Arrival/Transfer/Departure
+- Show toast on general failure with human friendly message
+- Table headers are crowded. Perhaps headings need to be broken in two? Total\nMeter
+- Navigation & State — Search filters (fromDate, toDate, destination, origin, etc.) are stored in Zustand but not 
+  synced to URL query params. Guideline: URL should reflect filter state so results are deep-linkable and survive 
+  page refresh.
+- Unsaved changes — arrival-form-page.tsx has no beforeunload / router guard warning when navigating away with    
+  unsaved form data.
 
 ## User
-- [ ] Authentication
-- [ ] Login
-- [ ] Saved queries
-- [ ] rights managemenet
+- Authentication
+- Login
+- Saved queries
+- rights managemenet
 
 ## Location
 - [ ] Add location

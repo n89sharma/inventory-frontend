@@ -1,8 +1,11 @@
 import { getDepartures } from "@/data/api/departure-api"
+import { useConstantsStore } from "@/data/store/constants-store"
 import { useDepartureStore } from "@/data/store/departure-store"
 import { useAutoSearch } from "@/hooks/use-auto-search"
 import type { SearchOptions } from "@/types/search-option-types"
 import { ANY_OPTION } from "@/types/select-option-types"
+import { useMemo } from "react"
+import { SelectOptions } from "../custom/select-options"
 import { SearchBar } from "../custom/search-bar"
 import { CollectionPage } from "./collection-page"
 import { departureTableColumns } from "./column-defs/departure-columns"
@@ -18,6 +21,8 @@ export function DepartureSummaryPage(): React.JSX.Element {
   const setOrigin = useDepartureStore(state => state.setOrigin)
   const hasSearched = useDepartureStore(state => state.hasSearched)
   const setHasSearched = useDepartureStore(state => state.setHasSearched)
+  const warehouses = useConstantsStore(state => state.warehouses)
+  const activeWarehouses = useMemo(() => warehouses.filter(w => w.is_active), [warehouses])
 
   async function onSearchSetData({ fromDate, toDate, origin }: SearchOptions) {
     setHasSearched(true)
@@ -36,8 +41,17 @@ export function DepartureSummaryPage(): React.JSX.Element {
           searchOptions={{ fromDate, toDate, origin }}
           setSearchOptions={{ setFromDate, setToDate, setOrigin }}
           onSearch={onSearchSetData}
-          showOrigin={true}
-        />
+        >
+          <SelectOptions
+            selection={origin!}
+            onSelectionChange={setOrigin!}
+            options={activeWarehouses}
+            getLabel={w => w.city_code}
+            fieldLabel="Warehouse"
+            anyAllowed={true}
+            className="max-w-40"
+          />
+        </SearchBar>
       }
     />
   )

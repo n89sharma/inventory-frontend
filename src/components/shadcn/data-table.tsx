@@ -102,7 +102,7 @@ export function DataTable<TData, TValue>({
                 </TableRow>
               ))
             ) : (
-              <TableRow>
+              <TableRow role="status" aria-live="polite">
                 <TableCell colSpan={columns.length} className="h-24 text-center">
                   No results.
                 </TableCell>
@@ -123,7 +123,7 @@ export function DataTable<TData, TValue>({
           disabled={!table.getCanPreviousPage()}
         >
           Previous
-          <CaretLeftIcon />
+          <CaretLeftIcon aria-hidden="true" />
         </Button>
         <Button
           variant="outline"
@@ -131,7 +131,7 @@ export function DataTable<TData, TValue>({
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          <CaretRightIcon />
+          <CaretRightIcon aria-hidden="true" />
           Next
         </Button>
       </div>

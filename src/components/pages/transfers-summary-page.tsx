@@ -1,8 +1,11 @@
 import { getTransfers } from "@/data/api/transfer-api"
+import { useConstantsStore } from "@/data/store/constants-store"
 import { useTransferStore } from "@/data/store/transfer-store"
 import { useAutoSearch } from "@/hooks/use-auto-search"
 import type { SearchOptions } from "@/types/search-option-types"
 import { ANY_OPTION } from "@/types/select-option-types"
+import { useMemo } from "react"
+import { SelectOptions } from "../custom/select-options"
 import { SearchBar } from "../custom/search-bar"
 import { CollectionPage } from "./collection-page"
 import { transferTableColumns } from "./column-defs/transfer-columns"
@@ -20,6 +23,8 @@ export function TransferSummaryPage(): React.JSX.Element {
   const setDestination = useTransferStore(state => state.setDestination)
   const hasSearched = useTransferStore(state => state.hasSearched)
   const setHasSearched = useTransferStore(state => state.setHasSearched)
+  const warehouses = useConstantsStore(state => state.warehouses)
+  const activeWarehouses = useMemo(() => warehouses.filter(w => w.is_active), [warehouses])
 
   async function onSearchSetData({ fromDate, toDate, origin, destination }: SearchOptions) {
     setHasSearched(true)
@@ -38,9 +43,26 @@ export function TransferSummaryPage(): React.JSX.Element {
           searchOptions={{ fromDate, toDate, origin, destination }}
           setSearchOptions={{ setFromDate, setToDate, setOrigin, setDestination }}
           onSearch={onSearchSetData}
-          showOrigin={true}
-          showDestination={true}
-        />
+        >
+          <SelectOptions
+            selection={origin!}
+            onSelectionChange={setOrigin!}
+            options={activeWarehouses}
+            getLabel={w => w.city_code}
+            fieldLabel="Warehouse"
+            anyAllowed={true}
+            className="max-w-40"
+          />
+          <SelectOptions
+            selection={destination!}
+            onSelectionChange={setDestination!}
+            options={activeWarehouses}
+            getLabel={w => w.city_code}
+            fieldLabel="Warehouse"
+            anyAllowed={true}
+            className="max-w-40"
+          />
+        </SearchBar>
       }
     />
   )

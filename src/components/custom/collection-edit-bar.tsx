@@ -24,8 +24,8 @@ export function CollectionEditBar({
       )}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline">
-            <DotsThreeVerticalIcon />
+          <Button variant="outline" aria-label="More options">
+            <DotsThreeVerticalIcon aria-hidden="true" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>

@@ -1,12 +1,15 @@
 import { getArrivals } from "@/data/api/arrival-api"
 import { useArrivalStore } from "@/data/store/arrival-store"
+import { useConstantsStore } from "@/data/store/constants-store"
 import { useAutoSearch } from "@/hooks/use-auto-search"
 import type { SearchOptions } from "@/types/search-option-types"
 import { ANY_OPTION } from "@/types/select-option-types"
 import { PlusIcon } from "@phosphor-icons/react"
+import { useMemo } from "react"
 import { Link } from "react-router-dom"
 import { SearchBar } from "../../custom/search-bar"
 import { Button } from "../../shadcn/button"
+import { SelectOptions } from "../../custom/select-options"
 import { CollectionPage } from "../collection-page"
 import { arrivalTableColumns } from "../column-defs/arrival-columns"
 
@@ -21,6 +24,8 @@ export function ArrivalsSummaryPage(): React.JSX.Element {
   const setDestination = useArrivalStore(state => state.setDestination)
   const hasSearched = useArrivalStore(state => state.hasSearched)
   const setHasSearched = useArrivalStore(state => state.setHasSearched)
+  const warehouses = useConstantsStore(state => state.warehouses)
+  const activeWarehouses = useMemo(() => warehouses.filter(w => w.is_active), [warehouses])
 
   async function onSearchSetData({ fromDate, toDate, destination }: SearchOptions) {
     setHasSearched(true)
@@ -39,8 +44,17 @@ export function ArrivalsSummaryPage(): React.JSX.Element {
           searchOptions={{ fromDate, toDate, destination }}
           setSearchOptions={{ setFromDate, setToDate, setDestination }}
           onSearch={onSearchSetData}
-          showDestination={true}
-        />
+        >
+          <SelectOptions
+            selection={destination!}
+            onSelectionChange={setDestination!}
+            options={activeWarehouses}
+            getLabel={w => w.city_code}
+            fieldLabel="Warehouse"
+            anyAllowed={true}
+            className="max-w-40"
+          />
+        </SearchBar>
       }
       actions={
         <Button asChild>

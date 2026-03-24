@@ -19,9 +19,11 @@ export function ArrivalEditPage(): React.JSX.Element {
   const models = useModelStore(state => state.models)
 
   useEffect(() => {
+    if (!collectionId) return
+    if (!orgs.length || !warehouses.length || !models.length || !technicalStatuses.length || !coreFunctions.length) return
+
     async function load() {
-      if (!collectionId) return
-      const raw = await getArrivalForEdit(collectionId)
+      const raw = await getArrivalForEdit(collectionId!)
       setResolved({
         id: raw.id,
         vendor: orgs.find(o => o.id === raw.vendorId) ?? null,
@@ -45,7 +47,7 @@ export function ArrivalEditPage(): React.JSX.Element {
       })
     }
     load()
-  }, [collectionId])
+  }, [collectionId, orgs.length, warehouses.length, models.length, technicalStatuses.length, coreFunctions.length])
 
   if (!resolved) return <div>Loading...</div>
   return <CreateArrivalPage defaultValues={resolved} arrivalId={collectionId} />

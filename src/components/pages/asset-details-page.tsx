@@ -12,6 +12,8 @@ import { getAllAssetDetails } from '@/data/api/asset-api'
 import type { NavigationSection } from '@/types/navigation-context'
 import { useAssetDetailsParams } from '@/hooks/use-asset-detail-params'
 
+const EMPTY_TAGS: { display: string; id: string }[] = []
+
 export const AssetDetailsPage = () => {
 
   const { section, collectionId, assetId } = useAssetDetailsParams()
@@ -139,14 +141,14 @@ export const AssetDetailsPage = () => {
             <Header title="Errors"></Header>
             <ErrorHeader />
             <DataRowContainer>
-              {ae?.map(e => <ErrorRow error={e}></ErrorRow>)}
+              {ae?.map(e => <ErrorRow key={`${e.code}-${e.added_at}`} error={e} />)}
             </DataRowContainer>
           </Section>
 
           <Section>
             <Header title="Installed Parts" />
             <PartsHeader />
-            {ap?.map(p => <DataRow label={p.part} value={p.donor} />)}
+            {ap?.map(p => <DataRow key={p.store_part_number} label={p.part} value={p.donor} />)}
           </Section>
 
         </SectionRow>
@@ -210,11 +212,12 @@ export const AssetDetailsPage = () => {
           </TabsList>
           <TabsContent value="comments" className="flex flex-col gap-3">
             {ac?.map(c => (<Comment
+              key={`${c.username}-${c.created_at}`}
               user={c.username}
               date={c.created_at}
               avatarFallback={c.initials}
               comment={c.comment}
-              tags={[]}
+              tags={EMPTY_TAGS}
             />))}
           </TabsContent>
         </Tabs>

@@ -26,7 +26,7 @@ export function useAutoSearch(
       if (setHoldBy) setHoldBy(ANY_OPTION)
       if (setHoldFor) setHoldFor(ANY_OPTION)
 
-      onSearchSetData({
+      callbackRef.current({
         fromDate: getSelectOption(subDays(new Date(), defaultDays)),
         toDate: getSelectOption(new Date()),
         origin: ANY_OPTION,

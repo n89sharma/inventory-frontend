@@ -6,7 +6,7 @@ import { ArrivalFormSchema, type ArrivalForm } from '@/types/arrival-types'
 import { UNSELECTED } from '@/types/select-option-types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CircleNotchIcon, PlusIcon } from '@phosphor-icons/react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Controller, useFieldArray, useForm, type FieldErrors } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -33,12 +33,16 @@ export function CreateArrivalPage({ defaultValues, arrivalId }: CreateArrivalPag
     defaultValues: defaultValues ?? getDefaultArrival()
   })
   const warehouses = useConstantsStore((state) => state.warehouses)
-  const activeWarehouses = warehouses.filter(w => w.is_active)
+  const activeWarehouses = useMemo(() => warehouses.filter(w => w.is_active), [warehouses])
   const orgs = useOrgStore((state) => state.organizations)
   const { fields: newAssets, append: addNewAsset, remove: deleteNewAsset, update: updateAsset } = useFieldArray({ control: newArrivalForm.control, name: 'assets' })
   const { isSubmitting } = newArrivalForm.formState
   const [isAssetModalOpen, setIsAssetModalOpen] = useState(false)
   const [editingAssetIndex, setEditingAssetIndex] = useState<number | null>(null)
+  const assetTableColumns = useMemo(() => getNewAssetTableColumns({
+    onDelete: id => deleteNewAsset(id),
+    onEdit: index => { setEditingAssetIndex(index); setIsAssetModalOpen(true) }
+  }), [deleteNewAsset])
   const editingAsset = editingAssetIndex !== null ? newArrivalForm.getValues('assets')[editingAssetIndex] : null
 
   const pageConfig = {
@@ -231,13 +235,7 @@ export function CreateArrivalPage({ defaultValues, arrivalId }: CreateArrivalPag
         editingIndex={editingAssetIndex}
       />
 
-      <DataTable
-        columns={getNewAssetTableColumns({
-          onDelete: id => deleteNewAsset(id),
-          onEdit: index => { setEditingAssetIndex(index); setIsAssetModalOpen(true) }
-        })}
-        data={newAssets}
-      />
+      <DataTable columns={assetTableColumns} data={newAssets} />
 
     </div>
   )

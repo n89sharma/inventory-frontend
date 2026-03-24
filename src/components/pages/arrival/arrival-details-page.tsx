@@ -3,7 +3,7 @@ import { getArrivalDetail } from '@/data/api/arrival-api'
 import { useNavigationStore } from '@/data/store/navigation-store'
 import type { ArrivalDetail } from '@/types/arrival-types'
 import type { OrgDetail } from '@/types/organization-types'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { CollectionEditBar } from '../../custom/collection-edit-bar'
@@ -44,7 +44,7 @@ export function ArrivalDetailsPage(): React.JSX.Element {
 
   if (collectionId === undefined) throw new Error('Missing collectionId parameter')
 
-  const columns = createAssetSummaryColumns('arrivals', collectionId)
+  const columns = useMemo(() => createAssetSummaryColumns('arrivals', collectionId), [collectionId])
 
   useEffect(() => {
     if (state?.successMessage) toast.success(state.successMessage, { position: 'top-center' })

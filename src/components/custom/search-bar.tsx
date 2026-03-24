@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { subDays } from "date-fns"
 import { Button } from "@/components/shadcn/button"
 import { DatePickerField } from './date-picker'
@@ -31,7 +31,7 @@ export function SearchBar({
   const { setFromDate, setToDate, setOrigin, setDestination, setHoldFor, setHoldBy } = setSearchOptions
   const activeUsers = useUserStore(state => state.users)
   const warehouses = useConstantsStore(state => state.warehouses)
-  const activeWarehouses = warehouses.filter(w => w.is_active)
+  const activeWarehouses = useMemo(() => warehouses.filter(w => w.is_active), [warehouses])
 
   async function handleSearch() {
     if (!isSelected(fromDate)) return
@@ -85,54 +85,58 @@ export function SearchBar({
           className="max-w-40"
         />
 
-        {showOrigin && !!origin && !!setOrigin &&
-          <SelectOptions
-            selection={origin}
-            onSelectionChange={setOrigin}
-            options={activeWarehouses}
-            getLabel={w => w.city_code}
-            fieldLabel="Warehouse"
-            anyAllowed={true}
-            className="max-w-40"
-          />
+        {(showOrigin && !!origin && !!setOrigin)
+          ? <SelectOptions
+              selection={origin}
+              onSelectionChange={setOrigin}
+              options={activeWarehouses}
+              getLabel={w => w.city_code}
+              fieldLabel="Warehouse"
+              anyAllowed={true}
+              className="max-w-40"
+            />
+          : null
         }
 
-        {showDestination && !!destination && !!setDestination &&
-          <SelectOptions
-            selection={destination}
-            onSelectionChange={setDestination}
-            options={activeWarehouses}
-            getLabel={w => w.city_code}
-            fieldLabel="Warehouse"
-            anyAllowed={true}
-            className="max-w-40"
-          />
+        {(showDestination && !!destination && !!setDestination)
+          ? <SelectOptions
+              selection={destination}
+              onSelectionChange={setDestination}
+              options={activeWarehouses}
+              getLabel={w => w.city_code}
+              fieldLabel="Warehouse"
+              anyAllowed={true}
+              className="max-w-40"
+            />
+          : null
         }
 
-        {showHeldByFor && !!holdBy && !!setHoldBy &&
-          <SelectOptions
-            selection={holdBy}
-            onSelectionChange={setHoldBy}
-            options={activeUsers}
-            getLabel={u => u.name}
-            getKey={u => u.username}
-            fieldLabel="Hold By"
-            anyAllowed={true}
-            className="max-w-40"
-          />
+        {(showHeldByFor && !!holdBy && !!setHoldBy)
+          ? <SelectOptions
+              selection={holdBy}
+              onSelectionChange={setHoldBy}
+              options={activeUsers}
+              getLabel={u => u.name}
+              getKey={u => u.username}
+              fieldLabel="Hold By"
+              anyAllowed={true}
+              className="max-w-40"
+            />
+          : null
         }
 
-        {showHeldByFor && !!holdFor && !!setHoldFor &&
-          <SelectOptions
-            selection={holdFor}
-            onSelectionChange={setHoldFor}
-            options={activeUsers}
-            getLabel={u => u.name}
-            getKey={u => u.username}
-            fieldLabel="Hold For"
-            anyAllowed={true}
-            className="max-w-40"
-          />
+        {(showHeldByFor && !!holdFor && !!setHoldFor)
+          ? <SelectOptions
+              selection={holdFor}
+              onSelectionChange={setHoldFor}
+              options={activeUsers}
+              getLabel={u => u.name}
+              getKey={u => u.username}
+              fieldLabel="Hold For"
+              anyAllowed={true}
+              className="max-w-40"
+            />
+          : null
         }
 
         <Button

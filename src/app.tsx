@@ -14,16 +14,10 @@ import { InvoicesSummaryPage } from './components/pages/invoices-summary-page'
 import { QueryPage } from './components/pages/query'
 import { TransferDetailsPage } from './components/pages/transfer-details-page'
 import { TransferSummaryPage } from './components/pages/transfers-summary-page'
-import { useConstantsData } from './hooks/use-constants'
-import { useModelData } from './hooks/use-model-data'
-import { useOrgData } from './hooks/use-org-data'
-import { useUserData } from './hooks/use-user-data'
+import { useGlobalData } from './hooks/use-global-data'
 
 function App() {
-  useModelData()
-  useOrgData()
-  useConstantsData()
-  useUserData()
+  useGlobalData()
 
   return (
     <BrowserRouter>

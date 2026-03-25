@@ -2,29 +2,29 @@ import { z } from 'zod';
 
 
 export const AssetSummarySchema = z.object({
+  barcode: z.string(),
   brand: z.string(),
   model: z.string(),
   asset_type: z.string(),
-  barcode: z.string(),
   serial_number: z.string(),
   meter_total: z.string(),
-  warehouse_city_code: z.string().nullable(),
-  warehouse_street: z.string().nullable(),
-  tracking_status: z.string(),
   availability_status: z.string(),
-  technical_status: z.string()
+  tracking_status: z.string(),
+  technical_status: z.string(),
+  warehouse_city_code: z.string().nullable(),
+  warehouse_street: z.string().nullable()
 })
 
 export type AssetSummary = z.infer<typeof AssetSummarySchema>
 
 export type AssetDetails = {
+  barcode: string
   model: string
   brand: string
-  barcode: string
-  serial_number: string
   asset_type: string
-  tracking_status: string
+  serial_number: string
   availability_status: string
+  tracking_status: string
   technical_status: string
   location: string
   warehouse_code: string

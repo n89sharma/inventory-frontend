@@ -35,7 +35,6 @@ const WarehouseSelectOptionSchema = SelectOptionSchema(WarehouseSchema)
 
 export const AssetFormSchema = z.object({
   id: z.number().optional(),
-  tempId: z.uuid(),
   model: ModelSchema.nullable().refine(val => !!val, "Model is required"),
   serialNumber: z.string().refine(val => val.length > 0, "Serial number is required"),
   meterBlack: z.number().min(0).nullable().refine(v => v != null && v != undefined, "Black meter is required"),
@@ -57,7 +56,6 @@ export const ArrivalFormSchema = z.object({
 
 export type AssetForm = {
   id?: number | undefined,
-  tempId: string,
   model: Model | null,
   serialNumber: string,
   meterBlack: number | null,

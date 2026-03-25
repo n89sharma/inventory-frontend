@@ -34,7 +34,6 @@ export function ArrivalEditPage(): React.JSX.Element {
         comment: raw.comment,
         assets: raw.assets.map(a => ({
           id: a.id,
-          tempId: crypto.randomUUID(),
           model: models.find(m => m.id === a.modelId) ?? null,
           serialNumber: a.serialNumber,
           meterBlack: a.meterBlack,

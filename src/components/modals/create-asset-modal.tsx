@@ -37,7 +37,6 @@ export function AssetModal({ open, onOpenChange, addNewAsset, updateAsset, editi
     resolver: zodResolver(AssetFormSchema),
     defaultValues: getDefaultNewAsset()
   })
-  const tempId = newAssetForm.watch('tempId')
   const technicalStatuses = useConstantsStore(state => state.technicalStatuses)
   const coreFunctions = useConstantsStore(state => state.coreFunctions)
   const models = useModelStore(state => state.models)
@@ -56,7 +55,6 @@ export function AssetModal({ open, onOpenChange, addNewAsset, updateAsset, editi
 
   function getDefaultNewAsset() {
     return {
-      tempId: crypto.randomUUID(),
       serialNumber: '',
       model: null,
       technicalStatus: UNSELECTED,
@@ -97,7 +95,7 @@ export function AssetModal({ open, onOpenChange, addNewAsset, updateAsset, editi
           <DialogTitle>{modalConfig.title}</DialogTitle>
         </DialogHeader>
         <form onSubmit={e => e.preventDefault()}>
-          <FieldGroup className='grid grid-cols-2 gap-x-6 gap-y-3' key={tempId}>
+          <FieldGroup className='grid grid-cols-2 gap-x-6 gap-y-3'>
 
             <ControlledPopoverSearch
               control={newAssetForm.control}

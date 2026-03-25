@@ -10,8 +10,14 @@
 
 ## Transfer
 - Create Transfer
+  - Allow for server side search for assets using partial barcode. Create general pattern that can be used elsewhere.
+  - 
 - Edit Transfer
 - Accept Transfer
+- Add a scheduled date for transfer
+- Contact person to remind that a transfer is about to happen
+- State related variable that shows whether the transfer was accepted or not
+- Do we need representative and invoice?
 
 ## Departure
 - Create Departure

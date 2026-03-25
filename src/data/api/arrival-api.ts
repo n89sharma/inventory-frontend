@@ -76,7 +76,6 @@ export async function createArrival(a: ArrivalForm): Promise<ApiResponse<CreateA
       warehouse: getSelectedOrNull(a.warehouse),
       comment: a.comment,
       assets: a.assets.map(s => ({
-        tempId: s.tempId,
         model: s.model,
         serialNumber: s.serialNumber,
         meterBlack: s.meterBlack,

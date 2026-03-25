@@ -72,7 +72,7 @@ export function ArrivalFormPage({ defaultValues, pageConfig, breadcrumbs, onVali
   }
 
   function onInvalidArrival(errors: FieldErrors<ArrivalForm>) {
-    toast.error(`Form has errors: ${flattenFieldErrors(errors, ['id', 'tempId'])}`, { position: 'top-center' })
+    toast.error(`Form has errors: ${flattenFieldErrors(errors, ['id'])}`, { position: 'top-center' })
   }
 
   return (
